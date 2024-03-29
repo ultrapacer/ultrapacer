@@ -7,5 +7,5 @@ export class Event {
     get sun(): any;
     dateAtElapsed(seconds: any): Date;
     elapsedToTimeOfDay(elapsed: any): number;
-    serialize(): any;
+    serialize(): Partial<this>;
 }

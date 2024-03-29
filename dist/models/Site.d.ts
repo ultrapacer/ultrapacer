@@ -7,5 +7,5 @@ export class Site {
     set percent(v: any);
     get percent(): any;
     get waypoints(): any;
-    serialize(): any;
+    serialize(): Partial<this>;
 }

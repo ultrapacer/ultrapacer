@@ -9,7 +9,7 @@ export class Callbacks {
      */
     constructor(target: any, events: [string]);
     _target: any;
-    _callbacks: any;
+    _callbacks: _.Dictionary<never[]>;
     /**
      * add a callback function to an event
      * @param {String} evt event name
@@ -33,3 +33,4 @@ export class Callbacks {
      */
     execute(event: string): void;
 }
+import _ from 'lodash';

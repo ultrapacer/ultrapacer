@@ -34,5 +34,5 @@ export class Waypoint {
     get cutoff(): any;
     matchingSegment(segments: any): any;
     refreshLLA(): void;
-    serialize(): any;
+    serialize(): Partial<this>;
 }
