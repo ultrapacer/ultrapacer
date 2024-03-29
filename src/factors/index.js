@@ -57,3 +57,4 @@ export function generate(point, { plan, course }) {
 export { list } from './list.js'
 export { Strategy } from './strategy/index.js'
 export { Factors }
+export { getHeatFactor } from './heat'

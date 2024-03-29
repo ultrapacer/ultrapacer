@@ -15,5 +15,6 @@ module.exports = {
     'simple-import-sort/imports': 'error',
     'prefer-const': ['error', { destructuring: 'all' }],
     quotes: ['error', 'single', { allowTemplateLiterals: false }]
-  }
+  },
+  ignorePatterns: ['**/node_modules/**', '**/dist/**']
 }
