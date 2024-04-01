@@ -4,7 +4,22 @@
   "description": "ultraPacer is a web app for creating courses and pacing plans for ultramarathons and trail adventures that factor in grade, terrain, altitude, heat, and fatigue.",
   "author": "Danny Murphy <danny@ultrapacer.com>",
   "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/main.js",
+      "require": "./dist/main.cjs"
+    }
+  },
+  "main": "./dist/main.cjs",
+  "module": "./dist/main.js",
+  "typings": "./dist/main.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
+    "build": "tsc && vite build",
+    "build:watch": "tsc && vite build --watch",
+    "dev": "vite",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "format": "prettier --write ./",
     "test": "vitest"
@@ -17,12 +32,19 @@
     "suncalc": "^1.9.0"
   },
   "devDependencies": {
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@types/lodash": "^4.17.0",
+    "@types/node": "^20.11.30",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-simple-import-sort": "^10.0.0",
-    "prettier": "^3.1.1",
+    "prettier": "^3.2.5",
+    "rollup-plugin-typescript-paths": "^1.5.0",
     "supports-color": "^9.4.0",
-    "vitest": "^1.1.0"
+    "tslib": "^2.6.2",
+    "typescript": "^5.4.3",
+    "vite": "^5.2.7",
+    "vitest": "^1.4.0"
   }
 }
