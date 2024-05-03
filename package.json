@@ -39,6 +39,7 @@
     "@types/node": "^20.12.8",
     "@types/sprintf-js": "^1.1.4",
     "@types/suncalc": "^1.9.2",
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",
