@@ -1,1 +1,1 @@
-export function dateToTODSeconds(date: any, timezone: any): any;
+export declare function dateToTODSeconds(date: Date, timezone: string): number;

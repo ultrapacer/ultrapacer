@@ -1,5 +1,2 @@
-export namespace defaults {
-    let rate: number;
-    let span: number;
-    let th: number;
-}
+import { AltitudeModel } from './AltitudeModel';
+export declare const defaults: AltitudeModel;

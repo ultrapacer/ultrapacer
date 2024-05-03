@@ -4,8 +4,14 @@ module.exports = {
   env: {
     browser: true
   },
-  extends: ['eslint:recommended', 'plugin:import/recommended', 'prettier'],
-  plugins: ['simple-import-sort'],
+  extends: [
+    'eslint:recommended',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
+    'plugin:@typescript-eslint/recommended',
+    'prettier'
+  ],
+  plugins: ['@typescript-eslint/eslint-plugin', 'eslint-plugin-tsdoc', 'simple-import-sort'],
   parserOptions: {
     sourceType: 'module',
     ecmaVersion: 'latest'
@@ -14,7 +20,11 @@ module.exports = {
     'import/first': 'error',
     'simple-import-sort/imports': 'error',
     'prefer-const': ['error', { destructuring: 'all' }],
-    quotes: ['error', 'single', { allowTemplateLiterals: false }]
+    quotes: ['error', 'single', { allowTemplateLiterals: false }],
+    'tsdoc/syntax': 'warn'
   },
-  ignorePatterns: ['**/node_modules/**', '**/dist/**']
+  ignorePatterns: ['**/node_modules/**', '**/dist/**'],
+  settings: {
+    'import/resolver': { typescript: true }
+  }
 }

@@ -1,4 +1,4 @@
-export class MissingDataError extends Error {
-    constructor(message: any, field: any);
-    field: any;
+export declare class MissingDataError extends Error {
+    constructor(message: string, field: string);
+    field: string;
 }

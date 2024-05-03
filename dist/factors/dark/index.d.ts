@@ -1,17 +1,13 @@
+import { Sun } from '../../models/Sun';
+import { DarkModel } from './DarkModel';
 /**
  * Return time-of-day based dark factor
  *
- * @param {Object}  args                  An object
- * @param {Number}  args.timeOfDaySeconds Time of day (in seconds)
- * @param {Number}  args.terrainFactor    Terrain %
- * @param {Object}  args.sun              Sun model, object w/ dawn, sunrise, sunset, dusk in time-of-day seconds
- * @param {Object}  [args.model]          Darkness model (see ./defaults)
+ * @param   timeOfDaySeconds - Time of day (in seconds)
+ * @param   terrainFactor  -  Terrain %
+ * @param   sun  -            Sun model, object w/ dawn, sunrise, sunset, dusk in time-of-day seconds
+ * @param   model -       Darkness model (see ./defaults)
  *
- * @return {Number} The heat factor at the provided point
+ * @returns  The heat factor at the provided point
  */
-export function getDarkFactor({ timeOfDaySeconds, terrainFactor, sun, model }: {
-    timeOfDaySeconds: number;
-    terrainFactor: number;
-    sun: Object;
-    model?: Object | undefined;
-}): number;
+export declare function getDarkFactor(timeOfDaySeconds: number, terrainFactor: number, sun: Sun, model?: DarkModel): number;

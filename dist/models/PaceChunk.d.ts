@@ -1,7 +1,26 @@
-export class PaceChunk {
-    constructor(data?: {});
-    l: any;
-    set elapsed(v: number);
+import { Factors } from '../factors';
+import { Plan } from './Plan';
+import { PlanPoint } from './PlanPoint';
+declare class Tests {
+    iterations: boolean;
+    factor: boolean;
+    target: boolean;
+    get passing(): boolean;
+    get statusString(): string;
+}
+export declare class PaceChunk {
+    constraints: (number | (() => number))[];
+    constructor(plan: Plan, points: PlanPoint[], constraints: (number | (() => number))[], delay: number);
+    points: PlanPoint[];
+    plan: Plan;
+    delay: number;
+    factor: number;
+    factors: Factors;
+    status?: {
+        success?: boolean;
+        tests?: Tests;
+        iterations?: number;
+    };
     get elapsed(): number;
     get dist(): number;
     get pace(): number;
@@ -11,20 +30,9 @@ export class PaceChunk {
      * apply pacing to chunk points, update factors
      */
     applyPacing(): void;
-    factors: Factors | undefined;
-    factor: number | undefined;
     /**
      * iterate applyPacing method until tests pass
      */
     calculate(): void;
-    status: {
-        tests: {
-            iterations: boolean;
-            factor: boolean;
-            target: boolean;
-        };
-        success: boolean;
-        iterations: number;
-    } | undefined;
 }
-import { Factors } from '../factors/index.js';
+export {};

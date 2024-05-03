@@ -1,5 +1,4 @@
-export function getSmoothedProfile({ points, locs, gt }: {
-    points: any;
-    locs: any;
-    gt: any;
-}): any[];
+export declare const getSmoothedProfile: (locations: number[], altitudes: number[], smoothedLocations: number[], gt: number) => {
+    grade: number;
+    alt: number;
+}[];

@@ -4,12 +4,16 @@ export {
   Plan,
   PlanPoint,
   Point,
-  Segment,
+  CourseSegment,
+  PlanSegment,
   Site,
-  SuperSegment,
+  SuperCourseSegment,
+  SuperPlanSegment,
   Track,
   Waypoint
 } from './models'
+/*
+FIX TYPESCRIPT
 export { Factors, Strategy, getHeatFactor, list as factorList } from './factors'
 export { adjust as adjustStrategy } from './factors/strategy/adjust'
 export { scale as scaleDark } from './factors/dark/scale'
@@ -20,3 +24,4 @@ export { calcSegments } from './geo'
 export { addLocations } from './models/Points/addLocations'
 export { interpolatePoint } from './models/Points/interpolate'
 export { dateToTODSeconds } from './util'
+*/

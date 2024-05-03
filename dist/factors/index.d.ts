@@ -1,10 +1,11 @@
-export function applyScale(fact: any, scale: any): number;
-export function generate(point: any, { plan, course }: {
-    plan: any;
-    course: any;
-}): void;
-export { list } from "./list.js";
-export { Strategy } from "./strategy/index.js";
+import { Course } from '../models/Course';
+import { CoursePoint } from '../models/CoursePoint';
+import { Plan } from '../models/Plan';
+import { PlanPoint } from '../models/PlanPoint';
+import { Factors } from './Factors';
+export declare function applyScale(fact: number, scale: number): number;
+export declare function generateCourseFactors(point: CoursePoint | PlanPoint, course: Course): void;
+export declare function generatePlanFactors(point: PlanPoint, plan: Plan): void;
+export { list } from './list';
+export { Strategy } from './strategy';
 export { Factors };
-export { getHeatFactor } from "./heat";
-import { Factors } from './Factors.js';

@@ -1,50 +1,47 @@
-export class Track {
-    constructor(arg: any);
-    type: any;
-    get __class(): string;
-    clearCache(): void;
-    set points(v: any);
-    get points(): any;
-    set start(v: any);
-    get start(): any;
-    set finish(v: any);
-    get finish(): any;
-    set stats(v: any);
-    get stats(): any;
-    set dist(v: any);
-    get dist(): any;
-    set gain(v: any);
-    get gain(): any;
-    set loss(v: any);
-    get loss(): any;
-    getLLA(location: any, opts?: {}): {
-        lat: any;
-        lon: any;
-        alt: any;
-        grade: any;
-        ind: any;
-    } | {
-        lat: any;
-        lon: any;
-        alt: any;
-        grade: any;
-        ind: any;
-    }[];
-    getNearestPoint(latlon: any, start: any, limit: any): {
-        point: any;
-        delta: number;
+/// <reference types="~/@types/sgeo" />
+import { latlon as LatLon } from 'sgeo';
+import { Point, TrackPoint } from './Point';
+export declare class Track {
+    dist: number;
+    gain: number;
+    loss: number;
+    points: TrackPoint[];
+    constructor(llas: {
+        lat: number;
+        lon: number;
+        alt: number;
+    }[]);
+    get start(): {
+        lat: number;
+        lon: number;
+    };
+    get finish(): {
+        lat: number;
+        lon: number;
+    };
+    getLLA(location: number): {
+        lat: number;
+        lon: number;
+        alt: number;
     };
     /**
-     * Returns nearest location to input lat/lon pair.
-     *
-     * @param {Number[]}  ll        [lat, lon] array.
-     * @param {Number}    [start]   starting location in meters.
-     * @param {Number}    [limit]   max distance it can move.
-     * @return {Number}             The nearest location to input lat/lon pair.
+     * iterate to new location based on waypoint lat/lon
+     * @param latlon - new point location
+     * @param start - starting point in track
+     * @param limit - max distance along track from starting point
+     * @returns
      */
-    getNearestLoc(ll: number[], start?: number | undefined, limit?: number | undefined): number;
-    reduceDensity({ spacing, length }?: {
-        spacing: any;
-        length: any;
-    }): Track;
+    getNearestPoint(latlon: LatLon, start: Point, limit: number): {
+        point: TrackPoint;
+        delta: number;
+    };
+    reduceDensity(spacing?: number, length?: number): Track;
 }
+/**
+ * utilty function to create a new track from lat[],lon[],alt[] input
+ * @param lat - latitudes
+ * @param lon - longitudes
+ * @param alt - altitudes
+ * @returns new Track
+ */
+export declare function createTrackFromArrays(lat: number[], lon: number[], alt: number[]): Track;

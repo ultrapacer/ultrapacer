@@ -1,1 +1,1 @@
-export const list: string[];
+export declare const list: string[];

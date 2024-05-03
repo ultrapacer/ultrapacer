@@ -1,13 +1,12 @@
+import { Course } from '../../models/Course';
+import { CoursePoint } from '../../models/CoursePoint';
+import { PlanPoint } from '../../models/PlanPoint';
 /**
  * Return a scaling factor for terrain
  *
- * @param {Object}  args          Arguments object
- * @param {Point}   args.point    Point object per /models/Point
- * @param {Course}  args.course   Course object per /models/Course
+ * @param point  - Point object per /models/Point
+ * @param course - Course object per /models/Course
  *
- * @return {Number} The terrain factor at the provided point
+ * @returns The terrain factor at the provided point
  */
-export function getTerrainFactor({ point, course }: {
-    point: Point;
-    course: Course;
-}): number;
+export declare function getTerrainFactor(point: CoursePoint | PlanPoint, course: Course): number;

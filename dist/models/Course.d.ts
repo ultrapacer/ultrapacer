@@ -1,47 +1,118 @@
-export class Course {
-    constructor(data: any);
-    get __class(): string;
-    set loops(v: any);
-    get loops(): any;
-    set dist(v: any);
-    get dist(): any;
-    set gain(v: any);
-    get gain(): any;
-    set loss(v: any);
-    get loss(): any;
+import { CoursePoint } from './CoursePoint';
+import { CourseSplits } from './CourseSplits';
+import { Site } from './Site';
+import { Track } from './Track';
+import { Waypoint } from './Waypoint';
+export type CourseData = {
+    track: Track;
+    loops?: number;
+    dist?: number;
+    gain?: number;
+    loss?: number;
+};
+export declare class Course {
+    name?: string;
+    _cache: {
+        terrainTypes?: TerrainType[];
+        terrainFactors?: TerrainFactor[];
+        splits?: [];
+        stats?: object;
+    };
+    constructor(data: CourseData);
+    private _loops;
+    get loops(): number;
+    set loops(v: number);
+    private _distOverride?;
+    private _gainOverride?;
+    private _lossOverride?;
+    private _dist?;
+    private _gain?;
+    private _loss?;
+    set dist(v: number);
+    set gain(v: number);
+    set loss(v: number);
+    get dist(): number;
+    get gain(): number;
+    get loss(): number;
     get distScale(): number;
     get gainScale(): number;
     get lossScale(): number;
     get loopDist(): number;
     get loopGain(): number;
     get loopLoss(): number;
-    set sites(data: any);
-    get sites(): any;
+    private _sites;
+    get sites(): Site[];
+    set sites(data: Site[]);
     clearCache(level?: number): void;
-    get waypoints(): any;
-    set track(v: any);
-    get track(): any;
-    set points(v: any);
-    get points(): any;
+    private _waypoints?;
+    get waypoints(): Waypoint[];
+    private _track;
+    set track(v: Track);
+    get track(): Track;
+    private _points?;
+    get points(): CoursePoint[];
+    set points(v: CoursePoint[]);
     /**
      * Finds and optionally inserts a point at an input location.
      *
-     * @param {Number} args.loc - The location (in km) to determine value.
-     * @param {Boolean} args.insert - Whether to also insert a created point into the points array. Defaults to false.
-     * @return {CoursePoint} The CoursePoint at input location.
+     * @param loc - The location (in km) to determine value.
+     * @param insert - Whether to also insert a created point into the points array. Defaults to false.
+     * @returns The CoursePoint at input location.
      */
-    getPoint({ loc, insert }: number): CoursePoint;
-    refreshWaypointLLAs(): void;
-    get terrainFactors(): any;
-    get terrainTypes(): any;
-    get cutoffs(): any;
-    get splits(): any;
-    set stats(v: any);
-    get stats(): any;
-    set eventStart(v: any);
-    get eventStart(): any;
-    set eventTimezone(v: any);
-    get eventTimezone(): any;
-    get event(): any;
+    getPoint(loc: number, insert?: boolean): CoursePoint;
+    private _terrainFactors?;
+    get terrainFactors(): TerrainFactor[];
+    private _terrainTypes?;
+    get terrainTypes(): TerrainType[];
+    private _cutoffs?;
+    get cutoffs(): CourseCutoff[];
+    private _splits?;
+    get splits(): CourseSplits;
+    private _stats?;
+    get stats(): {
+        altitude: {
+            avg: number;
+            max: number;
+            min: number;
+        };
+        grade: {
+            avg: number;
+            max: number;
+            min: number;
+        };
+        terrain: {
+            avg: number;
+            max: number;
+            min: number;
+            maxDist: number;
+            minDist: number;
+        };
+    };
+    locationsToBreaks(locations: number[]): {
+        start: number;
+        end: number;
+    }[];
 }
-import { CoursePoint } from './CoursePoint.js';
+export declare class CourseCutoff {
+    waypoint: Waypoint;
+    constructor(waypoint: Waypoint);
+    get loc(): number;
+    get time(): number;
+}
+declare class TerrainFactor {
+    value: number;
+    startWaypoint: Waypoint;
+    endWaypoint: Waypoint;
+    constructor(startWaypoint: Waypoint, endWaypoint: Waypoint, value?: number);
+    get start(): number;
+    get end(): number;
+}
+declare class TerrainType {
+    type: string;
+    startWaypoint: Waypoint;
+    endWaypoint: Waypoint;
+    constructor(startWaypoint: Waypoint, endWaypoint: Waypoint, type: string);
+    get start(): number;
+    get end(): number;
+}
+export {};
