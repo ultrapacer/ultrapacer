@@ -4,7 +4,6 @@ import { Site } from './Site';
 import { Track } from './Track';
 import { Waypoint } from './Waypoint';
 export type CourseData = {
-    track: Track;
     loops?: number;
     dist?: number;
     gain?: number;
@@ -18,7 +17,7 @@ export declare class Course {
         splits?: [];
         stats?: object;
     };
-    constructor(data: CourseData);
+    constructor(track: Track, data: CourseData);
     private _loops;
     get loops(): number;
     set loops(v: number);

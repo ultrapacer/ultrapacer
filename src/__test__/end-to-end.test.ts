@@ -36,8 +36,7 @@ const tests: Test[] = [
 
   // plan for a 30-hour finish that adjusts only to final cutoff
   {
-    plan: new Plan({
-      course,
+    plan: new Plan(course, {
       start,
       name: '30 hour basic',
       method: 'time',
@@ -59,8 +58,7 @@ const tests: Test[] = [
 
   // plan for a 25-hour with big rests
   {
-    plan: new Plan({
-      course,
+    plan: new Plan(course, {
       start,
       name: '25-hr+5hr-delays',
       method: 'time',
@@ -85,8 +83,7 @@ const tests: Test[] = [
 
   // plan for a 30-hour finish that adjusts to multiple cutoffs
   {
-    plan: new Plan({
-      course,
+    plan: new Plan(course, {
       start,
       name: '30 hour reverse',
       method: 'time',
@@ -116,8 +113,7 @@ const tests: Test[] = [
 
   // plan for a 10-minute average pace
   {
-    plan: new Plan({
-      course,
+    plan: new Plan(course, {
       start,
       name: '10min/mile',
       method: 'pace',
@@ -147,8 +143,7 @@ const tests: Test[] = [
 
   // plan for a 20-minute average pace
   {
-    plan: new Plan({
-      course,
+    plan: new Plan(course, {
       start,
       name: '20min/mile',
       method: 'pace',
@@ -179,8 +174,7 @@ const tests: Test[] = [
 
   // plan for a 15-minute average pace missing early cutoff
   {
-    plan: new Plan({
-      course,
+    plan: new Plan(course, {
       start,
       name: '15min-as-cut',
       method: 'pace',
@@ -210,8 +204,7 @@ const tests: Test[] = [
 
   // plan for a 10-minute np
   {
-    plan: new Plan({
-      course,
+    plan: new Plan(course, {
       start,
       name: '10-min',
       method: 'np',
@@ -236,8 +229,7 @@ const tests: Test[] = [
 
   // plan for a 13-minute np reverse that hits early cutoffs but finishes before final cutoff
   {
-    plan: new Plan({
-      course,
+    plan: new Plan(course, {
       start,
       name: '13-min-rev',
       method: 'np',
@@ -254,8 +246,7 @@ const tests: Test[] = [
 
   // plan for a 15-minute np reverse that needs to get reduced to final cutoff
   {
-    plan: new Plan({
-      course,
+    plan: new Plan(course, {
       start,
       name: '16-min-rev',
       method: 'np',
@@ -288,7 +279,7 @@ test(`${course.name}: check track distance`, () => {
 test(`${course.name}: check segment 7 properties`, () => {
   expect(course.splits.segments[7].len).toBeCloseTo(5.302885)
   expect(course.splits.segments[7].grade).toBeCloseTo(4.56348)
-  expect(course.splits.segments[7].factors.terrain).toBeCloseTo(1.0087442)
+  expect(tests[0].plan.splits.segments[7].factors.terrain).toBeCloseTo(1.0087442)
 })
 
 const pacingTests = ['elapsed', 'factor', 'pace', 'np']

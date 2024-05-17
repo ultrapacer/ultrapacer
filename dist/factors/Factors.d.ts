@@ -49,7 +49,3 @@ export declare class Factors {
      */
     scaleEach(scale: number): this;
 }
-export declare function rollupFactors(input: {
-    factors: Factors;
-    dist: number;
-}[]): Factors;

@@ -1,5 +1,3 @@
-import { sumBy } from 'lodash'
-
 export class Factors {
   private _altitude: number = 1
   private _grade: number = 1
@@ -156,13 +154,4 @@ export class Factors {
 
     return this
   }
-}
-
-export function rollupFactors(input: { factors: Factors; dist: number }[]) {
-  const f = new Factors().init(0)
-  input.forEach(({ factors, dist }) => {
-    f.applyEach((v, b) => v + dist * b, factors)
-  })
-  f.scaleEach(1 / sumBy(input, 'dist'))
-  return f
 }

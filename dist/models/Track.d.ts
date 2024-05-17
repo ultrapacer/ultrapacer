@@ -1,16 +1,17 @@
 /// <reference types="~/@types/sgeo" />
 import { latlon as LatLon } from 'sgeo';
 import { Point, TrackPoint } from './Point';
+export type TrackData = {
+    lat: number;
+    lon: number;
+    alt: number;
+}[];
 export declare class Track {
     dist: number;
     gain: number;
     loss: number;
     points: TrackPoint[];
-    constructor(llas: {
-        lat: number;
-        lon: number;
-        alt: number;
-    }[]);
+    constructor(llas: TrackData);
     get start(): {
         lat: number;
         lon: number;

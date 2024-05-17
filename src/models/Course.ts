@@ -17,7 +17,6 @@ const d = createDebug('models:Course')
 const disallowed = ['track', 'dist', 'gain', 'loss', 'cache', 'distance']
 
 export type CourseData = {
-  track: Track
   loops?: number
   dist?: number
   gain?: number
@@ -33,8 +32,8 @@ export class Course {
     stats?: object
   } = {}
 
-  constructor(data: CourseData) {
-    this._track = data.track
+  constructor(track: Track, data: CourseData) {
+    this._track = track
 
     if (data.loops) this.loops = data.loops
 

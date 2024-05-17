@@ -2,8 +2,7 @@ import _ from 'lodash'
 import { sprintf } from 'sprintf-js'
 
 import { createDebug } from '../debug'
-import { Factors } from '../factors'
-import { rollupFactors } from '../factors/Factors'
+import { Factors, rollup } from '../factors'
 import { Callbacks } from '../util/Callbacks'
 import { MissingDataError } from '../util/MissingDataError'
 import { PlanPoint } from '.'
@@ -70,7 +69,7 @@ export class Pacing {
       d('factors:update')
 
       // rollup individual factors:
-      this._factors = rollupFactors(this.chunks)
+      this._factors = rollup(this.chunks)
     }
     return this._factors
   }

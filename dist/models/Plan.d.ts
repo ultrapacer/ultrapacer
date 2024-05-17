@@ -24,7 +24,6 @@ declare class PlanScales {
     constructor(plan: Plan);
 }
 export type PlanData = {
-    course: Course;
     start: {
         date: Date;
         timezone: string;
@@ -53,7 +52,7 @@ export declare class Plan {
     target: number;
     name?: string;
     scales: PlanScales;
-    constructor(data: PlanData);
+    constructor(course: Course, data: PlanData);
     callbacks: Callbacks;
     pacing: Pacing;
     clearCache(): void;

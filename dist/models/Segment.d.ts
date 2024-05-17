@@ -38,8 +38,6 @@ export declare class CourseSegment extends Segment {
         loss: number;
         grade: number;
     });
-    private _factors?;
-    get factors(): Factors;
 }
 export declare class PlanSegment extends Segment {
     private _plan;

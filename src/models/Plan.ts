@@ -42,7 +42,6 @@ class PlanScales {
 }
 
 export type PlanData = {
-  course: Course
   start: { date: Date; timezone: string }
   method: string
   target: number
@@ -64,10 +63,10 @@ export class Plan {
   name?: string
   scales: PlanScales = new PlanScales(this)
 
-  constructor(data: PlanData) {
-    this.pacing = new Pacing(this)
+  constructor(course: Course, data: PlanData) {
+    this.course = course
 
-    this.course = data.course
+    this.pacing = new Pacing(this)
 
     this.points = this.course.points.map((point) => new PlanPoint(this, point))
 

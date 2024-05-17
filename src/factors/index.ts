@@ -44,5 +44,6 @@ export function generatePlanFactors(point: PlanPoint, plan: Plan) {
 }
 
 export { list } from './list'
+export { rollup } from './rollup'
 export { Strategy } from './strategy'
 export { Factors }

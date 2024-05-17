@@ -11,13 +11,15 @@ import { interpolatePoint } from './Points/interpolate'
 
 const d = createDebug('models:Track')
 
+export type TrackData = { lat: number; lon: number; alt: number }[]
+
 export class Track {
   dist: number
   gain: number
   loss: number
   points: TrackPoint[]
 
-  constructor(llas: { lat: number; lon: number; alt: number }[]) {
+  constructor(llas: TrackData) {
     d('Creating new Track object')
 
     const points = llas.map((p) => new Point(p.lat, p.lon, p.alt))

@@ -1806,8 +1806,9 @@ const trackdata = {
   ]
 }
 
+const track = createTrackFromArrays(trackdata.lat, trackdata.lon, trackdata.alt)
+
 const coursedata = {
-  track: createTrackFromArrays(trackdata.lat, trackdata.lon, trackdata.alt),
   name: 'RDL100',
   gain: 3352.7998927104036,
   loss: -3352.7998927104036,
@@ -2409,8 +2410,8 @@ const plandata = {
 
 export const start = { date: new Date('2021-11-06T12:15:00.000Z'), timezone: 'America/Los_Angeles' }
 
-const course = new Course(coursedata)
+const course = new Course(track, coursedata)
 
-const plan = new Plan({ ...plandata, course, start })
+const plan = new Plan(course, { ...plandata, start })
 
 export { course, plan }

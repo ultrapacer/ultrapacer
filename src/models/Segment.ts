@@ -1,7 +1,6 @@
 import _ from 'lodash'
 
-import { Factors } from '../factors'
-import { rollupFactors } from '../factors/Factors'
+import { Factors, rollup } from '../factors'
 import { Plan } from '.'
 import { Course } from './Course'
 import { CoursePoint } from './CoursePoint'
@@ -15,11 +14,7 @@ import { Waypoint } from './Waypoint'
  * @param point2 - finish point
  * @returns Factors
  */
-function rollupPointFactors(
-  points: CoursePoint[] | PlanPoint[],
-  point1: CoursePoint | PlanPoint,
-  point2: CoursePoint | PlanPoint
-): Factors {
+function rollupPointFactors(points: PlanPoint[], point1: PlanPoint, point2: PlanPoint): Factors {
   const filteredPoints = points.filter(
     (p, i) =>
       i >= points.findIndex((p) => p === point1) && i <= points.findIndex((p) => p === point2)
@@ -31,7 +26,7 @@ function rollupPointFactors(
   }))
   segs.pop()
 
-  return rollupFactors(segs)
+  return rollup(segs)
 }
 
 class Segment {
@@ -105,14 +100,6 @@ export class CourseSegment extends Segment {
     this._course = course
     this.point1 = obj.point1
     this.point2 = obj.point2
-  }
-
-  private _factors?: Factors
-  get factors() {
-    return (
-      this._factors ||
-      (this._factors = rollupPointFactors(this._course.points, this.point1, this.point2))
-    )
   }
 }
 

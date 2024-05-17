@@ -7,5 +7,6 @@ export declare function applyScale(fact: number, scale: number): number;
 export declare function generateCourseFactors(point: CoursePoint | PlanPoint, course: Course): void;
 export declare function generatePlanFactors(point: PlanPoint, plan: Plan): void;
 export { list } from './list';
+export { rollup } from './rollup';
 export { Strategy } from './strategy';
 export { Factors };
