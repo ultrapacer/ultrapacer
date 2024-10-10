@@ -18,9 +18,9 @@ const disallowed = ['track', 'dist', 'gain', 'loss', 'cache', 'distance']
 
 export type CourseData = {
   loops?: number
-  dist?: number
-  gain?: number
-  loss?: number
+  dist?: number | null
+  gain?: number | null
+  loss?: number | null
 }
 
 export class Course {

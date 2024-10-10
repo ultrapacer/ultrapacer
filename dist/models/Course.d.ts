@@ -5,9 +5,9 @@ import { Track } from './Track';
 import { Waypoint } from './Waypoint';
 export type CourseData = {
     loops?: number;
-    dist?: number;
-    gain?: number;
-    loss?: number;
+    dist?: number | null;
+    gain?: number | null;
+    loss?: number | null;
 };
 export declare class Course {
     name?: string;
