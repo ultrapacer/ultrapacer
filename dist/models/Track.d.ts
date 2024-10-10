@@ -1,4 +1,3 @@
-/// <reference types="~/@types/sgeo" />
 import { latlon as LatLon } from 'sgeo';
 import { Point, TrackPoint } from './Point';
 export type TrackData = {
@@ -19,6 +18,15 @@ export declare class Track {
     get finish(): {
         lat: number;
         lon: number;
+    };
+    private _stats?;
+    /**
+     * track gain, loss, and distance stats
+     */
+    get stats(): {
+        gain: number;
+        loss: number;
+        dist: number;
     };
     getLLA(location: number): {
         lat: number;

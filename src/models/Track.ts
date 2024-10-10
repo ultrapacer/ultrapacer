@@ -8,6 +8,7 @@ import { getGrades } from './Points/getGrades'
 import { getLocations } from './Points/getLocations'
 import { getSmoothedProfile } from './Points/getSmoothedProfile'
 import { interpolatePoint } from './Points/interpolate'
+import { MissingDataError } from '~/util/MissingDataError'
 
 const d = createDebug('models:Track')
 
@@ -57,6 +58,35 @@ export class Track {
 
   get finish(): { lat: number; lon: number } {
     return _.pick(this.points[this.points.length - 1], ['lat', 'lon'])
+  }
+
+  private _stats?: { gain: number; loss: number; dist: number }
+  /**
+   * track gain, loss, and distance stats
+   */
+  get stats() {
+    if (this._stats) return this._stats
+    if (this.points?.length) {
+      d('Calculating track stats')
+      const dist = _.last(this.points)?.loc as number // ok because we checked for length
+      let gain = 0
+      let loss = 0
+      let delta = 0
+      let last = this.points[0].alt
+      this.points.forEach((p) => {
+        delta = p.alt - last
+        if (delta < 0) {
+          loss += delta
+        } else {
+          gain += delta
+        }
+        last = p.alt
+      })
+
+      this._stats = { gain, loss, dist }
+
+      return this._stats
+    } else throw new MissingDataError('Track points are missing', 'points')
   }
 
   // get lat, lon, alt, index for distance location(s) along track

@@ -1,4 +1,3 @@
-/// <reference types="~/@types/sgeo" />
 import { Factors } from '../factors/Factors';
 import { Course } from './Course';
 import { TrackPoint } from './Point';
