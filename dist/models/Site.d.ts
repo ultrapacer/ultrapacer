@@ -5,7 +5,7 @@ type WaypointCutoff = {
     time: number;
 };
 export type SiteData = {
-    _id: string;
+    id: string | symbol;
     type: string;
     name: string;
     description?: string;
@@ -26,9 +26,9 @@ export declare class Site {
     _data: {
         percent: number;
     };
-    _id: string;
     course: Course;
     cutoffs: WaypointCutoff[];
+    id: string | symbol;
     name: string;
     tier: number;
     type: string;

@@ -1817,7 +1817,7 @@ const coursedata = {
   dist: 160.93444978925635,
   sites: [
     {
-      _id: '5d73071e0588d90008bba0c6',
+      id: '5d73071e0588d90008bba0c6',
       type: 'start',
       terrainFactor: 0,
       pointsIndex: 0,
@@ -1828,12 +1828,11 @@ const coursedata = {
       lon: -121.16862,
       terrainType: 'Paved',
       percent: 0,
-      cutoffs: [],
-      id: '5d73071e0588d90008bba0c6'
+      cutoffs: []
     },
     {
       terrainType: null,
-      _id: '5d73071e0588d90008bba0c8',
+      id: '5d73071e0588d90008bba0c8',
       type: 'finish',
       terrainFactor: null,
       pointsIndex: 0,
@@ -1847,14 +1846,13 @@ const coursedata = {
         {
           time: 108000,
           loop: 1,
-          _id: '63c32b73763d96c5c79becbd'
+          id: '63c32b73763d96c5c79becbd'
         }
-      ],
-      id: '5d73071e0588d90008bba0c8'
+      ]
     },
     {
       terrainType: null,
-      _id: '5d8e9973e372020007cb244b',
+      id: '5d8e9973e372020007cb244b',
       type: 'aid',
       terrainFactor: null,
       pointsIndex: 434,
@@ -1864,12 +1862,11 @@ const coursedata = {
       lon: -121.18961210053696,
       elevation: 41.12544491633615,
       percent: 0.09307857690919637,
-      cutoffs: [],
-      id: '5d8e9973e372020007cb244b'
+      cutoffs: []
     },
     {
       terrainType: null,
-      _id: '5d8e9986e372020007cb244c',
+      id: '5d8e9986e372020007cb244c',
       type: 'aid',
       terrainFactor: null,
       pointsIndex: 894,
@@ -1879,11 +1876,10 @@ const coursedata = {
       lon: -121.18490098271988,
       elevation: 50.71500584379635,
       percent: 0.17173104036331144,
-      cutoffs: [],
-      id: '5d8e9986e372020007cb244c'
+      cutoffs: []
     },
     {
-      _id: '5d8e9999e372020007cb244d',
+      id: '5d8e9999e372020007cb244d',
       type: 'aid',
       terrainFactor: 4,
       pointsIndex: 1097,
@@ -1897,15 +1893,14 @@ const coursedata = {
       percent: 0.21614081362393417,
       cutoffs: [
         {
-          _id: '616a08f2c4001e4a9c1cf541',
+          id: '616a08f2c4001e4a9c1cf541',
           time: 23400,
           loop: 1
         }
-      ],
-      id: '5d8e9999e372020007cb244d'
+      ]
     },
     {
-      _id: '5d8e99bfe372020007cb244e',
+      id: '5d8e99bfe372020007cb244e',
       type: 'aid',
       terrainFactor: 8,
       pointsIndex: 1299,
@@ -1916,11 +1911,10 @@ const coursedata = {
       elevation: 144.65642764720516,
       terrainType: 'Doubletrack',
       percent: 0.2585158095755734,
-      cutoffs: [],
-      id: '5d8e99bfe372020007cb244e'
+      cutoffs: []
     },
     {
-      _id: '5d8e99d9e372020007cb244f',
+      id: '5d8e99d9e372020007cb244f',
       type: 'aid',
       terrainFactor: 12,
       pointsIndex: 1721,
@@ -1931,12 +1925,11 @@ const coursedata = {
       elevation: 161.4197499798032,
       terrainType: 'Singletrack',
       percent: 0.32515885820639173,
-      cutoffs: [],
-      id: '5d8e99d9e372020007cb244f'
+      cutoffs: []
     },
     {
       terrainType: null,
-      _id: '5d8e9a0ee372020007cb2450',
+      id: '5d8e9a0ee372020007cb2450',
       type: 'aid',
       terrainFactor: null,
       pointsIndex: 1881,
@@ -1949,15 +1942,14 @@ const coursedata = {
       percent: 0.35365561039357263,
       cutoffs: [
         {
-          _id: '616a090bc4001e4a9c1cf54a',
+          id: '616a090bc4001e4a9c1cf54a',
           time: 39000,
           loop: 1
         }
-      ],
-      id: '5d8e9a0ee372020007cb2450'
+      ]
     },
     {
-      _id: '5d8e9a1be372020007cb2451',
+      id: '5d8e9a1be372020007cb2451',
       type: 'aid',
       terrainFactor: 4,
       pointsIndex: 2210,
@@ -1968,11 +1960,10 @@ const coursedata = {
       elevation: 175.7000981093342,
       terrainType: 'Fireroad',
       percent: 0.4142567540435294,
-      cutoffs: [],
-      id: '5d8e9a1be372020007cb2451'
+      cutoffs: []
     },
     {
-      _id: '5d8e9a27e372020007cb2452',
+      id: '5d8e9a27e372020007cb2452',
       type: 'aid',
       terrainFactor: 12,
       pointsIndex: 2409,
@@ -1986,16 +1977,15 @@ const coursedata = {
       percent: 0.44720734817088204,
       cutoffs: [
         {
-          _id: '616a091ac4001e4a9c1cf553',
+          id: '616a091ac4001e4a9c1cf553',
           time: 49200,
           loop: 1
         }
-      ],
-      id: '5d8e9a27e372020007cb2452'
+      ]
     },
     {
       terrainType: null,
-      _id: '5d8e9a38e372020007cb2453',
+      id: '5d8e9a38e372020007cb2453',
       type: 'aid',
       terrainFactor: null,
       pointsIndex: 2684,
@@ -2008,15 +1998,14 @@ const coursedata = {
       percent: 0.49056550569606505,
       cutoffs: [
         {
-          _id: '616a0928c4001e4a9c1cf55c',
+          id: '616a0928c4001e4a9c1cf55c',
           time: 53400,
           loop: 1
         }
-      ],
-      id: '5d8e9a38e372020007cb2453'
+      ]
     },
     {
-      _id: '5d8e9a49e372020007cb2454',
+      id: '5d8e9a49e372020007cb2454',
       type: 'aid',
       terrainFactor: 12,
       pointsIndex: 3281,
@@ -2027,12 +2016,11 @@ const coursedata = {
       elevation: 447.23906177388034,
       terrainType: 'Singletrack',
       percent: 0.5948036693901647,
-      cutoffs: [],
-      id: '5d8e9a49e372020007cb2454'
+      cutoffs: []
     },
     {
       terrainType: null,
-      _id: '5d8e9a5fe372020007cb2455',
+      id: '5d8e9a5fe372020007cb2455',
       type: 'aid',
       terrainFactor: null,
       pointsIndex: 3891,
@@ -2045,15 +2033,14 @@ const coursedata = {
       percent: 0.6925279700041065,
       cutoffs: [
         {
-          _id: '616a093ac4001e4a9c1cf565',
+          id: '616a093ac4001e4a9c1cf565',
           time: 74700,
           loop: 1
         }
-      ],
-      id: '5d8e9a5fe372020007cb2455'
+      ]
     },
     {
-      _id: '5d8e9a7ce372020007cb2456',
+      id: '5d8e9a7ce372020007cb2456',
       type: 'aid',
       terrainFactor: 8,
       pointsIndex: 4066,
@@ -2064,11 +2051,10 @@ const coursedata = {
       elevation: 184.68520788801982,
       percent: 0.7254864680653189,
       terrainType: 'Doubletrack',
-      cutoffs: [],
-      id: '5d8e9a7ce372020007cb2456'
+      cutoffs: []
     },
     {
-      _id: '5d8e9a8fe372020007cb2457',
+      id: '5d8e9a8fe372020007cb2457',
       type: 'aid',
       terrainFactor: 0,
       pointsIndex: 4343,
@@ -2082,15 +2068,14 @@ const coursedata = {
       percent: 0.7688062063772747,
       cutoffs: [
         {
-          _id: '616a094cc4001e4a9c1cf56e',
+          id: '616a094cc4001e4a9c1cf56e',
           time: 83100,
           loop: 1
         }
-      ],
-      id: '5d8e9a8fe372020007cb2457'
+      ]
     },
     {
-      _id: '5d8e9a9be372020007cb2458',
+      id: '5d8e9a9be372020007cb2458',
       type: 'aid',
       terrainFactor: 12,
       pointsIndex: 4543,
@@ -2101,12 +2086,11 @@ const coursedata = {
       elevation: 175.93561804135166,
       terrainType: 'Singletrack',
       percent: 0.8017078660120303,
-      cutoffs: [],
-      id: '5d8e9a9be372020007cb2458'
+      cutoffs: []
     },
     {
       terrainType: null,
-      _id: '5d8e9aaae372020007cb2459',
+      id: '5d8e9aaae372020007cb2459',
       type: 'aid',
       terrainFactor: null,
       pointsIndex: 4871,
@@ -2119,15 +2103,14 @@ const coursedata = {
       percent: 0.8622081110896661,
       cutoffs: [
         {
-          _id: '616a095ac4001e4a9c1cf577',
+          id: '616a095ac4001e4a9c1cf577',
           time: 93000,
           loop: 1
         }
-      ],
-      id: '5d8e9aaae372020007cb2459'
+      ]
     },
     {
-      _id: '5d8e9abbe372020007cb245a',
+      id: '5d8e9abbe372020007cb245a',
       type: 'aid',
       terrainFactor: 20,
       pointsIndex: 5031,
@@ -2138,11 +2121,10 @@ const coursedata = {
       elevation: 161.34389881033218,
       terrainType: 'Technical',
       percent: 0.8907373775846068,
-      cutoffs: [],
-      id: '5d8e9abbe372020007cb245a'
+      cutoffs: []
     },
     {
-      _id: '5d8e9acae372020007cb245b',
+      id: '5d8e9acae372020007cb245b',
       type: 'aid',
       terrainFactor: 4,
       pointsIndex: 5452,
@@ -2153,11 +2135,10 @@ const coursedata = {
       elevation: 144.73347365048113,
       terrainType: 'Fireroad',
       percent: 0.9574520419508679,
-      cutoffs: [],
-      id: '5d8e9acae372020007cb245b'
+      cutoffs: []
     },
     {
-      _id: '60ef7aa0f2dc7b000a7484da',
+      id: '60ef7aa0f2dc7b000a7484da',
       type: 'junction',
       terrainFactor: 0,
       terrainType: 'Paved',
@@ -2169,11 +2150,10 @@ const coursedata = {
       lon: -121.05791335829755,
       elevation: 276.7555128727891,
       percent: 0.42146000000000006,
-      cutoffs: [],
-      id: '60ef7aa0f2dc7b000a7484da'
+      cutoffs: []
     },
     {
-      _id: '60ef7acef2dc7b000a7484db',
+      id: '60ef7acef2dc7b000a7484db',
       type: 'junction',
       terrainFactor: 4,
       terrainType: 'Fireroad',
@@ -2185,11 +2165,10 @@ const coursedata = {
       lon: -121.05792308220686,
       elevation: 276.7563589608487,
       percent: 0.7945199999999996,
-      cutoffs: [],
-      id: '60ef7acef2dc7b000a7484db'
+      cutoffs: []
     },
     {
-      _id: '60ef7c53f2dc7b000a74893a',
+      id: '60ef7c53f2dc7b000a74893a',
       type: 'junction',
       terrainFactor: 4,
       terrainType: 'Fireroad',
@@ -2201,11 +2180,10 @@ const coursedata = {
       lon: -121.03563042904113,
       elevation: 215.88488133706997,
       percent: 0.49619999999999953,
-      cutoffs: [],
-      id: '60ef7c53f2dc7b000a74893a'
+      cutoffs: []
     },
     {
-      _id: '60ef7c94f2dc7b000a74893b',
+      id: '60ef7c94f2dc7b000a74893b',
       type: 'junction',
       terrainFactor: 12,
       terrainType: 'Singletrack',
@@ -2217,11 +2195,10 @@ const coursedata = {
       lon: -120.95718214224917,
       elevation: 230.67136297374327,
       percent: 0.5512600000000001,
-      cutoffs: [],
-      id: '60ef7c94f2dc7b000a74893b'
+      cutoffs: []
     },
     {
-      _id: '61114abe5420a1000b8fcd2d',
+      id: '61114abe5420a1000b8fcd2d',
       type: 'junction',
       terrainFactor: 12,
       terrainType: 'Singletrack',
@@ -2233,11 +2210,10 @@ const coursedata = {
       lon: -121.22511997117643,
       elevation: 51.61216884880472,
       percent: 0.1221,
-      cutoffs: [],
-      id: '61114abe5420a1000b8fcd2d'
+      cutoffs: []
     },
     {
-      _id: '61114b2f5420a1000b8fcd31',
+      id: '61114b2f5420a1000b8fcd31',
       type: 'junction',
       terrainFactor: 0,
       terrainType: 'Paved',
@@ -2249,11 +2225,10 @@ const coursedata = {
       lon: -121.19482141928071,
       elevation: 51.91531666000715,
       percent: 0.1518,
-      cutoffs: [],
-      id: '61114b2f5420a1000b8fcd31'
+      cutoffs: []
     },
     {
-      _id: '61114b455420a1000b8fcd32',
+      id: '61114b455420a1000b8fcd32',
       type: 'junction',
       terrainFactor: 12,
       terrainType: 'Singletrack',
@@ -2265,11 +2240,10 @@ const coursedata = {
       lon: -121.19172207520712,
       elevation: 41.11761288576748,
       percent: 0.1557,
-      cutoffs: [],
-      id: '61114b455420a1000b8fcd32'
+      cutoffs: []
     },
     {
-      _id: '61114b845420a1000b8fcd33',
+      id: '61114b845420a1000b8fcd33',
       type: 'junction',
       terrainFactor: 0,
       terrainType: 'Paved',
@@ -2281,11 +2255,10 @@ const coursedata = {
       lon: -121.19143385319634,
       elevation: 50.188884144827995,
       percent: 0.16747999999999993,
-      cutoffs: [],
-      id: '61114b845420a1000b8fcd33'
+      cutoffs: []
     },
     {
-      _id: '61159970ecd48f000a81d203',
+      id: '61159970ecd48f000a81d203',
       type: 'junction',
       terrainFactor: 16,
       terrainType: null,
@@ -2297,11 +2270,10 @@ const coursedata = {
       lon: -120.98133031325224,
       elevation: 357.26956500897467,
       percent: 0.6426999999999997,
-      cutoffs: [],
-      id: '61159970ecd48f000a81d203'
+      cutoffs: []
     },
     {
-      _id: '615cb4f4ab36a6000bca30d9',
+      id: '615cb4f4ab36a6000bca30d9',
       type: 'junction',
       terrainFactor: 20,
       terrainType: 'Technical',
@@ -2313,11 +2285,10 @@ const coursedata = {
       lat: 38.77288200376777,
       lon: -121.13374474955323,
       elevation: 150.95665321220454,
-      cutoffs: [],
-      id: '615cb4f4ab36a6000bca30d9'
+      cutoffs: []
     },
     {
-      _id: '615cb556ab36a6000bca30ee',
+      id: '615cb556ab36a6000bca30ee',
       type: 'junction',
       terrainFactor: 8,
       terrainType: 'Doubletrack',
@@ -2329,11 +2300,10 @@ const coursedata = {
       lat: 38.77292822471661,
       lon: -121.13368242777605,
       elevation: 151.02462234595484,
-      cutoffs: [],
-      id: '615cb556ab36a6000bca30ee'
+      cutoffs: []
     },
     {
-      _id: '615cb5f5ab36a6000bca3115',
+      id: '615cb5f5ab36a6000bca3115',
       type: 'junction',
       terrainFactor: 4,
       terrainType: 'Fireroad',
@@ -2345,11 +2315,10 @@ const coursedata = {
       lat: 38.89647443163548,
       lon: -121.01999340248423,
       elevation: 475.2149003064197,
-      cutoffs: [],
-      id: '615cb5f5ab36a6000bca3115'
+      cutoffs: []
     },
     {
-      _id: '615cb616ab36a6000bca312a',
+      id: '615cb616ab36a6000bca312a',
       type: 'junction',
       terrainFactor: 12,
       terrainType: 'Singletrack',
@@ -2361,8 +2330,7 @@ const coursedata = {
       lat: 38.89646543841448,
       lon: -121.0260402471999,
       elevation: 467.6154104963562,
-      cutoffs: [],
-      id: '615cb616ab36a6000bca312a'
+      cutoffs: []
     }
   ]
 }

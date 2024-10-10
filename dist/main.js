@@ -4744,7 +4744,7 @@ function vu(c, s, r) {
   return new _u(p, g, M, r, _);
 }
 function A0(c, s) {
-  return (typeof c == "object" ? String(c._id) : c) === (typeof s == "object" ? String(s._id) : s);
+  return (typeof c == "object" ? String(c.id) : c) === (typeof s == "object" ? String(s.id) : s);
 }
 function vs(c, s) {
   return !!(c && s && A0(c.site, s.site) && c.loop === s.loop);
@@ -4840,7 +4840,7 @@ class nu {
       "dropbags",
       "terrainType",
       "terrainFactor"
-    ]), site: this.site._id };
+    ]), site: this.site.id };
   }
 }
 const Ue = Kn("models:Waypoint");
@@ -4851,9 +4851,9 @@ class hs {
     m(this, "_lon");
     m(this, "_alt");
     m(this, "_data");
-    m(this, "_id");
     m(this, "course");
     m(this, "cutoffs", []);
+    m(this, "id");
     m(this, "name");
     m(this, "tier", 1);
     m(this, "type");
@@ -4863,7 +4863,7 @@ class hs {
     m(this, "pointsIndex");
     m(this, "dropbags");
     m(this, "crew");
-    this._data = { percent: r.percent }, this.course = s, this._id = r._id, this.type = r.type, this.name = r.name, r.cutoffs && (this.cutoffs = r.cutoffs), r.tier !== void 0 && (this.tier = r.tier), r.terrainFactor !== void 0 && (this.terrainFactor = r.terrainFactor), r.terrainType !== void 0 && (this.terrainType = r.terrainType), r.description && (this.description = r.description), this.crew = r.crew || !1, this.dropbags = r.dropbags || !1, Ue(`constructor: ${this.name}`);
+    this._data = { percent: r.percent }, this.course = s, this.id = r.id, this.type = r.type, this.name = r.name, r.cutoffs && (this.cutoffs = r.cutoffs), r.tier !== void 0 && (this.tier = r.tier), r.terrainFactor !== void 0 && (this.terrainFactor = r.terrainFactor), r.terrainType !== void 0 && (this.terrainType = r.terrainType), r.description && (this.description = r.description), this.crew = r.crew || !1, this.dropbags = r.dropbags || !1, Ue(`constructor: ${this.name}`);
   }
   clearCache() {
     Ue(`clearCache: ${this.name}`), delete this._waypoints, delete this._lat, delete this._lon, delete this._alt;
@@ -4921,13 +4921,13 @@ class H0 {
     m(this, "_loss");
     m(this, "_sites", [
       new hs(this, {
-        _id: String(B.random(1e4, 2e4)),
+        id: String(B.random(1e4, 2e4)),
         name: "Start",
         type: "start",
         percent: 0
       }),
       new hs(this, {
-        _id: String(B.random(3e4, 4e4)),
+        id: String(B.random(3e4, 4e4)),
         name: "Finish",
         type: "finish",
         percent: 1

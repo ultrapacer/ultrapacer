@@ -1,6 +1,6 @@
 type S = {
-    _id: string;
-} | string;
+    id: string | symbol;
+} | string | symbol;
 type W = {
     site: S;
     loop: number;

@@ -147,6 +147,6 @@ export class Waypoint {
       'terrainFactor'
     ])
 
-    return { ...data, site: this.site._id }
+    return { ...data, site: this.site.id }
   }
 }

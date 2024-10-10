@@ -106,13 +106,13 @@ export class Course {
 
   private _sites: Site[] = [
     new Site(this, {
-      _id: String(_.random(10000, 20000)),
+      id: String(_.random(10000, 20000)),
       name: 'Start',
       type: 'start',
       percent: 0
     }),
     new Site(this, {
-      _id: String(_.random(30000, 40000)),
+      id: String(_.random(30000, 40000)),
       name: 'Finish',
       type: 'finish',
       percent: 1

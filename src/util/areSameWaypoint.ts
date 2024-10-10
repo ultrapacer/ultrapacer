@@ -1,8 +1,8 @@
-type S = { _id: string } | string
+type S = { id: string | symbol } | string | symbol
 type W = { site: S; loop: number }
 
 function areSame(a: S, b: S) {
-  return (typeof a === 'object' ? String(a._id) : a) === (typeof b === 'object' ? String(b._id) : b)
+  return (typeof a === 'object' ? String(a.id) : a) === (typeof b === 'object' ? String(b.id) : b)
 }
 
 export function areSameWaypoint(a: W, b: W) {

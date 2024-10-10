@@ -10,7 +10,7 @@ const d = createDebug('models:Waypoint')
 type WaypointCutoff = { loop: number; time: number }
 
 export type SiteData = {
-  _id: string
+  id: string | symbol
   type: string
   name: string
   description?: string
@@ -34,7 +34,7 @@ export class Site {
 
     this.course = course
 
-    this._id = data._id
+    this.id = data.id
     this.type = data.type
     this.name = data.name
     if (data.cutoffs) this.cutoffs = data.cutoffs
@@ -51,9 +51,9 @@ export class Site {
   _data: {
     percent: number
   }
-  _id: string
   course: Course
   cutoffs: WaypointCutoff[] = []
+  id: string | symbol
   name: string
   tier: number = 1
   type: string
