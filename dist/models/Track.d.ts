@@ -19,15 +19,6 @@ export declare class Track {
         lat: number;
         lon: number;
     };
-    private _stats?;
-    /**
-     * track gain, loss, and distance stats
-     */
-    get stats(): {
-        gain: number;
-        loss: number;
-        dist: number;
-    };
     getLLA(location: number): {
         lat: number;
         lon: number;
