@@ -4,24 +4,25 @@ type WaypointCutoff = {
     loop: number;
     time: number;
 };
+export type SiteData = {
+    _id: string;
+    type: string;
+    name: string;
+    description?: string;
+    cutoffs?: WaypointCutoff[];
+    percent: number;
+    tier?: number;
+    terrainFactor?: number;
+    terrainType?: string;
+    crew?: boolean;
+    dropbags?: boolean;
+};
 export declare class Site {
     private _waypoints?;
     private _lat?;
     private _lon?;
     private _alt?;
-    constructor(course: Course, data: {
-        _id: string;
-        type: string;
-        name: string;
-        description?: string;
-        cutoffs?: WaypointCutoff[];
-        percent: number;
-        tier?: number;
-        terrainFactor?: number;
-        terrainType?: string;
-        crew?: boolean;
-        dropbags?: boolean;
-    });
+    constructor(course: Course, data: SiteData);
     _data: {
         percent: number;
     };

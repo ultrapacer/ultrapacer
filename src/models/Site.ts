@@ -9,28 +9,27 @@ const d = createDebug('models:Waypoint')
 
 type WaypointCutoff = { loop: number; time: number }
 
+export type SiteData = {
+  _id: string
+  type: string
+  name: string
+  description?: string
+  cutoffs?: WaypointCutoff[]
+  percent: number
+  tier?: number
+  terrainFactor?: number
+  terrainType?: string
+  crew?: boolean
+  dropbags?: boolean
+}
+
 export class Site {
   private _waypoints?: Waypoint[]
   private _lat?: number
   private _lon?: number
   private _alt?: number
 
-  constructor(
-    course: Course,
-    data: {
-      _id: string
-      type: string
-      name: string
-      description?: string
-      cutoffs?: WaypointCutoff[]
-      percent: number
-      tier?: number
-      terrainFactor?: number
-      terrainType?: string
-      crew?: boolean
-      dropbags?: boolean
-    }
-  ) {
+  constructor(course: Course, data: SiteData) {
     this._data = { percent: data.percent }
 
     this.course = course
