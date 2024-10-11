@@ -277,7 +277,7 @@ test(`${course.name}: check track distance`, () => {
 })
 
 test(`${course.name}: check segment 7 properties`, () => {
-  expect(course.splits.segments[7].len).toBeCloseTo(5.302885)
+  expect(course.splits.segments[7].dist).toBeCloseTo(5.302885)
   expect(course.splits.segments[7].grade).toBeCloseTo(4.56348)
   expect(tests[0].plan.splits.segments[7].factors.terrain).toBeCloseTo(1.0087442)
 })

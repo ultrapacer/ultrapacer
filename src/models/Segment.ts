@@ -63,12 +63,8 @@ class Segment {
     return this.point1.loc
   }
 
-  get len() {
-    return this.point2.loc - this.point1.loc
-  }
-
   get dist() {
-    return this.len
+    return this.point2.loc - this.point1.loc
   }
 
   get end() {
@@ -128,7 +124,7 @@ export class PlanSegment extends Segment {
   get pace() {
     if (!_.isNumber(this.time)) return undefined
     if (!this.time) return 0
-    return this.time / this.len
+    return this.time / this.dist
   }
 
   // time based fields require associated point1 & point2
