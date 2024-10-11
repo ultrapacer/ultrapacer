@@ -15,15 +15,42 @@ declare class Segment {
     });
     point1: CoursePoint | PlanPoint;
     point2: CoursePoint | PlanPoint;
+    /**
+     * elevation gain (m) over segment
+     */
     gain: number;
+    /**
+     * elevation loss (m) over segment
+     */
     loss: number;
+    /**
+     * average grade (%) over segment
+     */
     grade: number;
+    /**
+     * waypoint at end of segment
+     */
     waypoint?: Waypoint;
     private _name?;
+    /**
+     * name of segment
+     */
     get name(): string | undefined;
+    /**
+     * location along course (km) at start of segment
+     */
     get start(): number;
+    /**
+     * distance (km) of segment
+     */
     get dist(): number;
+    /**
+     * location along course (km) at end of segment
+     */
     get end(): number;
+    /**
+     * altitude (m) at end of segment
+     */
     get alt(): number;
 }
 export declare class CourseSegment extends Segment {
@@ -49,10 +76,25 @@ export declare class PlanSegment extends Segment {
         loss: number;
         grade: number;
     });
+    /**
+     * moving pace (s/km) over segment
+     */
     get pace(): number | undefined;
+    /**
+     * delay (s) over segment
+     */
     get delay(): number | undefined;
+    /**
+     * elapsed time (s) over segment
+     */
     get elapsed(): number;
+    /**
+     * moving time (s) over segment
+     */
     get time(): number | undefined;
+    /**
+     * time of day (s) at end of segment
+     */
     get tod(): number;
     set delay(v: number | undefined);
     set pace(v: number | undefined);

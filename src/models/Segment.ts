@@ -6,6 +6,7 @@ import { Course } from './Course'
 import { CoursePoint } from './CoursePoint'
 import { PlanPoint } from './PlanPoint'
 import { Waypoint } from './Waypoint'
+import { isNumber } from '~/util/isNumber'
 
 /**
  * create Factors for segment for points between point1 and point2
@@ -49,28 +50,58 @@ class Segment {
   point1: CoursePoint | PlanPoint
   point2: CoursePoint | PlanPoint
 
+  /**
+   * elevation gain (m) over segment
+   */
   gain: number
+
+  /**
+   * elevation loss (m) over segment
+   */
   loss: number
+
+  /**
+   * average grade (%) over segment
+   */
   grade: number
+
+  /**
+   * waypoint at end of segment
+   */
   waypoint?: Waypoint
 
   private _name?: string
+  /**
+   * name of segment
+   */
   get name() {
     return this._name || this.waypoint?.name || undefined
   }
 
+  /**
+   * location along course (km) at start of segment
+   */
   get start() {
     return this.point1.loc
   }
 
+  /**
+   * distance (km) of segment
+   */
   get dist() {
     return this.point2.loc - this.point1.loc
   }
 
+  /**
+   * location along course (km) at end of segment
+   */
   get end() {
     return this.point2.loc
   }
 
+  /**
+   * altitude (m) at end of segment
+   */
   get alt() {
     return this.point2.alt
   }
@@ -121,33 +152,47 @@ export class PlanSegment extends Segment {
     this.point2 = obj.point2
   }
 
+  /**
+   * moving pace (s/km) over segment
+   */
   get pace() {
     if (!_.isNumber(this.time)) return undefined
     if (!this.time) return 0
     return this.time / this.dist
   }
 
-  // time based fields require associated point1 & point2
+  /**
+   * delay (s) over segment
+   */
   get delay() {
     if (
-      !_.isNumber(this.point1.elapsed) ||
-      !_.isNumber(this.point2.elapsed) ||
-      !_.isNumber(this.point1.time) ||
-      !_.isNumber(this.point2.time)
+      !isNumber(this.point1.elapsed) ||
+      !isNumber(this.point2.elapsed) ||
+      !isNumber(this.point1.time) ||
+      !isNumber(this.point2.time)
     )
       return undefined
     return this.point2.elapsed - this.point1.elapsed - (this.point2.time - this.point1.time)
   }
 
+  /**
+   * elapsed time (s) over segment
+   */
   get elapsed() {
     return this.point2.elapsed
   }
 
+  /**
+   * moving time (s) over segment
+   */
   get time() {
     if (!_.isNumber(this.point1.time) || !_.isNumber(this.point2.time)) return undefined
     return this.point2.time - this.point1.time
   }
 
+  /**
+   * time of day (s) at end of segment
+   */
   get tod() {
     return this.point2.tod
   }
