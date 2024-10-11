@@ -7,7 +7,7 @@ type WaypointCutoff = {
 export type SiteData = {
     id: string | symbol;
     type: string;
-    name: string;
+    name?: string;
     description?: string;
     cutoffs?: WaypointCutoff[];
     percent: number;
@@ -29,7 +29,7 @@ export declare class Site {
     course: Course;
     cutoffs: WaypointCutoff[];
     id: string | symbol;
-    name: string;
+    name?: string;
     tier: number;
     type: string;
     terrainFactor?: number;
