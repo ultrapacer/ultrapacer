@@ -1,8 +1,8 @@
-export { Course } from './Course';
+export * from './Course';
 export { CoursePoint } from './CoursePoint';
 export { Event } from './Event';
 export { Pacing } from './Pacing';
-export { Plan, type PlanData } from './Plan';
+export * from './Plan';
 export { PlanPoint } from './PlanPoint';
 export { Point, TrackPoint } from './Point';
 export { CourseSegment, PlanSegment } from './Segment';

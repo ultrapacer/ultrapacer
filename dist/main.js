@@ -6238,6 +6238,7 @@ function K0(c, s, r) {
 }
 export {
   H0 as Course,
+  T0 as CourseCutoff,
   jo as CoursePoint,
   b0 as CourseSegment,
   ru as Event,
