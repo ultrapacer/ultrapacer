@@ -1,4 +1,4 @@
-import { Course, Plan } from '../models'
+import { Course, CourseData, Plan } from '../models'
 import { createTrackFromArrays } from '../models/Track'
 
 const trackdata = {
@@ -1808,73 +1808,43 @@ const trackdata = {
 
 const track = createTrackFromArrays(trackdata.lat, trackdata.lon, trackdata.alt)
 
-const coursedata = {
-  name: 'RDL100',
+const coursedata: CourseData = {
   gain: 3352.7998927104036,
   loss: -3352.7998927104036,
-  eventStart: '2021-11-06T12:15:00.000Z',
-  eventTimezone: 'America/Los_Angeles',
   dist: 160.93444978925635,
   sites: [
     {
       id: '5d73071e0588d90008bba0c6',
       type: 'start',
       terrainFactor: 0,
-      pointsIndex: 0,
       name: 'Beals Point',
-      location: 0,
-      elevation: 143.24,
-      lat: 38.7216,
-      lon: -121.16862,
       terrainType: 'Paved',
       percent: 0,
       cutoffs: []
     },
     {
-      terrainType: null,
       id: '5d73071e0588d90008bba0c8',
       type: 'finish',
-      terrainFactor: null,
-      pointsIndex: 0,
       name: 'Beals Point',
-      location: 160.93444978925635,
-      elevation: 143.03,
-      lat: 38.72153,
-      lon: -121.16906000000002,
       percent: 1,
       cutoffs: [
         {
           time: 108000,
-          loop: 1,
-          id: '63c32b73763d96c5c79becbd'
+          loop: 1
         }
       ]
     },
     {
-      terrainType: null,
       id: '5d8e9973e372020007cb244b',
       type: 'aid',
-      terrainFactor: null,
-      pointsIndex: 434,
       name: 'Willow Creek',
-      location: 14.820433257765833,
-      lat: 38.64846078370411,
-      lon: -121.18961210053696,
-      elevation: 41.12544491633615,
       percent: 0.09307857690919637,
       cutoffs: []
     },
     {
-      terrainType: null,
       id: '5d8e9986e372020007cb244c',
       type: 'aid',
-      terrainFactor: null,
-      pointsIndex: 894,
       name: 'Negro Bar',
-      location: 27.343869088953415,
-      lat: 38.68064892365378,
-      lon: -121.18490098271988,
-      elevation: 50.71500584379635,
       percent: 0.17173104036331144,
       cutoffs: []
     },
@@ -1882,18 +1852,11 @@ const coursedata = {
       id: '5d8e9999e372020007cb244d',
       type: 'aid',
       terrainFactor: 4,
-      pointsIndex: 1097,
       name: 'Beals Point',
-      location: 34.41501387794011,
-      lat: 38.72150775065698,
-      lon: -121.16914512208643,
-      elevation: 143.0077429532643,
-      __v: 9,
       terrainType: 'Fireroad',
       percent: 0.21614081362393417,
       cutoffs: [
         {
-          id: '616a08f2c4001e4a9c1cf541',
           time: 23400,
           loop: 1
         }
@@ -1903,12 +1866,7 @@ const coursedata = {
       id: '5d8e99bfe372020007cb244e',
       type: 'aid',
       terrainFactor: 8,
-      pointsIndex: 1299,
       name: 'Granite Beach',
-      location: 41.1621710292129,
-      lat: 38.756835399763474,
-      lon: -121.1475382983096,
-      elevation: 144.65642764720516,
       terrainType: 'Doubletrack',
       percent: 0.2585158095755734,
       cutoffs: []
@@ -1917,47 +1875,23 @@ const coursedata = {
       id: '5d8e99d9e372020007cb244f',
       type: 'aid',
       terrainFactor: 12,
-      pointsIndex: 1721,
       name: 'Horseshoe Bar',
-      location: 51.7734081916657,
-      lat: 38.81235454046936,
-      lon: -121.1076770658958,
-      elevation: 161.4197499798032,
       terrainType: 'Singletrack',
       percent: 0.32515885820639173,
       cutoffs: []
     },
     {
-      terrainType: null,
       id: '5d8e9a0ee372020007cb2450',
       type: 'aid',
-      terrainFactor: null,
-      pointsIndex: 1881,
       name: 'Rattlesnake Bar',
-      location: 56.310802594087846,
-      lat: 38.81881325551781,
-      lon: -121.08749250582612,
-      elevation: 144.98966190818322,
-      __v: 5,
       percent: 0.35365561039357263,
-      cutoffs: [
-        {
-          id: '616a090bc4001e4a9c1cf54a',
-          time: 39000,
-          loop: 1
-        }
-      ]
+      cutoffs: [{ time: 39000, loop: 1 }]
     },
     {
       id: '5d8e9a1be372020007cb2451',
       type: 'aid',
       terrainFactor: 4,
-      pointsIndex: 2210,
       name: 'Cardiac',
-      location: 65.96001791796618,
-      lat: 38.86482691495559,
-      lon: -121.05979364363117,
-      elevation: 175.7000981093342,
       terrainType: 'Fireroad',
       percent: 0.4142567540435294,
       cutoffs: []
@@ -1966,89 +1900,39 @@ const coursedata = {
       id: '5d8e9a27e372020007cb2452',
       type: 'aid',
       terrainFactor: 12,
-      pointsIndex: 2409,
       name: 'Overlook',
-      location: 71.20657517462695,
-      lat: 38.88898031553974,
-      lon: -121.06821742112761,
-      elevation: 412.0716088084994,
-      __v: 6,
       terrainType: 'Singletrack',
       percent: 0.44720734817088204,
-      cutoffs: [
-        {
-          id: '616a091ac4001e4a9c1cf553',
-          time: 49200,
-          loop: 1
-        }
-      ]
+      cutoffs: [{ time: 49200, loop: 1 }]
     },
     {
-      terrainType: null,
       id: '5d8e9a38e372020007cb2453',
       type: 'aid',
-      terrainFactor: null,
-      pointsIndex: 2684,
       name: 'No Hands Bridge',
-      location: 78.11027636799496,
-      lat: 38.91312797082264,
-      lon: -121.04112202925185,
-      elevation: 184.67997619944157,
-      __v: 7,
       percent: 0.49056550569606505,
-      cutoffs: [
-        {
-          id: '616a0928c4001e4a9c1cf55c',
-          time: 53400,
-          loop: 1
-        }
-      ]
+      cutoffs: [{ time: 53400, loop: 1 }]
     },
     {
       id: '5d8e9a49e372020007cb2454',
       type: 'aid',
       terrainFactor: 12,
-      pointsIndex: 3281,
       name: 'Auburn Lake Trails',
-      location: 94.70759412524049,
-      lat: 38.926706209565126,
-      lon: -120.95037852078401,
-      elevation: 447.23906177388034,
       terrainType: 'Singletrack',
       percent: 0.5948036693901647,
       cutoffs: []
     },
     {
-      terrainType: null,
       id: '5d8e9a5fe372020007cb2455',
       type: 'aid',
-      terrainFactor: null,
-      pointsIndex: 3891,
       name: 'Cool',
-      location: 110.2677425826421,
-      lat: 38.88893310413672,
-      lon: -121.01839369888219,
-      elevation: 465.4571712023088,
-      __v: 5,
       percent: 0.6925279700041065,
-      cutoffs: [
-        {
-          id: '616a093ac4001e4a9c1cf565',
-          time: 74700,
-          loop: 1
-        }
-      ]
+      cutoffs: [{ time: 74700, loop: 1 }]
     },
     {
       id: '5d8e9a7ce372020007cb2456',
       type: 'aid',
       terrainFactor: 8,
-      pointsIndex: 4066,
       name: 'No Hands Bridge',
-      location: 115.51555880680249,
-      lat: 38.91314148305063,
-      lon: -121.04110851701408,
-      elevation: 184.68520788801982,
       percent: 0.7254864680653189,
       terrainType: 'Doubletrack',
       cutoffs: []
@@ -2057,68 +1941,32 @@ const coursedata = {
       id: '5d8e9a8fe372020007cb2457',
       type: 'aid',
       terrainFactor: 0,
-      pointsIndex: 4343,
       name: 'Overlook',
-      location: 122.41314218723073,
-      lat: 38.889000288778156,
-      lon: -121.068212427818,
-      elevation: 412.06827784409916,
-      __v: 5,
       terrainType: 'Paved',
       percent: 0.7688062063772747,
-      cutoffs: [
-        {
-          id: '616a094cc4001e4a9c1cf56e',
-          time: 83100,
-          loop: 1
-        }
-      ]
+      cutoffs: [{ time: 83100, loop: 1 }]
     },
     {
       id: '5d8e9a9be372020007cb2458',
       type: 'aid',
       terrainFactor: 12,
-      pointsIndex: 4543,
       name: 'Cardiac',
-      location: 127.65190782889199,
-      lat: 38.86480491758887,
-      lon: -121.05976614683622,
-      elevation: 175.93561804135166,
       terrainType: 'Singletrack',
       percent: 0.8017078660120303,
       cutoffs: []
     },
     {
-      terrainType: null,
       id: '5d8e9aaae372020007cb2459',
       type: 'aid',
-      terrainFactor: null,
-      pointsIndex: 4871,
       name: 'Rattlesnake Bar',
-      location: 137.28505730351603,
-      lat: 38.818823198167486,
-      lon: -121.08748211124238,
-      elevation: 144.89510032323372,
-      __v: 5,
       percent: 0.8622081110896661,
-      cutoffs: [
-        {
-          id: '616a095ac4001e4a9c1cf577',
-          time: 93000,
-          loop: 1
-        }
-      ]
+      cutoffs: [{ time: 93000, loop: 1 }]
     },
     {
       id: '5d8e9abbe372020007cb245a',
       type: 'aid',
       terrainFactor: 20,
-      pointsIndex: 5031,
       name: 'Horseshoe Bar',
-      location: 141.82762879549065,
-      lat: 38.812333378307514,
-      lon: -121.10765707938539,
-      elevation: 161.34389881033218,
       terrainType: 'Technical',
       percent: 0.8907373775846068,
       cutoffs: []
@@ -2127,12 +1975,7 @@ const coursedata = {
       id: '5d8e9acae372020007cb245b',
       type: 'aid',
       terrainFactor: 4,
-      pointsIndex: 5452,
       name: 'Granite Beach',
-      location: 152.4502689709952,
-      lat: 38.75688983915161,
-      lon: -121.14748565364995,
-      elevation: 144.73347365048113,
       terrainType: 'Fireroad',
       percent: 0.9574520419508679,
       cutoffs: []
@@ -2142,13 +1985,8 @@ const coursedata = {
       type: 'junction',
       terrainFactor: 0,
       terrainType: 'Paved',
-      pointsIndex: 2254,
       tier: 3,
       name: 'Last Gasp',
-      location: 67.10695423407198,
-      lat: 38.86946245298723,
-      lon: -121.05791335829755,
-      elevation: 276.7555128727891,
       percent: 0.42146000000000006,
       cutoffs: []
     },
@@ -2157,13 +1995,8 @@ const coursedata = {
       type: 'junction',
       terrainFactor: 4,
       terrainType: 'Fireroad',
-      pointsIndex: 4499,
       tier: 3,
       name: 'Last Gasp',
-      location: 126.50742010642725,
-      lat: 38.869458225206856,
-      lon: -121.05792308220686,
-      elevation: 276.7563589608487,
       percent: 0.7945199999999996,
       cutoffs: []
     },
@@ -2172,13 +2005,8 @@ const coursedata = {
       type: 'junction',
       terrainFactor: 4,
       terrainType: 'Fireroad',
-      pointsIndex: 2727,
       tier: 3,
       name: 'Quarry TH',
-      location: 79.00742820421031,
-      lat: 38.91231000001006,
-      lon: -121.03563042904113,
-      elevation: 215.88488133706997,
       percent: 0.49619999999999953,
       cutoffs: []
     },
@@ -2187,13 +2015,8 @@ const coursedata = {
       type: 'junction',
       terrainFactor: 12,
       terrainType: 'Singletrack',
-      pointsIndex: 3000,
       tier: 3,
       name: 'Maine Bar Jnctn',
-      location: 87.7743548404938,
-      lat: 38.93739193908458,
-      lon: -120.95718214224917,
-      elevation: 230.67136297374327,
       percent: 0.5512600000000001,
       cutoffs: []
     },
@@ -2202,13 +2025,8 @@ const coursedata = {
       type: 'junction',
       terrainFactor: 12,
       terrainType: 'Singletrack',
-      pointsIndex: 615,
       tier: 3,
       name: 'dirt',
-      location: 19.441368367057816,
-      lat: 38.63675108871815,
-      lon: -121.22511997117643,
-      elevation: 51.61216884880472,
       percent: 0.1221,
       cutoffs: []
     },
@@ -2217,13 +2035,8 @@ const coursedata = {
       type: 'junction',
       terrainFactor: 0,
       terrainType: 'Paved',
-      pointsIndex: 805,
       tier: 3,
       name: 'paved',
-      location: 24.170349861747553,
-      lat: 38.658739360802876,
-      lon: -121.19482141928071,
-      elevation: 51.91531666000715,
       percent: 0.1518,
       cutoffs: []
     },
@@ -2232,13 +2045,8 @@ const coursedata = {
       type: 'junction',
       terrainFactor: 12,
       terrainType: 'Singletrack',
-      pointsIndex: 817,
       tier: 3,
       name: 'singletrack',
-      location: 24.791327229737117,
-      lat: 38.66355703542778,
-      lon: -121.19172207520712,
-      elevation: 41.11761288576748,
       percent: 0.1557,
       cutoffs: []
     },
@@ -2247,13 +2055,8 @@ const coursedata = {
       type: 'junction',
       terrainFactor: 0,
       terrainType: 'Paved',
-      pointsIndex: 877,
       tier: 3,
       name: 'paved',
-      location: 26.666997330997884,
-      lat: 38.678393095825285,
-      lon: -121.19143385319634,
-      elevation: 50.188884144827995,
       percent: 0.16747999999999993,
       cutoffs: []
     },
@@ -2261,14 +2064,8 @@ const coursedata = {
       id: '61159970ecd48f000a81d203',
       type: 'junction',
       terrainFactor: 16,
-      terrainType: null,
-      pointsIndex: 3606,
       tier: 3,
       name: 'Browns',
-      location: 102.3338857453567,
-      lat: 38.9178141386907,
-      lon: -120.98133031325224,
-      elevation: 357.26956500897467,
       percent: 0.6426999999999997,
       cutoffs: []
     },
@@ -2277,14 +2074,9 @@ const coursedata = {
       type: 'junction',
       terrainFactor: 20,
       terrainType: 'Technical',
-      pointsIndex: 1407,
       tier: 3,
       name: 'Meat Grinder',
       percent: 0.27577999999999986,
-      location: 43.91106116516955,
-      lat: 38.77288200376777,
-      lon: -121.13374474955323,
-      elevation: 150.95665321220454,
       cutoffs: []
     },
     {
@@ -2292,14 +2084,9 @@ const coursedata = {
       type: 'junction',
       terrainFactor: 8,
       terrainType: 'Doubletrack',
-      pointsIndex: 5344,
       tier: 3,
       name: 'Doubletrack',
       percent: 0.9400399999999995,
-      location: 149.67783718074546,
-      lat: 38.77292822471661,
-      lon: -121.13368242777605,
-      elevation: 151.02462234595484,
       cutoffs: []
     },
     {
@@ -2307,14 +2094,9 @@ const coursedata = {
       type: 'junction',
       terrainFactor: 4,
       terrainType: 'Fireroad',
-      pointsIndex: 3848,
       tier: 3,
       name: 'fireroad',
       percent: 0.6817399999999988,
-      location: 108.55002888056491,
-      lat: 38.89647443163548,
-      lon: -121.01999340248423,
-      elevation: 475.2149003064197,
       cutoffs: []
     },
     {
@@ -2322,14 +2104,9 @@ const coursedata = {
       type: 'junction',
       terrainFactor: 12,
       terrainType: 'Singletrack',
-      pointsIndex: 3933,
       tier: 3,
       name: 'singletrack',
       percent: 0.7027999999999999,
-      location: 111.90330621104202,
-      lat: 38.89646543841448,
-      lon: -121.0260402471999,
-      elevation: 467.6154104963562,
       cutoffs: []
     }
   ]
