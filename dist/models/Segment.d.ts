@@ -22,7 +22,6 @@ declare class Segment {
     private _name?;
     get name(): string | undefined;
     get start(): number;
-    get len(): number;
     get dist(): number;
     get end(): number;
     get alt(): number;

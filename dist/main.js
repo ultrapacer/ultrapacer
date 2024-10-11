@@ -4387,11 +4387,8 @@ class pu {
   get start() {
     return this.point1.loc;
   }
-  get len() {
-    return this.point2.loc - this.point1.loc;
-  }
   get dist() {
-    return this.len;
+    return this.point2.loc - this.point1.loc;
   }
   get end() {
     return this.point2.loc;
@@ -4420,7 +4417,7 @@ class x0 extends pu {
   }
   get pace() {
     if (B.isNumber(this.time))
-      return this.time ? this.time / this.len : 0;
+      return this.time ? this.time / this.dist : 0;
   }
   // time based fields require associated point1 & point2
   get delay() {
