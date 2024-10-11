@@ -1,6 +1,6 @@
 import { CoursePoint } from './CoursePoint';
 import { CourseSplits } from './CourseSplits';
-import { Site } from './Site';
+import { Site, type SiteData } from './Site';
 import { Track } from './Track';
 import { Waypoint } from './Waypoint';
 export type CourseData = {
@@ -8,6 +8,7 @@ export type CourseData = {
     dist?: number | null;
     gain?: number | null;
     loss?: number | null;
+    sites?: SiteData[];
 };
 export declare class Course {
     name?: string;
