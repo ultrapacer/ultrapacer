@@ -6397,6 +6397,7 @@ class G0 extends uu {
 export {
   z0 as Course,
   eu as CoursePoint,
+  hu as Event,
   Ur as Factors,
   q0 as Plan,
   iu as PlanPoint,

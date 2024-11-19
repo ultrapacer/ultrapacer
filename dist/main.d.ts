@@ -1,4 +1,4 @@
-export { Course, CoursePoint, Plan, PlanPoint, Point, Segment, Site, SuperSegment, Track, Waypoint } from './models';
+export { Course, CoursePoint, Event, Plan, PlanPoint, Point, Segment, Site, SuperSegment, Track, Waypoint } from './models';
 export { Factors, Strategy, getHeatFactor, list as factorList } from './factors';
 export { adjust as adjustStrategy } from './factors/strategy/adjust';
 export { scale as scaleDark } from './factors/dark/scale';
