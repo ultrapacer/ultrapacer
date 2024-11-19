@@ -1,6 +1,7 @@
 export {
   Course,
   CoursePoint,
+  Event,
   Plan,
   PlanPoint,
   Point,
