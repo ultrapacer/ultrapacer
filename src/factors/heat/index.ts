@@ -8,10 +8,8 @@ import { HeatModel } from './HeatModel'
  * @param model - Heat model
  * @returns  The heat factor at the provided point
  */
-export function getHeatFactor(point: PlanPoint, model?: HeatModel): number {
+export function getHeatFactor(point: { tod: number }, model?: HeatModel): number {
   if (!model) return 1
-
-  if (point.tod === undefined) throw new Error('tod is undefined')
 
   const t = point.tod
   let f = 1

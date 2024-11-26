@@ -1,4 +1,3 @@
-import { PlanPoint } from '../../models/PlanPoint';
 import { HeatModel } from './HeatModel';
 /**
  * Return a scaling factor for heat
@@ -7,4 +6,6 @@ import { HeatModel } from './HeatModel';
  * @param model - Heat model
  * @returns  The heat factor at the provided point
  */
-export declare function getHeatFactor(point: PlanPoint, model?: HeatModel): number;
+export declare function getHeatFactor(point: {
+    tod: number;
+}, model?: HeatModel): number;
