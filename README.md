@@ -44,7 +44,6 @@ distribution.
 
 ## Plan Model fields
 
-- **adjustForCutoffs**
 - **course**
 - **created**
 - **cutoffMargin**
