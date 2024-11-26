@@ -1,10 +1,16 @@
-import { Plan } from '../../models';
 import { StrategyElement } from './StrategyElement';
+import { Course } from '~/models';
 export type StrategyValues = {
     onset: number;
     value: number;
     type: string;
 }[];
+/**
+ * limited Plan type for Strategy
+ */
+type Plan = {
+    course: Pick<Course, 'dist'>;
+};
 export declare class Strategy {
     plan: Plan;
     values: StrategyValues;
@@ -18,3 +24,4 @@ export declare class Strategy {
     at(loc: number): number;
     addValue(val: StrategyElement): void;
 }
+export {};

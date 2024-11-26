@@ -1,9 +1,9 @@
 import _ from 'lodash'
 
-import { Plan } from '../../models'
 import { adjust } from './adjust'
 import { defaults as def } from './default'
 import { StrategyElement } from './StrategyElement'
+import { Course } from '~/models'
 
 function getFact(loc: number, values: StrategyElement[], length: number) {
   let a = -adjust(values, length)
@@ -25,6 +25,11 @@ function getFact(loc: number, values: StrategyElement[], length: number) {
 }
 
 export type StrategyValues = { onset: number; value: number; type: string }[]
+
+/**
+ * limited Plan type for Strategy
+ */
+type Plan = { course: Pick<Course, 'dist'> }
 
 export class Strategy {
   plan: Plan
