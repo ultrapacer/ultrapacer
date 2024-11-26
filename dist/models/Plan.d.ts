@@ -108,7 +108,12 @@ export declare class Plan {
     };
     private _stats?;
     get stats(): {
-        factors: object;
+        factors: {
+            [key: string]: {
+                min: number;
+                max: number;
+            };
+        };
         sun: {
             day: {
                 time: number;

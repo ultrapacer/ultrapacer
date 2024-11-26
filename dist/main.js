@@ -6080,8 +6080,8 @@ class K0 {
         return [
           p,
           {
-            min: z.min(g),
-            max: z.max(g)
+            min: Number(z.min(g)),
+            max: Number(z.max(g))
           }
         ];
       })

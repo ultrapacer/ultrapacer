@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
 import { createDebug } from '../debug'
-import { list as fKeys } from '../factors'
+import { Factors, list as fKeys } from '../factors'
 import { Strategy, StrategyValues } from '../factors/strategy'
 import { areSameWaypoint } from '../util/areSameWaypoint'
 import { Callbacks } from '../util/Callbacks'
@@ -266,7 +266,12 @@ export class Plan {
   }
 
   private _stats?: {
-    factors: object
+    factors: {
+      [key: string]: {
+        min: number
+        max: number
+      }
+    }
     sun: {
       day: {
         time: number
@@ -294,8 +299,8 @@ export class Plan {
         return [
           k,
           {
-            min: _.min(values),
-            max: _.max(values)
+            min: Number(_.min(values)),
+            max: Number(_.max(values))
           }
         ]
       })
