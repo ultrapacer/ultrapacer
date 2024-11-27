@@ -25,9 +25,9 @@ export type SiteData = {
 
 export class Site {
   private _waypoints?: Waypoint[]
-  private _lat?: number
-  private _lon?: number
-  private _alt?: number
+  private _lat: number = NaN
+  private _lon: number = NaN
+  private _alt: number = NaN
 
   constructor(course: Course, data: SiteData) {
     this._data = { percent: data.percent }
@@ -67,9 +67,9 @@ export class Site {
   clearCache() {
     d(`clearCache: ${this.name}`)
     delete this._waypoints
-    delete this._lat
-    delete this._lon
-    delete this._alt
+    this._lat = NaN
+    this._lon = NaN
+    this._alt = NaN
   }
 
   get percent() {
@@ -99,17 +99,17 @@ export class Site {
   }
 
   get lat() {
-    if (!this._lat) this.refreshLLA()
+    if (_.isNaN(this._lat)) this.refreshLLA()
     return this._lat
   }
 
   get lon() {
-    if (!this._lon) this.refreshLLA()
+    if (_.isNaN(this._lon)) this.refreshLLA()
     return this._lon
   }
 
   get alt() {
-    if (!this._alt) this.refreshLLA()
+    if (_.isNaN(this._alt)) this.refreshLLA()
     return this._alt
   }
 

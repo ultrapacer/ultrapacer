@@ -19,9 +19,9 @@ export type SiteData = {
 };
 export declare class Site {
     private _waypoints?;
-    private _lat?;
-    private _lon?;
-    private _alt?;
+    private _lat;
+    private _lon;
+    private _alt;
     constructor(course: Course, data: SiteData);
     _data: {
         percent: number;
@@ -42,9 +42,9 @@ export declare class Site {
     get percent(): number;
     set percent(v: number);
     get waypoints(): Waypoint[];
-    get lat(): number | undefined;
-    get lon(): number | undefined;
-    get alt(): number | undefined;
+    get lat(): number;
+    get lon(): number;
+    get alt(): number;
     refreshLLA(): void;
     serialize(): Partial<this>;
 }
