@@ -14,8 +14,6 @@ export type SiteData = {
     tier?: number;
     terrainFactor?: number;
     terrainType?: string;
-    crew?: boolean;
-    dropbags?: boolean;
 };
 export declare class Site {
     private _waypoints?;
@@ -36,8 +34,6 @@ export declare class Site {
     terrainType?: string;
     description?: string;
     pointsIndex?: number;
-    dropbags: boolean;
-    crew: boolean;
     clearCache(): void;
     get percent(): number;
     set percent(v: number);

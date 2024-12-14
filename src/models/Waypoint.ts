@@ -65,20 +65,6 @@ export class Waypoint {
     return this.site.type
   }
 
-  get dropbags() {
-    return this.site.dropbags || false
-  }
-  set dropbags(v) {
-    this.site.dropbags = Boolean(v)
-  }
-
-  get crew() {
-    return this.site.crew || false
-  }
-  set crew(v) {
-    this.site.crew = Boolean(v)
-  }
-
   get terrainFactor() {
     return this.site.terrainFactor
   }
@@ -141,8 +127,6 @@ export class Waypoint {
       'lon',
       'alt',
       'tier',
-      'crew',
-      'dropbags',
       'terrainType',
       'terrainFactor'
     ])

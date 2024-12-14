@@ -19,8 +19,6 @@ export type SiteData = {
   tier?: number
   terrainFactor?: number
   terrainType?: string
-  crew?: boolean
-  dropbags?: boolean
 }
 
 export class Site {
@@ -42,8 +40,6 @@ export class Site {
     if (data.terrainFactor !== undefined) this.terrainFactor = data.terrainFactor
     if (data.terrainType !== undefined) this.terrainType = data.terrainType
     if (data.description) this.description = data.description
-    this.crew = data.crew || false
-    this.dropbags = data.dropbags || false
 
     d(`constructor: ${this.name}`)
   }
@@ -61,8 +57,6 @@ export class Site {
   terrainType?: string
   description?: string
   pointsIndex?: number
-  dropbags: boolean
-  crew: boolean
 
   clearCache() {
     d(`clearCache: ${this.name}`)
