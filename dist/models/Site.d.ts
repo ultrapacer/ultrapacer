@@ -4,9 +4,10 @@ type WaypointCutoff = {
     loop: number;
     time: number;
 };
+export type WaypointType = 'start' | 'finish' | 'aid' | 'water' | 'landmark' | 'junction' | 'other';
 export type SiteData = {
     id: string | symbol;
-    type: string;
+    type: WaypointType;
     name?: string;
     description?: string;
     cutoffs?: WaypointCutoff[];
@@ -29,7 +30,7 @@ export declare class Site {
     id: string | symbol;
     name?: string;
     tier: number;
-    type: string;
+    type: WaypointType;
     terrainFactor?: number;
     terrainType?: string;
     description?: string;

@@ -8,10 +8,11 @@ import { Waypoint } from './Waypoint'
 const d = createDebug('models:Waypoint')
 
 type WaypointCutoff = { loop: number; time: number }
+export type WaypointType = 'start' | 'finish' | 'aid' | 'water' | 'landmark' | 'junction' | 'other'
 
 export type SiteData = {
   id: string | symbol
-  type: string
+  type: WaypointType
   name?: string
   description?: string
   cutoffs?: WaypointCutoff[]
@@ -52,7 +53,7 @@ export class Site {
   id: string | symbol
   name?: string
   tier: number = 1
-  type: string
+  type: WaypointType
   terrainFactor?: number
   terrainType?: string
   description?: string
