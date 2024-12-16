@@ -79,7 +79,7 @@ export declare class PlanSegment extends Segment {
     /**
      * moving pace (s/km) over segment
      */
-    get pace(): number | undefined;
+    get pace(): number;
     /**
      * delay (s) over segment
      */
@@ -97,7 +97,7 @@ export declare class PlanSegment extends Segment {
      */
     get tod(): number;
     set delay(v: number | undefined);
-    set pace(v: number | undefined);
+    set pace(v: number);
     set elapsed(v: number);
     set time(v: number | undefined);
     set tod(v: number);

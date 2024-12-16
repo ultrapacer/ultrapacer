@@ -4453,8 +4453,7 @@ class S0 extends mu {
    * moving pace (s/km) over segment
    */
   get pace() {
-    if ($.isNumber(this.time))
-      return this.time ? this.time / this.dist : 0;
+    return this.time ? this.time / this.dist : 0;
   }
   /**
    * delay (s) over segment

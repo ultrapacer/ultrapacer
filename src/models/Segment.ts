@@ -156,7 +156,6 @@ export class PlanSegment extends Segment {
    * moving pace (s/km) over segment
    */
   get pace() {
-    if (!_.isNumber(this.time)) return undefined
     if (!this.time) return 0
     return this.time / this.dist
   }
