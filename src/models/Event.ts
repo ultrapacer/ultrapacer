@@ -59,9 +59,4 @@ export class Event {
   elapsedToTimeOfDay(elapsed: number): number {
     return (this.startTime + elapsed) % 86400
   }
-
-  // return static object
-  serialize() {
-    return _.pick(this, ['start', 'sun', 'lat', 'lon', 'timezone'])
-  }
 }

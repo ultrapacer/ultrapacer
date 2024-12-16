@@ -9,11 +9,12 @@ import { Course } from './Course'
 import { CoursePoint } from './CoursePoint'
 import { PlanPoint } from './PlanPoint'
 import { CourseSegment } from './Segment'
+import { Waypoint } from './Waypoint'
 
 const d = createDebug('CourseSplits')
 
 export class CourseSplits {
-  private _segments?: CourseSegment[]
+  private _segments?: (CourseSegment & { waypoint: Waypoint })[]
   private _miles?: CourseSegment[]
   private _kilometers?: CourseSegment[]
 
@@ -24,7 +25,8 @@ export class CourseSplits {
   }
 
   get segments() {
-    if (!this._segments) this._segments = this.createSegments()
+    if (!this._segments)
+      this._segments = this.createSegments() as (CourseSegment & { waypoint: Waypoint })[]
     return this._segments
   }
   set segments(v) {

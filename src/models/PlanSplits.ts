@@ -8,11 +8,12 @@ import { distScale } from '../util/units'
 import { Plan } from './Plan'
 import { PlanPoint } from './PlanPoint'
 import { PlanSegment } from './Segment'
+import { Waypoint } from './Waypoint'
 
 const d = createDebug('PlanSplits')
 
 export class PlanSplits {
-  private _segments?: PlanSegment[]
+  private _segments?: (PlanSegment & { waypoint: Waypoint })[]
   private _miles?: PlanSegment[]
   private _kilometers?: PlanSegment[]
 
@@ -25,7 +26,7 @@ export class PlanSplits {
   get segments() {
     if (!this._segments?.length) {
       this.plan.checkPacing()
-      this._segments = this.createSegments()
+      this._segments = this.createSegments() as (PlanSegment & { waypoint: Waypoint })[]
     }
     return this._segments
   }

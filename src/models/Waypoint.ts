@@ -115,22 +115,4 @@ export class Waypoint {
   matchingSegment(segments: CourseSegment[]): CourseSegment | PlanSegment | undefined {
     return segments.find((s) => s.waypoint && areSameWaypoint(this, s.waypoint))
   }
-
-  serialize() {
-    const data = _.pick(this, [
-      'loop',
-      'name',
-      'type',
-      'cutoff',
-      'loc',
-      'lat',
-      'lon',
-      'alt',
-      'tier',
-      'terrainType',
-      'terrainFactor'
-    ])
-
-    return { ...data, site: this.site.id }
-  }
 }

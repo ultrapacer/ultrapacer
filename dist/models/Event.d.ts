@@ -9,5 +9,4 @@ export declare class Event {
     constructor(start: Date, timezone: string, lat: number, lon: number);
     dateAtElapsed(seconds: number): Date;
     elapsedToTimeOfDay(elapsed: number): number;
-    serialize(): Pick<this, "start" | "sun" | "lat" | "lon" | "timezone">;
 }

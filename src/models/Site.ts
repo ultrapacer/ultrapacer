@@ -137,11 +137,4 @@ export class Site {
     // TODO. clearing splits; not sure if this is the best place to put this
     this.course.clearCache(1)
   }
-
-  serialize() {
-    d(`serialize: ${this.name}`)
-    const fields = Object.keys(this)
-    fields.push('percent')
-    return _.pick(this, fields)
-  }
 }

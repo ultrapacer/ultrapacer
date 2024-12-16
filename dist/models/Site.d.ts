@@ -42,6 +42,5 @@ export declare class Site {
     get lon(): number;
     get alt(): number;
     refreshLLA(): void;
-    serialize(): Partial<this>;
 }
 export {};
