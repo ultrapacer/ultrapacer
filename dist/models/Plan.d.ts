@@ -6,6 +6,7 @@ import { Pacing } from './Pacing';
 import { PlanPoint } from './PlanPoint';
 import { PlanSplits } from './PlanSplits';
 import { Waypoint } from './Waypoint';
+import { DateWithTimezone } from './types';
 type DelaysInput = {
     waypoint: {
         site: string;
@@ -24,34 +25,42 @@ declare class PlanScales {
     constructor(plan: Plan);
 }
 export type PlanData = {
-    start: {
-        date: Date;
-        timezone: string;
-    };
-    method: string;
-    target: number;
-    name?: string;
-    strategy?: StrategyValues;
     cutoffMargin?: number;
-    typicalDelay?: number;
-    scales?: {
-        altitude?: number;
-        dark?: number;
-    };
+    /**
+     * Unique identifier for the plan
+     */
+    id?: string | null | number | symbol;
+    delays?: DelaysInput;
     heatModel?: {
         baseline: number;
         max: number;
     };
-    delays?: DelaysInput;
+    method: string;
+    name?: string;
+    scales?: {
+        altitude?: number;
+        dark?: number;
+    };
+    /**
+     * Start date and timezone
+     */
+    start?: DateWithTimezone;
+    strategy?: StrategyValues;
+    target: number;
+    typicalDelay?: number;
 };
 export declare class Plan {
     readonly course: Course;
     event: Event;
-    readonly points: PlanPoint[];
+    /**
+     * Unique identifier for the plan
+     */
+    id?: string | null | number | symbol;
     method: string;
-    target: number;
     name?: string;
+    readonly points: PlanPoint[];
     scales: PlanScales;
+    target: number;
     constructor(course: Course, data: PlanData);
     callbacks: Callbacks;
     pacing: Pacing;

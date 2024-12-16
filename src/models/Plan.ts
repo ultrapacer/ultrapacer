@@ -12,6 +12,7 @@ import { Pacing } from './Pacing'
 import { PlanPoint } from './PlanPoint'
 import { PlanSplits } from './PlanSplits'
 import { Waypoint } from './Waypoint'
+import { DateWithTimezone } from './types'
 
 const d = createDebug('models:Plan')
 
@@ -42,40 +43,58 @@ class PlanScales {
 }
 
 export type PlanData = {
-  start: { date: Date; timezone: string }
-  method: string
-  target: number
-  name?: string
-  strategy?: StrategyValues
   cutoffMargin?: number
-  typicalDelay?: number
-  scales?: { altitude?: number; dark?: number }
-  heatModel?: { baseline: number; max: number }
+
+  /**
+   * Unique identifier for the plan
+   */
+  id?: string | null | number | symbol
+
   delays?: DelaysInput
+  heatModel?: { baseline: number; max: number }
+  method: string
+  name?: string
+  scales?: { altitude?: number; dark?: number }
+
+  /**
+   * Start date and timezone
+   */
+  start?: DateWithTimezone
+
+  strategy?: StrategyValues
+  target: number
+  typicalDelay?: number
 }
 
 export class Plan {
   readonly course: Course
   event: Event
-  readonly points: PlanPoint[]
+
+  /**
+   * Unique identifier for the plan
+   */
+  id?: string | null | number | symbol
+
   method: string
-  target: number
   name?: string
+  readonly points: PlanPoint[]
   scales: PlanScales = new PlanScales(this)
+  target: number
 
   constructor(course: Course, data: PlanData) {
     this.course = course
 
+    const event = data.start
+      ? new Event(data.start.date, data.start.timezone, course.points[0].lat, course.points[0].lon)
+      : course.event
+    if (!event) throw new Error('Start date/timezone is required for either the plan or the course')
+    this.event = event
+
+    this.id = data.id
+
     this.pacing = new Pacing(this)
 
     this.points = this.course.points.map((point) => new PlanPoint(this, point))
-
-    this.event = new Event(
-      data.start.date,
-      data.start.timezone,
-      this.points[0].lat,
-      this.points[0].lon
-    )
 
     this.method = data.method
     this.target = data.target

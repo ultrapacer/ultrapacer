@@ -9,12 +9,14 @@ import { interpolatePoint } from './Points/interpolate'
 import { Site, type SiteData } from './Site'
 import { Track } from './Track'
 import { Waypoint } from './Waypoint'
+import { DateWithTimezone } from './types'
+import { Event } from './Event'
 
 const d = createDebug('models:Course')
 
 // course constructor will pass through all fields; use
 // this array to omit certain keys from passing through
-const disallowed = ['track', 'dist', 'gain', 'loss', 'cache', 'distance']
+const disallowed = ['track', 'dist', 'gain', 'loss', 'cache', 'distance', 'start']
 
 export type CourseData = {
   loops?: number
@@ -22,9 +24,15 @@ export type CourseData = {
   gain?: number | null
   loss?: number | null
   sites?: SiteData[]
+
+  /**
+   * Start date and timezone
+   */
+  start?: DateWithTimezone
 }
 
 export class Course {
+  event?: Event
   name?: string
   _cache: {
     terrainTypes?: TerrainType[]
@@ -41,6 +49,14 @@ export class Course {
     if (data.dist) this._distOverride = data.dist
     if (data.gain) this._gainOverride = data.gain
     if (data.loss) this._lossOverride = data.loss
+
+    if (data.start)
+      this.event = new Event(
+        data.start.date,
+        data.start.timezone,
+        track.points[0].lat,
+        track.points[0].lon
+      )
 
     // other fields just pass along:
     const keys = Object.keys(data).filter((k) => !disallowed.includes(k))

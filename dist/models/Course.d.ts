@@ -3,14 +3,21 @@ import { CourseSplits } from './CourseSplits';
 import { Site, type SiteData } from './Site';
 import { Track } from './Track';
 import { Waypoint } from './Waypoint';
+import { DateWithTimezone } from './types';
+import { Event } from './Event';
 export type CourseData = {
     loops?: number;
     dist?: number | null;
     gain?: number | null;
     loss?: number | null;
     sites?: SiteData[];
+    /**
+     * Start date and timezone
+     */
+    start?: DateWithTimezone;
 };
 export declare class Course {
+    event?: Event;
     name?: string;
     _cache: {
         terrainTypes?: TerrainType[];
