@@ -1,7 +1,6 @@
 import _ from 'lodash'
 
 import { createDebug } from '../debug'
-import { MissingDataError } from '../util/MissingDataError'
 import { Course } from './Course'
 import { Waypoint } from './Waypoint'
 
@@ -111,9 +110,6 @@ export class Site {
   // function updates the lat/lon/alt of a waypoint
   refreshLLA() {
     d('refreshLLA')
-
-    if (!this.course?.track?.points?.length)
-      throw new MissingDataError('No track points defined', 'points')
 
     let lat, lon, alt, ind
 

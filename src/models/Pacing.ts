@@ -4,7 +4,6 @@ import { sprintf } from 'sprintf-js'
 import { createDebug } from '../debug'
 import { Factors, rollup } from '../factors'
 import { Callbacks } from '../util/Callbacks'
-import { MissingDataError } from '../util/MissingDataError'
 import { PlanPoint } from '.'
 import { PaceChunk } from './PaceChunk'
 import { Plan } from './Plan'
@@ -94,11 +93,6 @@ export class Pacing {
   calculate() {
     const d2 = d.extend('calculate')
     d2('exec')
-
-    if (!this.plan.points?.length) {
-      d2('calculate: error; no points')
-      throw new MissingDataError('Plan points are not defined.', 'points')
-    }
 
     // clear some cached things
     d2('clearing cache')

@@ -3,7 +3,6 @@ import _ from 'lodash'
 import { createDebug } from '../debug'
 import { Factors, generatePlanFactors } from '../factors'
 import { req, rgte, rlt, rlte } from '../util/math'
-import { MissingDataError } from '../util/MissingDataError'
 import { distScale } from '../util/units'
 import { Plan } from './Plan'
 import { PlanPoint } from './PlanPoint'
@@ -110,11 +109,6 @@ export class PlanSplits {
     const course = plan.course
 
     const p = plan.points
-
-    if (!p?.length) {
-      d2('Plan points are not defined.')
-      throw new MissingDataError('Plan points are not defined.', 'points')
-    }
 
     const s: PlanSegment[] = [] // segments array
     const fSums: Factors[] = [] // factor sum array

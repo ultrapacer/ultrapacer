@@ -2,7 +2,6 @@ import _ from 'lodash'
 
 import { createDebug } from '../debug'
 import { req, rgte, rlt } from '../util/math'
-import { MissingDataError } from '../util/MissingDataError'
 import { CoursePoint } from './CoursePoint'
 import { CourseSplits } from './CourseSplits'
 import { interpolatePoint } from './Points/interpolate'
@@ -196,9 +195,6 @@ export class Course {
     if (this._points) return this._points
 
     d('generating points array')
-
-    if (!this.track?.points?.length)
-      throw new MissingDataError('Track points are not defined.', 'points')
 
     this._points = new Array(this.track.points.length * this.loops)
     for (let l = 0; l < this.loops; l++) {

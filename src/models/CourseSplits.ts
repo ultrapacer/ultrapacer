@@ -3,7 +3,6 @@ import _ from 'lodash'
 import { createDebug } from '../debug'
 import { Factors, generateCourseFactors } from '../factors'
 import { req, rlte } from '../util/math'
-import { MissingDataError } from '../util/MissingDataError'
 import { distScale } from '../util/units'
 import { Course } from './Course'
 import { CoursePoint } from './CoursePoint'
@@ -100,11 +99,6 @@ export class CourseSplits {
     const course = this.course
 
     const p = course.points
-
-    if (!p?.length) {
-      d2('Course points are not defined.')
-      throw new MissingDataError('Course points are not defined.', 'points')
-    }
 
     const s: CourseSegment[] = [] // segments array
     const fSums: Factors[] = [] // factor sum array
