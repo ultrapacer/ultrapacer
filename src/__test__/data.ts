@@ -1,4 +1,4 @@
-import { Course, CourseData, Plan } from '../models'
+import { Course, CourseData, Plan, PlanData } from '../models'
 import { createTrackFromArrays } from '../models/Track'
 
 const trackdata = {
@@ -2112,14 +2112,14 @@ const coursedata: CourseData = {
   ]
 }
 
-const plandata = {
+export const start = { date: new Date('2021-11-06T12:15:00.000Z'), timezone: 'America/Los_Angeles' }
+
+export const planData: PlanData = {
   name: '22-hour',
   method: 'time',
   heatModel: {
     baseline: 0,
-    max: 5,
-    start: 29319,
-    stop: 68436
+    max: 5
   },
   typicalDelay: 210,
   target: 79200,
@@ -2129,8 +2129,6 @@ const plandata = {
         site: '5d8e9973e372020007cb244b',
         loop: 1
       },
-      _waypoint: '5d8e9973e372020007cb244b',
-      loop: 1,
       delay: 180
     },
     {
@@ -2138,8 +2136,6 @@ const plandata = {
         site: '5d8e99bfe372020007cb244e',
         loop: 1
       },
-      _waypoint: '5d8e99bfe372020007cb244e',
-      loop: 1,
       delay: 480
     }
   ],
@@ -2150,13 +2146,12 @@ const plandata = {
       type: 'linear'
     }
   ],
-  cutoffMargin: 120
+  cutoffMargin: 120,
+  start
 }
-
-export const start = { date: new Date('2021-11-06T12:15:00.000Z'), timezone: 'America/Los_Angeles' }
 
 const course = new Course(track, coursedata)
 
-const plan = new Plan(course, { ...plandata, start })
+const plan = new Plan(course, planData)
 
 export { course, plan }

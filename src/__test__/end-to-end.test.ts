@@ -1,8 +1,8 @@
 import _ from 'lodash'
-import { expect, test } from 'vitest'
+import { describe, expect, test } from 'vitest'
 
-import { Plan } from '../models'
-import { course, plan, start } from './data'
+import { Plan, PlanData } from '../models'
+import { course, planData, start } from './data'
 
 type Rules = {
   np?: number
@@ -13,7 +13,7 @@ type Rules = {
 }
 
 type Test = {
-  plan: Plan
+  planData: PlanData
   r: Rules & {
     segments?: { index: number; r: Rules }[]
     custom?: { name: string; fun: (p: Plan) => number; result: number }[]
@@ -22,7 +22,7 @@ type Test = {
 
 const tests: Test[] = [
   {
-    plan,
+    planData: planData,
     r: {
       segments: [
         { index: 8, r: { elapsed: 34449 } },
@@ -36,15 +36,15 @@ const tests: Test[] = [
 
   // plan for a 30-hour finish that adjusts only to final cutoff
   {
-    plan: new Plan(course, {
-      start,
+    planData: {
       name: '30 hour basic',
-      method: 'time',
       target: 111600,
       cutoffMargin: 300,
       typicalDelay: 180,
-      scales: { altitude: 1.2, dark: 0.7 }
-    }),
+      method: 'time',
+      scales: { altitude: 1.2, dark: 0.7 },
+      start
+    },
     r: {
       segments: [
         { index: 8, r: { elapsed: 13 * 3600 + 8 * 60 + 43 } },
@@ -58,7 +58,7 @@ const tests: Test[] = [
 
   // plan for a 25-hour with big rests
   {
-    plan: new Plan(course, {
+    planData: {
       start,
       name: '25-hr+5hr-delays',
       method: 'time',
@@ -71,7 +71,7 @@ const tests: Test[] = [
         { waypoint: { site: '5d8e9a27e372020007cb2452', loop: 1 }, delay: 5 * 3600 },
         { waypoint: { site: '5d8e9aaae372020007cb2459', loop: 1 }, delay: 5 * 3600 }
       ]
-    }),
+    },
     r: {
       segments: [
         { index: 8, r: { elapsed: '11:36:07' } },
@@ -83,14 +83,14 @@ const tests: Test[] = [
 
   // plan for a 30-hour finish that adjusts to multiple cutoffs
   {
-    plan: new Plan(course, {
-      start,
+    planData: {
       name: '30 hour reverse',
       method: 'time',
       target: 111600,
       cutoffMargin: 300,
       typicalDelay: 180,
       scales: { altitude: 1.2, dark: 0.7 },
+      start,
       strategy: [
         {
           onset: 0,
@@ -98,7 +98,7 @@ const tests: Test[] = [
           type: 'linear'
         }
       ]
-    }),
+    },
     r: {
       segments: [
         { index: 8, r: { elapsed: 14 * 3600 + 13 * 60 + 54 } },
@@ -113,7 +113,7 @@ const tests: Test[] = [
 
   // plan for a 10-minute average pace
   {
-    plan: new Plan(course, {
+    planData: {
       start,
       name: '10min/mile',
       method: 'pace',
@@ -129,7 +129,7 @@ const tests: Test[] = [
         }
       ],
       heatModel: { baseline: 0, max: 5 }
-    }),
+    },
     r: {
       segments: [
         { index: 8, r: { elapsed: 8 * 3600 + 16 * 60 + 34 } },
@@ -143,7 +143,7 @@ const tests: Test[] = [
 
   // plan for a 20-minute average pace
   {
-    plan: new Plan(course, {
+    planData: {
       start,
       name: '20min/mile',
       method: 'pace',
@@ -159,7 +159,7 @@ const tests: Test[] = [
         }
       ],
       heatModel: { baseline: 0, max: 5 }
-    }),
+    },
     r: {
       segments: [
         { index: 8, r: { elapsed: 14 * 3600 + 6 * 60 + 14.5 } },
@@ -174,7 +174,7 @@ const tests: Test[] = [
 
   // plan for a 15-minute average pace missing early cutoff
   {
-    plan: new Plan(course, {
+    planData: {
       start,
       name: '15min-as-cut',
       method: 'pace',
@@ -189,7 +189,7 @@ const tests: Test[] = [
           type: 'linear'
         }
       ]
-    }),
+    },
     r: {
       segments: [
         { index: 8, r: { elapsed: 14 * 3600 + 42 * 60 + 42 } },
@@ -204,7 +204,7 @@ const tests: Test[] = [
 
   // plan for a 10-minute np
   {
-    plan: new Plan(course, {
+    planData: {
       start,
       name: '10-min',
       method: 'np',
@@ -212,7 +212,7 @@ const tests: Test[] = [
       cutoffMargin: 300,
       typicalDelay: 180,
       scales: { altitude: 1.2, dark: 0.7 }
-    }),
+    },
     r: {
       np: 10 * 60 * 0.621371,
       elapsed: '20:52:22',
@@ -229,7 +229,7 @@ const tests: Test[] = [
 
   // plan for a 13-minute np reverse that hits early cutoffs but finishes before final cutoff
   {
-    plan: new Plan(course, {
+    planData: {
       start,
       name: '13-min-rev',
       method: 'np',
@@ -238,7 +238,7 @@ const tests: Test[] = [
       typicalDelay: 180,
       scales: { altitude: 1.2, dark: 0.7 },
       strategy: [{ onset: 0, value: -100, type: 'linear' }]
-    }),
+    },
     r: {
       np: 13 * 60 * 0.621371
     }
@@ -246,7 +246,7 @@ const tests: Test[] = [
 
   // plan for a 15-minute np reverse that needs to get reduced to final cutoff
   {
-    plan: new Plan(course, {
+    planData: {
       start,
       name: '16-min-rev',
       method: 'np',
@@ -255,7 +255,7 @@ const tests: Test[] = [
       typicalDelay: 180,
       scales: { altitude: 1.2, dark: 0.7 },
       strategy: [{ onset: 0, value: -100, type: 'linear' }]
-    }),
+    },
     r: {
       elapsed: 107700
     }
@@ -272,82 +272,119 @@ function time(v: number | string | undefined) {
   else throw new Error('ahh')
 }
 
-test(`${course.name}: check track distance`, () => {
+test(`check track distance`, () => {
   expect(course.track.dist).toBeCloseTo(159.32537, 5)
 })
 
-test(`${course.name}: check segment 7 properties`, () => {
+test(`check segment 7 properties`, () => {
   expect(course.splits.segments[7].dist).toBeCloseTo(5.302885)
   expect(course.splits.segments[7].grade).toBeCloseTo(4.56348)
-  expect(tests[0].plan.splits.segments[7].factors.terrain).toBeCloseTo(1.0087442)
+
+  const plan = new Plan(course, tests[0].planData)
+  expect(plan.splits.segments[7].factors.terrain).toBeCloseTo(1.0087442)
 })
 
 const pacingTests = ['elapsed', 'factor', 'pace', 'np']
 
-tests.forEach((t) => {
-  const str = `${course.name}-${t.plan.method}-${t.plan.name}`
+function performTests(plan: Plan, r: Test['r'], update?: Partial<PlanData>) {
+  describe.sequential(`${update?.method || plan.method}-${update?.name || plan.name}`, () => {
+    const t = { r, plan }
 
-  test(`${str}: Elapsed times`, () => {
-    if (_.has(t.r, 'elapsed'))
-      expect(_.last(t.plan.splits.segments)?.elapsed).toBeCloseTo(time(t.r.elapsed), 0)
-  })
+    if (update)
+      test.sequential(`Update`, () => {
+        const update2 = {
+          delays: undefined,
+          strategy: undefined,
+          ...update,
+          ...(plan.heatModel && !('heatModel' in update) ? { heatModel: undefined } : {})
+        }
 
-  // if we have specified an elapsed time, also check that time against all the last segments
-  if (_.has(t.r, 'elapsed')) {
-    if (!t.r.segments) t.r.segments = []
-    t.r.segments.push({
-      index: t.plan.splits.segments.length - 1,
-      r: { elapsed: t.r.elapsed }
+        Object.assign(plan, update2)
+      })
+
+    test.sequential(`Elapsed times`, () => {
+      if (_.has(t.r, 'elapsed'))
+        expect(_.last(t.plan.splits.segments)?.elapsed).toBeCloseTo(time(t.r.elapsed), 0)
     })
-  }
 
-  t.r.segments?.forEach(({ index, r }: { index: number; r: Rules }) => {
+    // if we have specified an elapsed time, also check that time against all the last segments
+    if (_.has(t.r, 'elapsed')) {
+      if (!t.r.segments) t.r.segments = []
+      t.r.segments.push({
+        index: t.plan.splits.segments.length - 1,
+        r: { elapsed: t.r.elapsed }
+      })
+    }
+
+    t.r.segments?.forEach(({ index, r }: { index: number; r: Rules }) => {
+      pacingTests
+        .filter((pt) => _.has(r, pt))
+        .forEach((pt) =>
+          test.concurrent(`Segment ${index} ${pt}`, () => {
+            const segment = t.plan.splits.segments[index]
+            if (!segment) throw new Error('segment doesnt exist')
+
+            if (pt === 'elapsed') expect(segment.elapsed).toBeCloseTo(time(r.elapsed), 0)
+            else if (pt === 'pace') expect(segment.pace).toBeCloseTo(time(r.pace), 0)
+            else throw new Error('invalid rule')
+          })
+        )
+    })
+
+    test.concurrent(`delay adds at right place`, () => {
+      const p1 = t.plan.splits.segments[16].point2
+      const p2 = t.plan.points.find((p) => p.loc > p1.loc)
+      expect(p2 && p2.elapsed - p1.elapsed - (p2.time - p1.time)).toBeCloseTo(t.plan.typicalDelay)
+      const p0 = _.findLast(t.plan.points, (p) => p.loc < p1.loc)
+      expect(p0 && p2 && p2.elapsed - p0.elapsed - (p2.time - p0.time)).toBeCloseTo(
+        t.plan.typicalDelay
+      )
+    })
+
     pacingTests
-      .filter((pt) => _.has(r, pt))
+      .filter((pt) => _.has(t.r, pt))
       .forEach((pt) =>
-        test(`${str}-${index}: Pacing: ${pt}`, () => {
-          const segment = t.plan.splits.segments[index]
-          if (!segment) throw new Error('segment doesnt exist')
-
-          if (pt === 'elapsed') expect(segment.elapsed).toBeCloseTo(time(r.elapsed), 0)
-          else if (pt === 'pace') expect(segment.pace).toBeCloseTo(time(r.pace), 0)
-          else throw new Error('invalid rule')
+        test.sequential(`Pacing: ${pt}`, () => {
+          if (pt === 'elapsed') expect(t.plan.pacing.elapsed).toBeCloseTo(time(t.r.elapsed), 0)
+          if (pt === 'factor') expect(t.plan.pacing.factor).toBeCloseTo(time(t.r.factor), 0)
+          if (pt === 'pace') expect(t.plan.pacing.pace).toBeCloseTo(time(t.r.pace), 0)
+          if (pt === 'np') expect(t.plan.pacing.np).toBeCloseTo(time(t.r.np), 0)
         })
       )
+
+    // custom tests formatted [message,function(plan),result]
+    if (t.r.custom) {
+      t.r.custom.forEach((c) => {
+        test(`${c.name}`, () => {
+          expect(c.fun(t.plan)).toBeCloseTo(c.result)
+        })
+      })
+    }
+
+    test.sequential(`Calculation success`, () => {
+      expect(t.plan.pacing.status.success).toBe(true)
+      //expect(t.plan.pacing.chunks.length).toBe(t.r.numChunks || 1)
+    })
+  })
+}
+
+describe('create new plans', () => {
+  tests
+    .map((t) => ({ ...t, plan: new Plan(course, t.planData) }))
+    .forEach((t) => {
+      performTests(t.plan, t.r)
+    })
+})
+
+describe.sequential('make sure plan updates correctly', () => {
+  const plan = new Plan(course, tests[0].planData)
+  describe.sequential('update plan 0', () => {
+    performTests(plan, tests[0].r)
   })
 
-  test(`${str}: delay adds at right place`, () => {
-    const p1 = t.plan.splits.segments[16].point2
-    const p2 = t.plan.points.find((p) => p.loc > p1.loc)
-    expect(p2 && p2.elapsed - p1.elapsed - (p2.time - p1.time)).toBeCloseTo(t.plan.typicalDelay)
-    const p0 = _.findLast(t.plan.points, (p) => p.loc < p1.loc)
-    expect(p0 && p2 && p2.elapsed - p0.elapsed - (p2.time - p0.time)).toBeCloseTo(
-      t.plan.typicalDelay
-    )
-  })
-
-  pacingTests
-    .filter((pt) => _.has(t.r, pt))
-    .forEach((pt) =>
-      test(`${str}: Pacing: ${pt}`, () => {
-        if (pt === 'elapsed') expect(t.plan.pacing.elapsed).toBeCloseTo(time(t.r.elapsed), 0)
-        if (pt === 'factor') expect(t.plan.pacing.factor).toBeCloseTo(time(t.r.factor), 0)
-        if (pt === 'pace') expect(t.plan.pacing.pace).toBeCloseTo(time(t.r.pace), 0)
-        if (pt === 'np') expect(t.plan.pacing.np).toBeCloseTo(time(t.r.np), 0)
-      })
-    )
-
-  // custom tests formatted [message,function(plan),result]
-  if (t.r.custom) {
-    t.r.custom.forEach((c) => {
-      test(`${str}: ${c.name}`, () => {
-        expect(c.fun(t.plan)).toBeCloseTo(c.result)
-      })
+  for (let i = 1; i < tests.length; i++) {
+    describe.sequential(`update plan ${i}`, () => {
+      performTests(plan, tests[i].r, tests[i].planData)
     })
   }
-
-  test(`${str}: Calculation success`, () => {
-    expect(t.plan.pacing.status.success).toBe(true)
-    //expect(t.plan.pacing.chunks.length).toBe(t.r.numChunks || 1)
-  })
 })

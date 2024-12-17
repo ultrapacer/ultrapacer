@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
 import { createDebug } from '../debug'
-import { Factors, list as fKeys } from '../factors'
+import { list as fKeys } from '../factors'
 import { Strategy, StrategyValues } from '../factors/strategy'
 import { areSameWaypoint } from '../util/areSameWaypoint'
 import { Callbacks } from '../util/Callbacks'
@@ -18,42 +18,30 @@ const d = createDebug('models:Plan')
 
 type DelaysInput = { waypoint: { site: string; loop: number }; delay: number }[]
 
-class PlanScales {
-  plan: Plan
-  private _altitude: number = 1
-  get altitude() {
-    return this._altitude
-  }
-  set altitude(value) {
-    this._altitude = value
-    this.plan.clearCache()
-  }
-  private _dark: number = 1
-  get dark() {
-    return this._dark
-  }
-  set dark(value) {
-    this._dark = value
-    this.plan.clearCache()
-  }
-
-  constructor(plan: Plan) {
-    this.plan = plan
-  }
-}
+type PlanMethod = 'np' | 'pace' | 'time'
 
 export type PlanData = {
   cutoffMargin?: number
+
+  delays?: DelaysInput
+
+  heatModel?: { baseline: number; max: number }
 
   /**
    * Unique identifier for the plan
    */
   id?: string | null | number | symbol
 
-  delays?: DelaysInput
-  heatModel?: { baseline: number; max: number }
-  method: string
+  /**
+   * Method for calculating target time
+   */
+  method: PlanMethod
+
   name?: string
+
+  /**
+   * Scales for factors
+   */
   scales?: { altitude?: number; dark?: number }
 
   /**
@@ -62,66 +50,26 @@ export type PlanData = {
   start?: DateWithTimezone
 
   strategy?: StrategyValues
+
   target: number
+
   typicalDelay?: number
 }
 
 export class Plan {
-  readonly course: Course
-  event: Event
-
-  /**
-   * Unique identifier for the plan
-   */
-  id?: string | null | number | symbol
-
-  method: string
-  name?: string
-  readonly points: PlanPoint[]
-  scales: PlanScales = new PlanScales(this)
-  target: number
-
-  constructor(course: Course, data: PlanData) {
-    this.course = course
-
-    const event = data.start
-      ? new Event(data.start.date, data.start.timezone, course.points[0].lat, course.points[0].lon)
-      : course.event
-    if (!event) throw new Error('Start date/timezone is required for either the plan or the course')
-    this.event = event
-
-    this.id = data.id
-
-    this.pacing = new Pacing(this)
-
-    this.points = this.course.points.map((point) => new PlanPoint(this, point))
-
-    this.method = data.method
-    this.target = data.target
-    this.typicalDelay = data.typicalDelay || 0
-    if (data.delays) this.delays = data.delays
-    this.cutoffMargin = data.cutoffMargin
-    this._strategy = new Strategy(this, data.strategy)
-
-    Object.assign(this.scales, data.scales || {})
-
-    if (data.heatModel) this.heatModel = data.heatModel
-    this.name = data.name
-
-    this.callbacks = new Callbacks(this, ['onUpdated'])
-  }
-
   callbacks: Callbacks
-  pacing: Pacing
 
-  clearCache() {
-    d('clearCache')
-    delete this._cutoffs
-    delete this._splits
-    delete this._stats
+  readonly course: Course
+
+  get cutoffMargin() {
+    return this._cutoffMargin
   }
+  set cutoffMargin(value: number | undefined) {
+    this._cutoffMargin = value
+    this.clearCache()
+  }
+  private _cutoffMargin?: number = 0
 
-  private _cutoffs?: PlanCutoff[]
   get cutoffs() {
     if (this._cutoffs) return this._cutoffs
 
@@ -141,60 +89,18 @@ export class Plan {
 
     return this._cutoffs
   }
+  private _cutoffs?: PlanCutoff[]
 
-  set start(val: { date: Date; timezone: string }) {
-    this.event = new Event(val.date, val.timezone, this.points[0].lat, this.points[0].lon)
-  }
-
-  private _strategy: Strategy
-  get strategy(): Strategy {
-    return this._strategy
-  }
-  set strategy(values: StrategyValues) {
-    this._strategy = new Strategy(this, values)
-    this.clearCache()
+  /**
+   * delay is sum of Plan.delays
+   */
+  get delay() {
+    return _.sumBy(this.delays, 'delay')
   }
 
-  private _typicalDelay: number = 0
-  get typicalDelay() {
-    return this._typicalDelay
-  }
-  set typicalDelay(value: number) {
-    this._typicalDelay = value
-    this.clearCache()
-  }
-
-  private _cutoffMargin?: number = 0
-  get cutoffMargin() {
-    return this._cutoffMargin
-  }
-  set cutoffMargin(value: number | undefined) {
-    this._cutoffMargin = value
-    this.clearCache()
-  }
-
-  private _heatModel?: { start: number; stop: number; baseline: number; max: number } | undefined
-  set heatModel(value: { baseline: number; max: number }) {
-    this._heatModel = {
-      start: this.event.sun.sunrise + 1800,
-      stop: this.event.sun.sunset + 7200,
-      baseline: value.baseline,
-      max: value.max
-    }
-  }
-  get heatModel(): { start: number; stop: number; baseline: number; max: number } | undefined {
-    return this._heatModel
-  }
-
-  private _specifiedDelays: DelaysInput = []
-  private _delays?: PlanDelay[]
   /**
    * delays array is calculated on get as a combination of the specified delays and default delays based on waypoint types
    */
-  set delays(value: DelaysInput) {
-    this._specifiedDelays = value
-    delete this._delays
-  }
   get delays(): PlanDelay[] {
     if (this._delays) return this._delays
 
@@ -221,28 +127,15 @@ export class Plan {
 
     return this._delays
   }
-
-  /**
-   * delay is sum of Plan.delays
-   */
-  get delay() {
-    return _.sumBy(this.delays, 'delay')
+  set delays(value: DelaysInput) {
+    this._specifiedDelays = value
+    delete this._delays
   }
+  private _specifiedDelays: DelaysInput = []
+  private _delays?: PlanDelay[]
 
-  private _splits?: PlanSplits
-  /**
-   * splits are calculaed on get
-   */
-  get splits() {
-    if (this._splits) return this._splits
+  event: Event
 
-    d('creating splits')
-    this._splits = new PlanSplits(this)
-
-    return this._splits
-  }
-
-  private _events?: { sun: { event: string; elapsed: number; loc: number }[] }
   get events() {
     if (this._events) return this._events
 
@@ -283,29 +176,82 @@ export class Plan {
 
     return this._events
   }
+  private _events?: { sun: { event: string; elapsed: number; loc: number }[] }
 
-  private _stats?: {
-    factors: {
-      [key: string]: {
-        min: number
-        max: number
-      }
-    }
-    sun: {
-      day: {
-        time: number
-        dist: number
-      }
-      twilight: {
-        time: number
-        dist: number
-      }
-      dark: {
-        time: number
-        dist: number
-      }
-    }
+  get heatModel(): { start: number; stop: number; baseline: number; max: number } | undefined {
+    return this._heatModel
   }
+  set heatModel(value: { baseline: number; max: number } | undefined) {
+    if (value)
+      this._heatModel = {
+        start: this.event.sun.sunrise + 1800,
+        stop: this.event.sun.sunset + 7200,
+        baseline: value.baseline,
+        max: value.max
+      }
+    else delete this._heatModel
+  }
+  private _heatModel?: { start: number; stop: number; baseline: number; max: number } | undefined
+
+  /**
+   * Unique identifier for the plan
+   */
+  id?: string | null | number | symbol
+
+  /**
+   * Method for calculating target time
+   */
+  get method() {
+    return this._method
+  }
+  set method(value: PlanMethod) {
+    this._method = value
+    this.invalidatePacing()
+  }
+  private _method: PlanMethod
+
+  /**
+   * Display name for the plan
+   */
+  name?: string
+
+  pacing: Pacing
+
+  readonly points: PlanPoint[]
+
+  /**
+   * Scales for factors
+   */
+  get scales() {
+    return this._scales
+  }
+  set scales(values: { altitude?: number; dark?: number } | undefined) {
+    this._scales.altitude = values?.altitude || 1
+    this._scales.dark = values?.dark || 1
+    this.invalidatePacing()
+  }
+  private _scales: PlanScales = new PlanScales(this)
+
+  /**
+   * splits are calculaed on get
+   */
+  get splits() {
+    if (this._splits) return this._splits
+
+    d('creating splits')
+    this._splits = new PlanSplits(this)
+
+    return this._splits
+  }
+  private _splits?: PlanSplits
+
+  set start(val: { date: Date; timezone: string }) {
+    this.event = new Event(val.date, val.timezone, this.points[0].lat, this.points[0].lon)
+  }
+
+  /**
+   * Plan stats object
+   */
   get stats() {
     if (this._stats) return this._stats
 
@@ -356,6 +302,106 @@ export class Plan {
     this._stats = { factors, sun }
 
     return this._stats
+  }
+  private _stats?: {
+    factors: {
+      [key: string]: {
+        min: number
+        max: number
+      }
+    }
+    sun: {
+      day: {
+        time: number
+        dist: number
+      }
+      twilight: {
+        time: number
+        dist: number
+      }
+      dark: {
+        time: number
+        dist: number
+      }
+    }
+  }
+
+  get strategy(): Strategy {
+    return this._strategy
+  }
+  set strategy(values: StrategyValues) {
+    this._strategy = new Strategy(this, values)
+    this.clearCache()
+  }
+  private _strategy: Strategy
+
+  private _target: number
+  get target() {
+    return this._target
+  }
+  set target(value: number) {
+    if (!_.isEqual(this._target, value)) {
+      this._target = value
+      this.invalidatePacing()
+    }
+  }
+
+  get typicalDelay() {
+    return this._typicalDelay
+  }
+  set typicalDelay(value: number) {
+    this._typicalDelay = value
+    this.clearCache()
+    this.invalidatePacing()
+  }
+  private _typicalDelay: number = 0
+
+  constructor(course: Course, data: PlanData) {
+    this.course = course
+
+    const event = data.start
+      ? new Event(data.start.date, data.start.timezone, course.points[0].lat, course.points[0].lon)
+      : course.event
+    if (!event) throw new Error('Start date/timezone is required for either the plan or the course')
+    this.event = event
+
+    this.id = data.id
+
+    this.pacing = new Pacing(this)
+
+    this.points = this.course.points.map((point) => new PlanPoint(this, point))
+
+    this._method = data.method
+    this._target = data.target
+    this.typicalDelay = data.typicalDelay || 0
+    if (data.delays) this.delays = data.delays
+    this.cutoffMargin = data.cutoffMargin
+    this.scales = data.scales
+    this._strategy = new Strategy(this, data.strategy)
+
+    if (data.heatModel) this.heatModel = data.heatModel
+    this.name = data.name
+
+    this.callbacks = new Callbacks(this, ['onUpdated'])
+  }
+
+  checkPacing() {
+    d('checkPacing')
+    if (!this.pacing.status?.complete) {
+      d('checkPacing: calculate')
+      this.pacing.calculate()
+    }
+
+    // this is mostly just to trigger the points getter
+    if (!this.points?.length) throw new Error('No plan points')
+    return true
+  }
+
+  clearCache() {
+    d('clearCache')
+    delete this._cutoffs
+    delete this._splits
+    delete this._stats
   }
 
   /**
@@ -419,18 +465,6 @@ export class Plan {
     this.pacing.invalidate()
     delete this._splits
   }
-
-  checkPacing() {
-    d('checkPacing')
-    if (!this.pacing.status?.complete) {
-      d('checkPacing: calculate')
-      this.pacing.calculate()
-    }
-
-    // this is mostly just to trigger the points getter
-    if (!this.points?.length) throw new Error('No plan points')
-    return true
-  }
 }
 
 class PlanDelay {
@@ -469,5 +503,29 @@ class PlanCutoff {
       this.courseCutoff.time -
       Math.max(this.plan.cutoffMargin || 0, this.plan.getDelayAtWaypoint(this.waypoint))
     )
+  }
+}
+
+class PlanScales {
+  plan: Plan
+  private _altitude: number = 1
+  get altitude() {
+    return this._altitude
+  }
+  set altitude(value) {
+    this._altitude = value
+    this.plan.clearCache()
+  }
+  private _dark: number = 1
+  get dark() {
+    return this._dark
+  }
+  set dark(value) {
+    this._dark = value
+    this.plan.clearCache()
+  }
+
+  constructor(plan: Plan) {
+    this.plan = plan
   }
 }
