@@ -3,7 +3,6 @@ import { sprintf } from 'sprintf-js'
 
 import { createDebug } from '../debug'
 import { Factors, rollup } from '../factors'
-import { Callbacks } from '../util/Callbacks'
 import { PlanPoint } from '.'
 import { PaceChunk } from './PaceChunk'
 import { Plan } from './Plan'
@@ -11,7 +10,6 @@ import { Plan } from './Plan'
 const d = createDebug('Pacing')
 
 export class Pacing {
-  callbacks: Callbacks = new Callbacks(this, ['onUpdated', 'onFail', 'onInvalidated'])
   chunks: PaceChunk[] = []
   plan: Plan
 
@@ -31,8 +29,6 @@ export class Pacing {
 
     this.chunks = []
     this.clearCache()
-
-    this.callbacks.execute('onInvalidated')
   }
 
   private _elapsed?: number
@@ -155,9 +151,6 @@ export class Pacing {
     }
 
     d(`pacing status=${this.status.success ? 'PASS' : 'FAIL'}.`)
-
-    if (this.status.success) this.callbacks.execute('onUpdated')
-    else this.callbacks.execute('onFail')
   }
 
   /**

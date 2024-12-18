@@ -4,7 +4,6 @@ import { createDebug } from '../debug'
 import { list as fKeys } from '../factors'
 import { Strategy, StrategyValues } from '../factors/strategy'
 import { areSameWaypoint } from '../util/areSameWaypoint'
-import { Callbacks } from '../util/Callbacks'
 import { interp, interpArray, req, rgte } from '../util/math'
 import { Course, CourseCutoff } from './Course'
 import { Event } from './Event'
@@ -57,8 +56,6 @@ export type PlanData = {
 }
 
 export class Plan {
-  callbacks: Callbacks
-
   readonly course: Course
 
   get cutoffMargin() {
@@ -400,8 +397,6 @@ export class Plan {
 
     if (data.heatModel) this.heatModel = data.heatModel
     this.name = data.name
-
-    this.callbacks = new Callbacks(this, ['onUpdated'])
   }
 
   checkPacing() {

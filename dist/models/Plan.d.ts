@@ -1,5 +1,4 @@
 import { Strategy, StrategyValues } from '../factors/strategy';
-import { Callbacks } from '../util/Callbacks';
 import { Course, CourseCutoff } from './Course';
 import { Event } from './Event';
 import { Pacing } from './Pacing';
@@ -47,7 +46,6 @@ export type PlanData = {
     typicalDelay?: number;
 };
 export declare class Plan {
-    callbacks: Callbacks;
     readonly course: Course;
     get cutoffMargin(): number | undefined;
     set cutoffMargin(value: number | undefined);
@@ -151,9 +149,15 @@ export declare class Plan {
     get strategy(): Strategy;
     set strategy(values: StrategyValues);
     private _strategy;
-    private _target;
+    /**
+     * Target time in seconds
+     */
     get target(): number;
     set target(value: number);
+    private _target;
+    /**
+     * Typical delay for the plan; amount of dwell time at 'aid' and 'water' waypoints
+     */
     get typicalDelay(): number;
     set typicalDelay(value: number);
     private _typicalDelay;

@@ -1,10 +1,8 @@
 import { Factors } from '../factors';
-import { Callbacks } from '../util/Callbacks';
 import { PlanPoint } from '.';
 import { PaceChunk } from './PaceChunk';
 import { Plan } from './Plan';
 export declare class Pacing {
-    callbacks: Callbacks;
     chunks: PaceChunk[];
     plan: Plan;
     constructor(plan: Plan);
