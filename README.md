@@ -13,4 +13,4 @@ distribution.
 
 # Documentation
 
-[https://ultrapacer.github.io/core](Documentation)
+[Go to Docs site](https://ultrapacer.github.io/core)
