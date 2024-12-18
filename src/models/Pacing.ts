@@ -95,7 +95,9 @@ export class Pacing {
     this.clearCache()
 
     d2('adding points at each terrain factor break')
-    this.plan.course.terrainFactors?.forEach((tf) => this.plan.getPoint(tf.start, true))
+    this.plan.course.terrain?.forEach((tf) =>
+      this.plan.getPoint(tf.percents[0] * this.plan.course.dist, true)
+    )
 
     d2('adding points at each cutoff')
     if (this.plan.cutoffMargin) {

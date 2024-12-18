@@ -5,6 +5,11 @@ import { Track } from './Track';
 import { Waypoint } from './Waypoint';
 import { DateWithTimezone } from './types';
 import { Event } from './Event';
+export type TerrainTypeIndex = 'paved' | 'dirt road' | 'doubletrack' | 'singletrack' | 'technical';
+export declare const terrainTypes: {
+    type: TerrainTypeIndex;
+    value: number;
+}[];
 export type CourseData = {
     loops?: number;
     dist?: number | null;
@@ -15,13 +20,18 @@ export type CourseData = {
      * Start date and timezone
      */
     start?: DateWithTimezone;
+    terrain?: {
+        percent: number;
+        value: number | TerrainTypeIndex | {
+            value: number;
+            type: string;
+        };
+    }[];
 };
 export declare class Course {
     event?: Event;
     name?: string;
     _cache: {
-        terrainTypes?: TerrainType[];
-        terrainFactors?: TerrainFactor[];
         splits?: [];
         stats?: object;
     };
@@ -67,10 +77,9 @@ export declare class Course {
      * @returns The CoursePoint at input location.
      */
     getPoint(loc: number, insert?: boolean): CoursePoint;
-    private _terrainFactors?;
-    get terrainFactors(): TerrainFactor[];
-    private _terrainTypes?;
-    get terrainTypes(): TerrainType[];
+    get terrain(): TerrainElement[];
+    set terrain(value: CourseData['terrain']);
+    private _terrain?;
     private _cutoffs?;
     get cutoffs(): CourseCutoff[];
     private _splits?;
@@ -106,20 +115,12 @@ export declare class CourseCutoff {
     get loc(): number;
     get time(): number;
 }
-declare class TerrainFactor {
+interface TerrainElement {
+    /**
+     * Terrain value, not factor (eg, this is a number, eg 5, not a factor like 1.05)
+     */
     value: number;
-    startWaypoint: Waypoint;
-    endWaypoint: Waypoint;
-    constructor(startWaypoint: Waypoint, endWaypoint: Waypoint, value?: number);
-    get start(): number;
-    get end(): number;
-}
-declare class TerrainType {
-    type: string;
-    startWaypoint: Waypoint;
-    endWaypoint: Waypoint;
-    constructor(startWaypoint: Waypoint, endWaypoint: Waypoint, type: string);
-    get start(): number;
-    get end(): number;
+    type?: string;
+    percents: [number, number];
 }
 export {};

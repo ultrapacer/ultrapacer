@@ -1816,9 +1816,7 @@ const coursedata: CourseData = {
     {
       id: '5d73071e0588d90008bba0c6',
       type: 'start',
-      terrainFactor: 0,
       name: 'Beals Point',
-      terrainType: 'Paved',
       percent: 0,
       cutoffs: []
     },
@@ -1851,9 +1849,7 @@ const coursedata: CourseData = {
     {
       id: '5d8e9999e372020007cb244d',
       type: 'aid',
-      terrainFactor: 4,
       name: 'Beals Point',
-      terrainType: 'Fireroad',
       percent: 0.21614081362393417,
       cutoffs: [
         {
@@ -1865,18 +1861,14 @@ const coursedata: CourseData = {
     {
       id: '5d8e99bfe372020007cb244e',
       type: 'aid',
-      terrainFactor: 8,
       name: 'Granite Beach',
-      terrainType: 'Doubletrack',
       percent: 0.2585158095755734,
       cutoffs: []
     },
     {
       id: '5d8e99d9e372020007cb244f',
       type: 'aid',
-      terrainFactor: 12,
       name: 'Horseshoe Bar',
-      terrainType: 'Singletrack',
       percent: 0.32515885820639173,
       cutoffs: []
     },
@@ -1890,18 +1882,14 @@ const coursedata: CourseData = {
     {
       id: '5d8e9a1be372020007cb2451',
       type: 'aid',
-      terrainFactor: 4,
       name: 'Cardiac',
-      terrainType: 'Fireroad',
       percent: 0.4142567540435294,
       cutoffs: []
     },
     {
       id: '5d8e9a27e372020007cb2452',
       type: 'aid',
-      terrainFactor: 12,
       name: 'Overlook',
-      terrainType: 'Singletrack',
       percent: 0.44720734817088204,
       cutoffs: [{ time: 49200, loop: 1 }]
     },
@@ -1915,9 +1903,7 @@ const coursedata: CourseData = {
     {
       id: '5d8e9a49e372020007cb2454',
       type: 'aid',
-      terrainFactor: 12,
       name: 'Auburn Lake Trails',
-      terrainType: 'Singletrack',
       percent: 0.5948036693901647,
       cutoffs: []
     },
@@ -1931,27 +1917,21 @@ const coursedata: CourseData = {
     {
       id: '5d8e9a7ce372020007cb2456',
       type: 'aid',
-      terrainFactor: 8,
       name: 'No Hands Bridge',
       percent: 0.7254864680653189,
-      terrainType: 'Doubletrack',
       cutoffs: []
     },
     {
       id: '5d8e9a8fe372020007cb2457',
       type: 'aid',
-      terrainFactor: 0,
       name: 'Overlook',
-      terrainType: 'Paved',
       percent: 0.7688062063772747,
       cutoffs: [{ time: 83100, loop: 1 }]
     },
     {
       id: '5d8e9a9be372020007cb2458',
       type: 'aid',
-      terrainFactor: 12,
       name: 'Cardiac',
-      terrainType: 'Singletrack',
       percent: 0.8017078660120303,
       cutoffs: []
     },
@@ -1965,26 +1945,20 @@ const coursedata: CourseData = {
     {
       id: '5d8e9abbe372020007cb245a',
       type: 'aid',
-      terrainFactor: 20,
       name: 'Horseshoe Bar',
-      terrainType: 'Technical',
       percent: 0.8907373775846068,
       cutoffs: []
     },
     {
       id: '5d8e9acae372020007cb245b',
       type: 'aid',
-      terrainFactor: 4,
       name: 'Granite Beach',
-      terrainType: 'Fireroad',
       percent: 0.9574520419508679,
       cutoffs: []
     },
     {
       id: '60ef7aa0f2dc7b000a7484da',
       type: 'junction',
-      terrainFactor: 0,
-      terrainType: 'Paved',
       tier: 3,
       name: 'Last Gasp',
       percent: 0.42146000000000006,
@@ -1993,8 +1967,6 @@ const coursedata: CourseData = {
     {
       id: '60ef7acef2dc7b000a7484db',
       type: 'junction',
-      terrainFactor: 4,
-      terrainType: 'Fireroad',
       tier: 3,
       name: 'Last Gasp',
       percent: 0.7945199999999996,
@@ -2003,8 +1975,6 @@ const coursedata: CourseData = {
     {
       id: '60ef7c53f2dc7b000a74893a',
       type: 'junction',
-      terrainFactor: 4,
-      terrainType: 'Fireroad',
       tier: 3,
       name: 'Quarry TH',
       percent: 0.49619999999999953,
@@ -2013,8 +1983,6 @@ const coursedata: CourseData = {
     {
       id: '60ef7c94f2dc7b000a74893b',
       type: 'junction',
-      terrainFactor: 12,
-      terrainType: 'Singletrack',
       tier: 3,
       name: 'Maine Bar Jnctn',
       percent: 0.5512600000000001,
@@ -2023,8 +1991,6 @@ const coursedata: CourseData = {
     {
       id: '61114abe5420a1000b8fcd2d',
       type: 'junction',
-      terrainFactor: 12,
-      terrainType: 'Singletrack',
       tier: 3,
       name: 'dirt',
       percent: 0.1221,
@@ -2033,8 +1999,6 @@ const coursedata: CourseData = {
     {
       id: '61114b2f5420a1000b8fcd31',
       type: 'junction',
-      terrainFactor: 0,
-      terrainType: 'Paved',
       tier: 3,
       name: 'paved',
       percent: 0.1518,
@@ -2043,8 +2007,6 @@ const coursedata: CourseData = {
     {
       id: '61114b455420a1000b8fcd32',
       type: 'junction',
-      terrainFactor: 12,
-      terrainType: 'Singletrack',
       tier: 3,
       name: 'singletrack',
       percent: 0.1557,
@@ -2053,8 +2015,6 @@ const coursedata: CourseData = {
     {
       id: '61114b845420a1000b8fcd33',
       type: 'junction',
-      terrainFactor: 0,
-      terrainType: 'Paved',
       tier: 3,
       name: 'paved',
       percent: 0.16747999999999993,
@@ -2063,7 +2023,6 @@ const coursedata: CourseData = {
     {
       id: '61159970ecd48f000a81d203',
       type: 'junction',
-      terrainFactor: 16,
       tier: 3,
       name: 'Browns',
       percent: 0.6426999999999997,
@@ -2072,8 +2031,6 @@ const coursedata: CourseData = {
     {
       id: '615cb4f4ab36a6000bca30d9',
       type: 'junction',
-      terrainFactor: 20,
-      terrainType: 'Technical',
       tier: 3,
       name: 'Meat Grinder',
       percent: 0.27577999999999986,
@@ -2082,8 +2039,6 @@ const coursedata: CourseData = {
     {
       id: '615cb556ab36a6000bca30ee',
       type: 'junction',
-      terrainFactor: 8,
-      terrainType: 'Doubletrack',
       tier: 3,
       name: 'Doubletrack',
       percent: 0.9400399999999995,
@@ -2092,8 +2047,6 @@ const coursedata: CourseData = {
     {
       id: '615cb5f5ab36a6000bca3115',
       type: 'junction',
-      terrainFactor: 4,
-      terrainType: 'Fireroad',
       tier: 3,
       name: 'fireroad',
       percent: 0.6817399999999988,
@@ -2102,12 +2055,181 @@ const coursedata: CourseData = {
     {
       id: '615cb616ab36a6000bca312a',
       type: 'junction',
-      terrainFactor: 12,
-      terrainType: 'Singletrack',
       tier: 3,
       name: 'singletrack',
       percent: 0.7027999999999999,
       cutoffs: []
+    }
+  ],
+  terrain: [
+    {
+      value: { value: 0, type: 'Paved' },
+      percent: 0
+    },
+    {
+      value: {
+        value: 4,
+        type: 'fireroad'
+      },
+      percent: 0.21614081362393417
+    },
+    {
+      value: {
+        value: 8,
+        type: 'doubletrack'
+      },
+      percent: 0.2585158095755734
+    },
+    {
+      value: {
+        value: 12,
+        type: 'Singletrack'
+      },
+      percent: 0.32515885820639173
+    },
+    {
+      value: {
+        value: 4,
+        type: 'Fireroad'
+      },
+      percent: 0.4142567540435294
+    },
+    {
+      value: {
+        value: 12,
+        type: 'Singletrack'
+      },
+      percent: 0.44720734817088204
+    },
+    {
+      value: {
+        value: 12,
+        type: 'Singletrack'
+      },
+      percent: 0.5948036693901647
+    },
+    {
+      value: {
+        value: 8,
+        type: 'Doubletrack'
+      },
+      percent: 0.7254864680653189
+    },
+    {
+      value: {
+        value: 0,
+        type: 'paved'
+      },
+      percent: 0.7688062063772747
+    },
+    {
+      value: {
+        value: 12,
+        type: 'Singletrack'
+      },
+      percent: 0.8017078660120303
+    },
+    {
+      value: {
+        value: 20,
+        type: 'Technical'
+      },
+      percent: 0.8907373775846068
+    },
+    {
+      value: {
+        value: 4,
+        type: 'Fireroad'
+      },
+      percent: 0.9574520419508679
+    },
+    {
+      value: {
+        value: 0,
+        type: 'paved'
+      },
+      percent: 0.42146000000000006
+    },
+    {
+      value: {
+        value: 4,
+        type: 'Fireroad'
+      },
+      percent: 0.7945199999999996
+    },
+    {
+      value: {
+        value: 4,
+        type: 'Fireroad'
+      },
+      percent: 0.49619999999999953
+    },
+    {
+      value: {
+        value: 12,
+        type: 'Singletrack'
+      },
+      percent: 0.5512600000000001
+    },
+    {
+      value: {
+        value: 12,
+        type: 'Singletrack'
+      },
+      percent: 0.1221
+    },
+    {
+      value: {
+        value: 0,
+        type: 'paved'
+      },
+      percent: 0.1518
+    },
+    {
+      value: {
+        value: 12,
+        type: 'Singletrack'
+      },
+      percent: 0.1557
+    },
+    {
+      value: {
+        value: 0,
+        type: 'paved'
+      },
+      percent: 0.16747999999999993
+    },
+    {
+      value: 16,
+      percent: 0.6426999999999997
+    },
+    {
+      value: {
+        value: 20,
+        type: 'Technical'
+      },
+      percent: 0.27577999999999986
+    },
+    {
+      value: {
+        value: 8,
+        type: 'Doubletrack'
+      },
+      percent: 0.9400399999999995
+    },
+    {
+      value: {
+        value: 4,
+        type: 'Fireroad'
+      },
+      percent: 0.6817399999999988
+    },
+    {
+      value: {
+        value: 12,
+        type: 'Singletrack'
+      },
+      percent: 0.7027999999999999
     }
   ]
 }

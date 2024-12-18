@@ -65,13 +65,6 @@ export class Waypoint {
     return this.site.type
   }
 
-  get terrainFactor() {
-    return this.site.terrainFactor
-  }
-  get terrainType() {
-    return this.site.terrainType
-  }
-
   get hasTypicalDelay() {
     return Boolean(
       this.type === 'aid' || this.type === 'water' || (this.loop >= 2 && this.type === 'start')

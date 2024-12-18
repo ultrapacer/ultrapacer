@@ -13,8 +13,6 @@ export type SiteData = {
     cutoffs?: WaypointCutoff[];
     percent: number;
     tier?: number;
-    terrainFactor?: number;
-    terrainType?: string;
 };
 export declare class Site {
     private _waypoints?;
@@ -31,10 +29,7 @@ export declare class Site {
     name?: string;
     tier: number;
     type: WaypointType;
-    terrainFactor?: number;
-    terrainType?: string;
     description?: string;
-    pointsIndex?: number;
     clearCache(): void;
     get percent(): number;
     set percent(v: number);

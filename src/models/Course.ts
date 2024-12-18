@@ -17,6 +17,15 @@ const d = createDebug('models:Course')
 // this array to omit certain keys from passing through
 const disallowed = ['track', 'dist', 'gain', 'loss', 'cache', 'distance', 'start']
 
+export type TerrainTypeIndex = 'paved' | 'dirt road' | 'doubletrack' | 'singletrack' | 'technical'
+export const terrainTypes: { type: TerrainTypeIndex; value: number }[] = [
+  { type: 'paved', value: 0 },
+  { type: 'dirt road', value: 4 },
+  { type: 'doubletrack', value: 8 },
+  { type: 'singletrack', value: 15 },
+  { type: 'technical', value: 30 }
+]
+
 export type CourseData = {
   loops?: number
   dist?: number | null
@@ -28,14 +37,17 @@ export type CourseData = {
    * Start date and timezone
    */
   start?: DateWithTimezone
+
+  terrain?: {
+    percent: number
+    value: number | TerrainTypeIndex | { value: number; type: string }
+  }[]
 }
 
 export class Course {
   event?: Event
   name?: string
   _cache: {
-    terrainTypes?: TerrainType[]
-    terrainFactors?: TerrainFactor[]
     splits?: []
     stats?: object
   } = {}
@@ -150,8 +162,7 @@ export class Course {
     delete this._cutoffs
     delete this._splits
     delete this._stats
-    delete this._terrainFactors
-    delete this._terrainTypes
+    delete this._terrain
     delete this._waypoints
 
     if (level === 2) {
@@ -243,37 +254,34 @@ export class Course {
     return point
   }
 
-  // terrainFactors: array of TerrainFactor objects only where actual terrain factor values exist
-  private _terrainFactors?: TerrainFactor[]
-  get terrainFactors() {
-    if (this._terrainFactors) return this._terrainFactors
-    d('regenerating terrainFactors')
-    const arr = this.waypoints.filter(
-      (x, i) =>
-        i === 0 ||
-        (!_.isNil(x.terrainFactor) && x.terrainFactor !== this.waypoints[i - 1]?.terrainFactor)
-    )
-    this._terrainFactors = arr.map((x, i) => {
-      return new TerrainFactor(x, arr[i + 1] || _.last(this.waypoints), x.terrainFactor)
-    })
-
-    return this._terrainFactors
+  get terrain(): TerrainElement[] {
+    return this._terrain || []
   }
+  set terrain(value: CourseData['terrain']) {
+    if (!value) {
+      this._terrain = []
+      return
+    }
 
-  // terrainTypes: array of TerrainType objects only where actual terrain type changes exist
-  private _terrainTypes?: TerrainType[]
-  get terrainTypes() {
-    if (this._terrainTypes) return this._terrainTypes
-    d('regenerating terrainTypes')
-    const arr = this.waypoints.filter(
-      (x, i) => !_.isNil(x.terrainType) && x.terrainType !== this.waypoints[i - 1]?.terrainType
-    )
-    this._terrainTypes = arr.map((x, i) => {
-      return new TerrainType(x, arr[i + 1] || _.last(this.waypoints), x.terrainType || '')
+    value = [...value]
+    value.sort((a, b) => a.percent - b.percent)
+
+    this._terrain = value.map((x, i) => {
+      const v = _.isNumber(x.value)
+        ? x.value
+        : _.isString(x.value)
+          ? terrainTypes.find((t) => t.type === x.value)?.value || 0
+          : x.value.value
+      const type = typeof x === 'string' ? x : _.isObject(x.value) ? x.value.type : undefined
+      const res: TerrainElement = {
+        value: v,
+        type,
+        percents: [x.percent, value[i + 1]?.percent || 1]
+      }
+      return res
     })
-
-    return this._terrainTypes
   }
+  private _terrain?: TerrainElement[]
 
   private _cutoffs?: CourseCutoff[]
   get cutoffs() {
@@ -306,7 +314,7 @@ export class Course {
 
     const alts = this.track.points.map((p) => p.alt)
     const grades = this.track.points.map((p) => p.grade)
-    const terrains = this.terrainFactors.map((tf) => tf.value / 100 + 1)
+    const terrains = this.terrain.map((tf) => tf.value / 100 + 1)
 
     const stats = {
       altitude: {
@@ -327,7 +335,9 @@ export class Course {
       },
       terrain: {
         avg:
-          (_.sumBy(this.terrainFactors, (tF) => (tF.end - tF.start) * tF.value) / this.dist + 100) /
+          (_.sumBy(this.terrain, (tF) => (tF.percents[1] - tF.percents[0]) * this.dist * tF.value) /
+            this.dist +
+            100) /
           100,
         max: _.max(terrains) || 0,
         min: _.min(terrains) || 0,
@@ -338,7 +348,10 @@ export class Course {
 
     // get distances for max/min terrain
     const terrainFactorDist = (val: number): number =>
-      this.terrainFactors.reduce((a, b) => (b.value / 100 + 1 === val ? a + b.end - b.start : a), 0)
+      this.terrain.reduce(
+        (a, b) => (b.value / 100 + 1 === val ? a + (b.percents[1] - b.percents[0]) * this.dist : a),
+        0
+      )
     Object.assign(stats.terrain, {
       maxDist: terrainFactorDist(stats.terrain.max),
       minDist: terrainFactorDist(stats.terrain.min)
@@ -374,40 +387,11 @@ export class CourseCutoff {
   }
 }
 
-class TerrainFactor {
+interface TerrainElement {
+  /**
+   * Terrain value, not factor (eg, this is a number, eg 5, not a factor like 1.05)
+   */
   value: number
-  startWaypoint: Waypoint
-  endWaypoint: Waypoint
-
-  constructor(startWaypoint: Waypoint, endWaypoint: Waypoint, value: number = 0) {
-    this.startWaypoint = startWaypoint
-    this.endWaypoint = endWaypoint
-    this.value = value
-  }
-
-  get start() {
-    return this.startWaypoint.loc
-  }
-  get end() {
-    return this.endWaypoint.loc
-  }
-}
-
-class TerrainType {
-  type: string
-  startWaypoint: Waypoint
-  endWaypoint: Waypoint
-
-  constructor(startWaypoint: Waypoint, endWaypoint: Waypoint, type: string) {
-    this.startWaypoint = startWaypoint
-    this.endWaypoint = endWaypoint
-    this.type = type
-  }
-
-  get start() {
-    return this.startWaypoint.loc
-  }
-  get end() {
-    return this.endWaypoint.loc
-  }
+  type?: string
+  percents: [number, number]
 }

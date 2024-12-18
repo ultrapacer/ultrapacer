@@ -16,7 +16,7 @@ import { rlte } from '../../util/math'
  * @returns The terrain factor at the provided point
  */
 export function getTerrainFactor(point: CoursePoint | PlanPoint, course: Course) {
-  const tF = _.findLast(course.terrainFactors, (x) => rlte(x.start, point.loc, 4))
+  const tF = _.findLast(course.terrain, (x) => rlte(x.percents[0] * course.dist, point.loc, 4))
 
   if (!tF) return 1
 

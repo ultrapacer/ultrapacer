@@ -15,8 +15,6 @@ export declare class Waypoint {
     get alt(): number;
     get tier(): number;
     get type(): import("./Site").WaypointType;
-    get terrainFactor(): number | undefined;
-    get terrainType(): string | undefined;
     get hasTypicalDelay(): boolean;
     get cutoff(): number | null;
     set cutoff(v: number | null);

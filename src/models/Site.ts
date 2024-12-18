@@ -17,8 +17,6 @@ export type SiteData = {
   cutoffs?: WaypointCutoff[]
   percent: number
   tier?: number
-  terrainFactor?: number
-  terrainType?: string
 }
 
 export class Site {
@@ -37,8 +35,6 @@ export class Site {
     this.name = data.name
     if (data.cutoffs) this.cutoffs = data.cutoffs
     if (data.tier !== undefined) this.tier = data.tier
-    if (data.terrainFactor !== undefined) this.terrainFactor = data.terrainFactor
-    if (data.terrainType !== undefined) this.terrainType = data.terrainType
     if (data.description) this.description = data.description
 
     d(`constructor: ${this.name}`)
@@ -53,10 +49,7 @@ export class Site {
   name?: string
   tier: number = 1
   type: WaypointType
-  terrainFactor?: number
-  terrainType?: string
   description?: string
-  pointsIndex?: number
 
   clearCache() {
     d(`clearCache: ${this.name}`)
@@ -129,7 +122,6 @@ export class Site {
     this._lat = lat
     this._lon = lon
     this._alt = alt
-    if (ind) this.pointsIndex = ind
 
     // TODO. clearing splits; not sure if this is the best place to put this
     this.course.clearCache(1)
