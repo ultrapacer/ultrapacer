@@ -8,7 +8,7 @@ import { Factors } from './Factors';
 import { getGradeFactor } from './grade';
 import { getHeatFactor } from './heat';
 import { getTerrainFactor } from './terrain';
-export declare function applyScale(fact: number, scale: number): number;
+export declare function applyScale(fact: number, scale?: number): number;
 export declare function generateCourseFactors(point: CoursePoint | PlanPoint, course: Course): void;
 export declare function generatePlanFactors(point: PlanPoint, plan: Plan): void;
 export { list } from './list';

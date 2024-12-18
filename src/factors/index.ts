@@ -10,7 +10,8 @@ import { getHeatFactor } from './heat'
 import { getTerrainFactor } from './terrain'
 
 // utility function to offset by 1 and scale
-export function applyScale(fact: number, scale: number) {
+export function applyScale(fact: number, scale?: number) {
+  if (scale === undefined) return fact
   return (fact - 1) * scale + 1
 }
 
@@ -39,8 +40,8 @@ export function generatePlanFactors(point: PlanPoint, plan: Plan) {
   }
 
   // if any factor scales exist, apply them:
-  point.factors.altitude = applyScale(point.factors.altitude, plan.scales.altitude)
-  point.factors.dark = applyScale(point.factors.dark, plan.scales.dark)
+  point.factors.altitude = applyScale(point.factors.altitude, plan.scales?.altitude)
+  point.factors.dark = applyScale(point.factors.dark, plan.scales?.dark)
 }
 
 export { list } from './list'

@@ -4313,7 +4313,7 @@ class ds {
   }
 }
 function _s(c, i) {
-  return (c - 1) * i + 1;
+  return i === void 0 ? c : (c - 1) * i + 1;
 }
 function Ms(c, i) {
   c.factors || (c.factors = new bn()), Object.assign(c.factors, {
@@ -4323,6 +4323,7 @@ function Ms(c, i) {
   });
 }
 function Nr(c, i) {
+  var r, o;
   if (c.factors || (c.factors = new bn()), Ms(c, i.course), i) {
     if (c.factors === void 0) throw new Error("no factors");
     c.factors.strategy = i.strategy.at(c.loc), Object.assign(c.factors, {
@@ -4330,7 +4331,7 @@ function Nr(c, i) {
       dark: i.event.sun ? hu(c.tod, c.factors.terrain, i.event.sun) : 1
     });
   }
-  c.factors.altitude = _s(c.factors.altitude, i.scales.altitude), c.factors.dark = _s(c.factors.dark, i.scales.dark);
+  c.factors.altitude = _s(c.factors.altitude, (r = i.scales) == null ? void 0 : r.altitude), c.factors.dark = _s(c.factors.dark, (o = i.scales) == null ? void 0 : o.dark);
 }
 const G0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
