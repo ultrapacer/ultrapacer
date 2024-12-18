@@ -7,7 +7,7 @@ name: Deploy TypeDoc site to Pages
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: [$default-branch]
+    branches: ['master']
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -58,7 +58,7 @@ jobs:
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Build with TypeDoc
-        run: ${{ steps.detect-package-manager.outputs.runner }} typedoc --out typedoc-site
+        run: ${{ steps.detect-package-manager.outputs.runner }} typedoc src/main.ts --out typedoc-site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
