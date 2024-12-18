@@ -4,19 +4,18 @@
 
 Go to [https://ultrapacer.com](https://ultrapacer.com)
 
-# No License / Copyright
+# using @ultrapacer/core:
 
-The source code herin is copyright to ULTRAPACER, LLC.
-This code may be forked, downloaded, and/or modified for the purposes of
-contributing to this project only. There is no license for any other use or
-distribution.
+0. Import modules:
 
-# Using this repo:
+```
+import {Course, Plan, Track} from '@ultrapacer/core'
+```
 
 1. Create a new track:
 
 ```
-const track = new Track(lat, lon, alt)
+const track = new Track(trackData)
 ```
 
 2. Create a new course:
@@ -31,6 +30,24 @@ const course = new Course(track, courseData)
 const plan = new Plan(course, planData)
 ```
 
+4. See computed pacing:
+
+```
+console.log(plan.stats)
+console.log(plan.splits)
+```
+
 # Documentation
 
-[Go to Docs site](https://ultrapacer.github.io/core)
+[Docs site](https://ultrapacer.github.io/core)
+
+# Repository
+
+[Github site](https://github.com/ultrapacer/core)
+
+# No License / Copyright
+
+The source code herin is copyright to ULTRAPACER, LLC.
+This code may be forked, downloaded, and/or modified for the purposes of
+contributing to this project only. There is no license for any other use or
+distribution.
