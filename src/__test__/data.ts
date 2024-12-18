@@ -1817,8 +1817,7 @@ const coursedata: CourseData = {
       id: '5d73071e0588d90008bba0c6',
       type: 'start',
       name: 'Beals Point',
-      percent: 0,
-      cutoffs: []
+      percent: 0
     },
     {
       id: '5d73071e0588d90008bba0c8',
@@ -1836,15 +1835,13 @@ const coursedata: CourseData = {
       id: '5d8e9973e372020007cb244b',
       type: 'aid',
       name: 'Willow Creek',
-      percent: 0.09307857690919637,
-      cutoffs: []
+      percent: 0.09307857690919637
     },
     {
       id: '5d8e9986e372020007cb244c',
       type: 'aid',
       name: 'Negro Bar',
-      percent: 0.17173104036331144,
-      cutoffs: []
+      percent: 0.17173104036331144
     },
     {
       id: '5d8e9999e372020007cb244d',
@@ -1862,15 +1859,13 @@ const coursedata: CourseData = {
       id: '5d8e99bfe372020007cb244e',
       type: 'aid',
       name: 'Granite Beach',
-      percent: 0.2585158095755734,
-      cutoffs: []
+      percent: 0.2585158095755734
     },
     {
       id: '5d8e99d9e372020007cb244f',
       type: 'aid',
       name: 'Horseshoe Bar',
-      percent: 0.32515885820639173,
-      cutoffs: []
+      percent: 0.32515885820639173
     },
     {
       id: '5d8e9a0ee372020007cb2450',
@@ -1883,8 +1878,7 @@ const coursedata: CourseData = {
       id: '5d8e9a1be372020007cb2451',
       type: 'aid',
       name: 'Cardiac',
-      percent: 0.4142567540435294,
-      cutoffs: []
+      percent: 0.4142567540435294
     },
     {
       id: '5d8e9a27e372020007cb2452',
@@ -1904,8 +1898,7 @@ const coursedata: CourseData = {
       id: '5d8e9a49e372020007cb2454',
       type: 'aid',
       name: 'Auburn Lake Trails',
-      percent: 0.5948036693901647,
-      cutoffs: []
+      percent: 0.5948036693901647
     },
     {
       id: '5d8e9a5fe372020007cb2455',
@@ -1918,8 +1911,7 @@ const coursedata: CourseData = {
       id: '5d8e9a7ce372020007cb2456',
       type: 'aid',
       name: 'No Hands Bridge',
-      percent: 0.7254864680653189,
-      cutoffs: []
+      percent: 0.7254864680653189
     },
     {
       id: '5d8e9a8fe372020007cb2457',
@@ -1932,8 +1924,7 @@ const coursedata: CourseData = {
       id: '5d8e9a9be372020007cb2458',
       type: 'aid',
       name: 'Cardiac',
-      percent: 0.8017078660120303,
-      cutoffs: []
+      percent: 0.8017078660120303
     },
     {
       id: '5d8e9aaae372020007cb2459',
@@ -1946,119 +1937,104 @@ const coursedata: CourseData = {
       id: '5d8e9abbe372020007cb245a',
       type: 'aid',
       name: 'Horseshoe Bar',
-      percent: 0.8907373775846068,
-      cutoffs: []
+      percent: 0.8907373775846068
     },
     {
       id: '5d8e9acae372020007cb245b',
       type: 'aid',
       name: 'Granite Beach',
-      percent: 0.9574520419508679,
-      cutoffs: []
+      percent: 0.9574520419508679
     },
     {
       id: '60ef7aa0f2dc7b000a7484da',
       type: 'junction',
       tier: 3,
       name: 'Last Gasp',
-      percent: 0.42146000000000006,
-      cutoffs: []
+      percent: 0.42146000000000006
     },
     {
       id: '60ef7acef2dc7b000a7484db',
       type: 'junction',
       tier: 3,
       name: 'Last Gasp',
-      percent: 0.7945199999999996,
-      cutoffs: []
+      percent: 0.7945199999999996
     },
     {
       id: '60ef7c53f2dc7b000a74893a',
       type: 'junction',
       tier: 3,
       name: 'Quarry TH',
-      percent: 0.49619999999999953,
-      cutoffs: []
+      percent: 0.49619999999999953
     },
     {
       id: '60ef7c94f2dc7b000a74893b',
       type: 'junction',
       tier: 3,
       name: 'Maine Bar Jnctn',
-      percent: 0.5512600000000001,
-      cutoffs: []
+      percent: 0.5512600000000001
     },
     {
       id: '61114abe5420a1000b8fcd2d',
       type: 'junction',
       tier: 3,
       name: 'dirt',
-      percent: 0.1221,
-      cutoffs: []
+      percent: 0.1221
     },
     {
       id: '61114b2f5420a1000b8fcd31',
       type: 'junction',
       tier: 3,
       name: 'paved',
-      percent: 0.1518,
-      cutoffs: []
+      percent: 0.1518
     },
     {
       id: '61114b455420a1000b8fcd32',
       type: 'junction',
       tier: 3,
       name: 'singletrack',
-      percent: 0.1557,
-      cutoffs: []
+      percent: 0.1557
     },
     {
       id: '61114b845420a1000b8fcd33',
       type: 'junction',
       tier: 3,
       name: 'paved',
-      percent: 0.16747999999999993,
-      cutoffs: []
+      percent: 0.16747999999999993
     },
     {
       id: '61159970ecd48f000a81d203',
       type: 'junction',
       tier: 3,
       name: 'Browns',
-      percent: 0.6426999999999997,
-      cutoffs: []
+      percent: 0.6426999999999997
     },
     {
       id: '615cb4f4ab36a6000bca30d9',
       type: 'junction',
       tier: 3,
       name: 'Meat Grinder',
-      percent: 0.27577999999999986,
-      cutoffs: []
+      percent: 0.27577999999999986
     },
     {
       id: '615cb556ab36a6000bca30ee',
       type: 'junction',
       tier: 3,
       name: 'Doubletrack',
-      percent: 0.9400399999999995,
-      cutoffs: []
+      percent: 0.9400399999999995
     },
     {
       id: '615cb5f5ab36a6000bca3115',
       type: 'junction',
       tier: 3,
       name: 'fireroad',
-      percent: 0.6817399999999988,
-      cutoffs: []
+      percent: 0.6817399999999988
     },
     {
       id: '615cb616ab36a6000bca312a',
       type: 'junction',
       tier: 3,
       name: 'singletrack',
-      percent: 0.7027999999999999,
-      cutoffs: []
+      percent: 0.7027999999999999
     }
   ],
   terrain: [
@@ -2137,10 +2113,7 @@ const coursedata: CourseData = {
       percent: 0.8907373775846068
     },
     {
-      value: {
-        value: 4,
-        type: 'Fireroad'
-      },
+      value: 'dirt road',
       percent: 0.9574520419508679
     },
     {
@@ -2160,7 +2133,7 @@ const coursedata: CourseData = {
     {
       value: {
         value: 4,
-        type: 'Fireroad'
+        type: 'dirt road'
       },
       percent: 0.49619999999999953
     },
@@ -2179,10 +2152,7 @@ const coursedata: CourseData = {
       percent: 0.1221
     },
     {
-      value: {
-        value: 0,
-        type: 'paved'
-      },
+      value: 'paved',
       percent: 0.1518
     },
     {
