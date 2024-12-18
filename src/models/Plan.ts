@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _, { pick } from 'lodash'
 
 import { createDebug } from '../debug'
 import { list as fKeys } from '../factors'
@@ -65,8 +65,10 @@ export class Plan {
     return this._cutoffMargin
   }
   set cutoffMargin(value: number | undefined) {
+    if (value === this._cutoffMargin) return
     this._cutoffMargin = value
-    this.clearCache()
+    delete this._cutoffs
+    this.invalidatePacing()
   }
   private _cutoffMargin?: number = 0
 
@@ -128,8 +130,10 @@ export class Plan {
     return this._delays
   }
   set delays(value: DelaysInput) {
+    if (_.isEqual(this._specifiedDelays, value)) return
     this._specifiedDelays = value
     delete this._delays
+    this.invalidatePacing()
   }
   private _specifiedDelays: DelaysInput = []
   private _delays?: PlanDelay[]
@@ -182,6 +186,7 @@ export class Plan {
     return this._heatModel
   }
   set heatModel(value: { baseline: number; max: number } | undefined) {
+    if (_.isEqual(pick(this._heatModel, ['baseline', 'max']), value)) return
     if (value)
       this._heatModel = {
         start: this.event.sun.sunrise + 1800,
@@ -190,6 +195,7 @@ export class Plan {
         max: value.max
       }
     else delete this._heatModel
+    this.invalidatePacing()
   }
   private _heatModel?: { start: number; stop: number; baseline: number; max: number } | undefined
 
@@ -205,6 +211,7 @@ export class Plan {
     return this._method
   }
   set method(value: PlanMethod) {
+    if (value === this._method) return
     this._method = value
     this.invalidatePacing()
   }
@@ -228,7 +235,6 @@ export class Plan {
   set scales(values: { altitude?: number; dark?: number } | undefined) {
     this._scales.altitude = values?.altitude || 1
     this._scales.dark = values?.dark || 1
-    this.invalidatePacing()
   }
   private _scales: PlanScales = new PlanScales(this)
 
@@ -246,7 +252,10 @@ export class Plan {
   private _splits?: PlanSplits
 
   set start(val: { date: Date; timezone: string }) {
+    if (this.event.start.getTime() === val.date.getTime() && this.event.timezone === val.timezone)
+      return
     this.event = new Event(val.date, val.timezone, this.points[0].lat, this.points[0].lon)
+    this.invalidatePacing()
   }
 
   /**
@@ -330,28 +339,38 @@ export class Plan {
     return this._strategy
   }
   set strategy(values: StrategyValues) {
+    if (
+      values?.length === this._strategy.values.length &&
+      values.every((v, i) => _.isEqual(v, this._strategy.values[i]))
+    )
+      return
     this._strategy = new Strategy(this, values)
-    this.clearCache()
+    this.invalidatePacing()
   }
   private _strategy: Strategy
 
-  private _target: number
+  /**
+   * Target time in seconds
+   */
   get target() {
     return this._target
   }
   set target(value: number) {
-    if (!_.isEqual(this._target, value)) {
-      this._target = value
-      this.invalidatePacing()
-    }
+    if (value === this._target) return
+    this._target = value
+    this.invalidatePacing()
   }
+  private _target: number
 
+  /**
+   * Typical delay for the plan; amount of dwell time at 'aid' and 'water' waypoints
+   */
   get typicalDelay() {
     return this._typicalDelay
   }
   set typicalDelay(value: number) {
+    if (value === this._typicalDelay) return
     this._typicalDelay = value
-    this.clearCache()
     this.invalidatePacing()
   }
   private _typicalDelay: number = 0
@@ -464,6 +483,7 @@ export class Plan {
     d('invalidatePacing')
     this.pacing.invalidate()
     delete this._splits
+    delete this._stats
   }
 }
 
@@ -513,16 +533,18 @@ class PlanScales {
     return this._altitude
   }
   set altitude(value) {
+    if (value === this._altitude) return
     this._altitude = value
-    this.plan.clearCache()
+    this.plan.invalidatePacing()
   }
   private _dark: number = 1
   get dark() {
     return this._dark
   }
   set dark(value) {
+    if (value === this._dark) return
     this._dark = value
-    this.plan.clearCache()
+    this.plan.invalidatePacing()
   }
 
   constructor(plan: Plan) {
