@@ -65,12 +65,12 @@ export class Plan {
     if (value === this._cutoffMargin) return
     this._cutoffMargin = value
     delete this._cutoffs
-    this.invalidatePacing()
+    this.version++
   }
   private _cutoffMargin?: number = 0
 
   get cutoffs() {
-    if (this._cutoffs) return this._cutoffs
+    if (this._cutoffs && this._cutoffsVersion === this.version2) return this._cutoffs
 
     this._cutoffs = this.cutoffMargin
       ? this.course.cutoffs.map((c) => new PlanCutoff(this, c, this.getPoint(c.loc, true)))
@@ -86,9 +86,12 @@ export class Plan {
       } else i++
     }
 
+    this._cutoffsVersion = this.version2
+
     return this._cutoffs
   }
   private _cutoffs?: PlanCutoff[]
+  private _cutoffsVersion?: number
 
   /**
    * delay is sum of Plan.delays
@@ -101,7 +104,7 @@ export class Plan {
    * delays array is calculated on get as a combination of the specified delays and default delays based on waypoint types
    */
   get delays(): PlanDelay[] {
-    if (this._delays) return this._delays
+    if (this._delays && this._delaysVersion === this.version2) return this._delays
 
     const delays = this.course.waypoints
       .map((waypoint) => {
@@ -124,21 +127,24 @@ export class Plan {
 
     this._delays = delays
 
+    this._delaysVersion = this.version2
+
     return this._delays
   }
   set delays(value: DelaysInput) {
     if (_.isEqual(this._specifiedDelays, value)) return
     this._specifiedDelays = value
     delete this._delays
-    this.invalidatePacing()
+    this.version++
   }
   private _specifiedDelays: DelaysInput = []
   private _delays?: PlanDelay[]
+  private _delaysVersion?: number
 
   event: Event
 
   get events() {
-    if (this._events) return this._events
+    if (this._events && this._eventsVersion === this.version2) return this._events
 
     // create array of sun events during the course:
     d('calculating events.sun')
@@ -175,9 +181,12 @@ export class Plan {
 
     this._events = { sun }
 
+    this._eventsVersion = this.version2
+
     return this._events
   }
   private _events?: { sun: { event: string; elapsed: number; loc: number }[] }
+  private _eventsVersion?: number
 
   get heatModel(): { start: number; stop: number; baseline: number; max: number } | undefined {
     return this._heatModel
@@ -192,7 +201,7 @@ export class Plan {
         max: value.max
       }
     else delete this._heatModel
-    this.invalidatePacing()
+    this.version++
   }
   private _heatModel?: { start: number; stop: number; baseline: number; max: number } | undefined
 
@@ -210,7 +219,7 @@ export class Plan {
   set method(value: PlanMethod) {
     if (value === this._method) return
     this._method = value
-    this.invalidatePacing()
+    this.version++
   }
   private _method: PlanMethod
 
@@ -236,30 +245,22 @@ export class Plan {
   private _scales: PlanScales = new PlanScales(this)
 
   /**
-   * splits are calculaed on get
+   * splits
    */
-  get splits() {
-    if (this._splits) return this._splits
-
-    d('creating splits')
-    this._splits = new PlanSplits(this)
-
-    return this._splits
-  }
-  private _splits?: PlanSplits
+  readonly splits = new PlanSplits(this)
 
   set start(val: { date: Date; timezone: string }) {
     if (this.event.start.getTime() === val.date.getTime() && this.event.timezone === val.timezone)
       return
     this.event = new Event(val.date, val.timezone, this.points[0].lat, this.points[0].lon)
-    this.invalidatePacing()
+    this.version++
   }
 
   /**
    * Plan stats object
    */
   get stats() {
-    if (this._stats) return this._stats
+    if (this._stats && this._statsVersion === this.version2) return this._stats
 
     // add in statistics
     // these are max and min values for each factor
@@ -306,6 +307,7 @@ export class Plan {
     })
 
     this._stats = { factors, sun }
+    this._statsVersion = this.version2
 
     return this._stats
   }
@@ -331,6 +333,7 @@ export class Plan {
       }
     }
   }
+  private _statsVersion?: number
 
   get strategy(): Strategy {
     return this._strategy
@@ -342,7 +345,7 @@ export class Plan {
     )
       return
     this._strategy = new Strategy(this, values)
-    this.invalidatePacing()
+    this.version++
   }
   private _strategy: Strategy
 
@@ -355,7 +358,7 @@ export class Plan {
   set target(value: number) {
     if (value === this._target) return
     this._target = value
-    this.invalidatePacing()
+    this.version++
   }
   private _target: number
 
@@ -368,9 +371,21 @@ export class Plan {
   set typicalDelay(value: number) {
     if (value === this._typicalDelay) return
     this._typicalDelay = value
-    this.invalidatePacing()
+    this.version++
   }
   private _typicalDelay: number = 0
+
+  /**
+   * Version of plan update (non trivial changes that affect pacing)
+   */
+  version: number = 0
+
+  /**
+   * Version of course & plan update (non trivial changes that affect pacing)
+   */
+  get version2() {
+    return this.course.version + this.version
+  }
 
   constructor(course: Course, data: PlanData) {
     this.course = course
@@ -401,7 +416,7 @@ export class Plan {
 
   checkPacing() {
     d('checkPacing')
-    if (!this.pacing.status?.complete) {
+    if (!this.pacing.status?.complete || !this.pacing.isCurrent) {
       d('checkPacing: calculate')
       this.pacing.calculate()
     }
@@ -409,13 +424,6 @@ export class Plan {
     // this is mostly just to trigger the points getter
     if (!this.points?.length) throw new Error('No plan points')
     return true
-  }
-
-  clearCache() {
-    d('clearCache')
-    delete this._cutoffs
-    delete this._splits
-    delete this._stats
   }
 
   /**
@@ -473,13 +481,6 @@ export class Plan {
 
     return point
   }
-
-  invalidatePacing() {
-    d('invalidatePacing')
-    this.pacing.invalidate()
-    delete this._splits
-    delete this._stats
-  }
 }
 
 class PlanDelay {
@@ -530,7 +531,7 @@ class PlanScales {
   set altitude(value) {
     if (value === this._altitude) return
     this._altitude = value
-    this.plan.invalidatePacing()
+    this.plan.version++
   }
   private _dark: number = 1
   get dark() {
@@ -539,7 +540,7 @@ class PlanScales {
   set dark(value) {
     if (value === this._dark) return
     this._dark = value
-    this.plan.invalidatePacing()
+    this.plan.version++
   }
 
   constructor(plan: Plan) {

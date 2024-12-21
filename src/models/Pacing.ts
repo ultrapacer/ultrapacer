@@ -3,7 +3,7 @@ import { sprintf } from 'sprintf-js'
 
 import { createDebug } from '../debug'
 import { Factors, rollup } from '../factors'
-import { PlanPoint } from '.'
+import { PlanPoint } from './PlanPoint'
 import { PaceChunk } from './PaceChunk'
 import { Plan } from './Plan'
 
@@ -19,22 +19,13 @@ export class Pacing {
 
   clearCache() {
     d('clearCache')
-    delete this._elapsed
     delete this._factor
     delete this._factors
   }
 
-  invalidate() {
-    d('invalidate')
-
-    this.chunks = []
-    this.clearCache()
-  }
-
-  private _elapsed?: number
   get elapsed() {
     d('elapsed:get')
-    return this._elapsed || this.plan.points[this.plan.points.length - 1].elapsed
+    return this.plan.points[this.plan.points.length - 1].elapsed
   }
 
   get pace() {
@@ -69,6 +60,13 @@ export class Pacing {
     return this._factors
   }
 
+  /**
+   * check if this pacing is current
+   */
+  get isCurrent() {
+    return this.version === this.plan.version2
+  }
+
   get np() {
     d('np:get')
     return this.pace / this.factor
@@ -85,6 +83,11 @@ export class Pacing {
       chunks: this.chunks?.length || 0
     }
   }
+
+  /**
+   * last time this pacing was updated
+   */
+  version?: number
 
   calculate() {
     const d2 = d.extend('calculate')
@@ -153,6 +156,8 @@ export class Pacing {
     }
 
     d(`pacing status=${this.status.success ? 'PASS' : 'FAIL'}.`)
+
+    this.version = this.plan.version2
   }
 
   /**

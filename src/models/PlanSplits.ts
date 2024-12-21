@@ -12,10 +12,6 @@ import { Waypoint } from './Waypoint'
 const d = createDebug('PlanSplits')
 
 export class PlanSplits {
-  private _segments?: (PlanSegment & { waypoint: Waypoint })[]
-  private _miles?: PlanSegment[]
-  private _kilometers?: PlanSegment[]
-
   plan: Plan
 
   constructor(plan: Plan) {
@@ -23,37 +19,46 @@ export class PlanSplits {
   }
 
   get segments() {
-    if (!this._segments?.length) {
-      this.plan.checkPacing()
-      this._segments = this.createSegments() as (PlanSegment & { waypoint: Waypoint })[]
-    }
+    if (!this._segments?.length && this._segmentsVersion === this.plan.version2)
+      return this._segments
+
+    this._segments = this.createSegments() as (PlanSegment & { waypoint: Waypoint })[]
+    this._segmentsVersion = this.plan.version2
+
     return this._segments
   }
   set segments(v) {
     this._segments = v
   }
+  private _segments?: (PlanSegment & { waypoint: Waypoint })[]
+  private _segmentsVersion?: number
 
   get miles() {
-    if (!this._miles?.length) {
-      this.plan.checkPacing()
-      this._miles = this.createSplits('miles')
-    }
+    if (this._miles && this._milesVersion === this.plan.version2) return this._miles
+
+    this._miles = this.createSplits('miles')
+    this._milesVersion = this.plan.version2
+
     return this._miles
   }
   set miles(v) {
     this._miles = v
   }
+  private _miles?: PlanSegment[]
+  private _milesVersion?: number
 
   get kilometers() {
-    if (!this._kilometers?.length) {
-      this.plan.checkPacing()
-      this._kilometers = this.createSplits('kilometers')
-    }
+    if (this._kilometers && this._kilometersVersion === this.plan.version2) return this._kilometers
+
+    this._kilometers = this.createSplits('kilometers')
+    this._kilometersVersion = this.plan.version2
     return this._kilometers
   }
   set kilometers(v) {
     this._kilometers = v
   }
+  private _kilometers?: PlanSegment[]
+  private _kilometersVersion?: number
 
   createSegments() {
     d('createSegments')
@@ -104,6 +109,8 @@ export class PlanSplits {
     */
     const d2 = d.extend('calcSegments')
     d2('exec')
+
+    this.plan.checkPacing()
 
     const plan = this.plan
     const course = plan.course

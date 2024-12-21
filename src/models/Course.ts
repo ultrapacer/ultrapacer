@@ -154,6 +154,11 @@ export class Course {
     this.clearCache(1)
   }
 
+  /**
+   * Version of course update (non-trivial changes that affect pacing)
+   */
+  version: number = 0
+
   clearCache(level = 1) {
     // level 1 means route itself does not change (eg, changes to waypoints and trivial changes to course)
     // level 2 means route itself changes (eg, track, loops, dist, gain, loss)
