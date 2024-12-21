@@ -19,10 +19,10 @@ export class PlanSplits {
   }
 
   get segments() {
-    if (this._segments && this._segmentsVersion === this.plan.version2) return this._segments
+    if (this._segments && this._segmentsVersion === this.plan.version) return this._segments
 
     this._segments = this.createSegments() as (PlanSegment & { waypoint: Waypoint })[]
-    this._segmentsVersion = this.plan.version2
+    this._segmentsVersion = this.plan.version
 
     return this._segments
   }
@@ -33,10 +33,10 @@ export class PlanSplits {
   private _segmentsVersion?: number
 
   get miles() {
-    if (this._miles && this._milesVersion === this.plan.version2) return this._miles
+    if (this._miles && this._milesVersion === this.plan.version) return this._miles
 
     this._miles = this.createSplits('miles')
-    this._milesVersion = this.plan.version2
+    this._milesVersion = this.plan.version
 
     return this._miles
   }
@@ -47,10 +47,10 @@ export class PlanSplits {
   private _milesVersion?: number
 
   get kilometers() {
-    if (this._kilometers && this._kilometersVersion === this.plan.version2) return this._kilometers
+    if (this._kilometers && this._kilometersVersion === this.plan.version) return this._kilometers
 
     this._kilometers = this.createSplits('kilometers')
-    this._kilometersVersion = this.plan.version2
+    this._kilometersVersion = this.plan.version
     return this._kilometers
   }
   set kilometers(v) {

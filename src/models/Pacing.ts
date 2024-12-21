@@ -64,7 +64,7 @@ export class Pacing {
    * check if this pacing is current
    */
   get isCurrent() {
-    return this.version === this.plan.version2
+    return this.version === this.plan.version
   }
 
   get np() {
@@ -157,7 +157,7 @@ export class Pacing {
 
     d(`pacing status=${this.status.success ? 'PASS' : 'FAIL'}.`)
 
-    this.version = this.plan.version2
+    this.version = this.plan.version
   }
 
   /**

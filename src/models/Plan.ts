@@ -65,12 +65,12 @@ export class Plan {
     if (value === this._cutoffMargin) return
     this._cutoffMargin = value
     delete this._cutoffs
-    this.version++
+    this._version++
   }
   private _cutoffMargin?: number = 0
 
   get cutoffs() {
-    if (this._cutoffs && this._cutoffsVersion === this.version2) return this._cutoffs
+    if (this._cutoffs && this._cutoffsVersion === this.version) return this._cutoffs
 
     this._cutoffs = this.cutoffMargin
       ? this.course.cutoffs.map((c) => new PlanCutoff(this, c, this.getPoint(c.loc, true)))
@@ -86,7 +86,7 @@ export class Plan {
       } else i++
     }
 
-    this._cutoffsVersion = this.version2
+    this._cutoffsVersion = this.version
 
     return this._cutoffs
   }
@@ -104,7 +104,7 @@ export class Plan {
    * delays array is calculated on get as a combination of the specified delays and default delays based on waypoint types
    */
   get delays(): PlanDelay[] {
-    if (this._delays && this._delaysVersion === this.version2) return this._delays
+    if (this._delays && this._delaysVersion === this.version) return this._delays
 
     const delays = this.course.waypoints
       .map((waypoint) => {
@@ -127,7 +127,7 @@ export class Plan {
 
     this._delays = delays
 
-    this._delaysVersion = this.version2
+    this._delaysVersion = this.version
 
     return this._delays
   }
@@ -135,7 +135,7 @@ export class Plan {
     if (_.isEqual(this._specifiedDelays, value)) return
     this._specifiedDelays = value
     delete this._delays
-    this.version++
+    this._version++
   }
   private _specifiedDelays: DelaysInput = []
   private _delays?: PlanDelay[]
@@ -144,7 +144,7 @@ export class Plan {
   event: Event
 
   get events() {
-    if (this._events && this._eventsVersion === this.version2) return this._events
+    if (this._events && this._eventsVersion === this.version) return this._events
 
     // create array of sun events during the course:
     d('calculating events.sun')
@@ -181,7 +181,7 @@ export class Plan {
 
     this._events = { sun }
 
-    this._eventsVersion = this.version2
+    this._eventsVersion = this.version
 
     return this._events
   }
@@ -201,7 +201,7 @@ export class Plan {
         max: value.max
       }
     else delete this._heatModel
-    this.version++
+    this._version++
   }
   private _heatModel?: { start: number; stop: number; baseline: number; max: number } | undefined
 
@@ -219,7 +219,7 @@ export class Plan {
   set method(value: PlanMethod) {
     if (value === this._method) return
     this._method = value
-    this.version++
+    this._version++
   }
   private _method: PlanMethod
 
@@ -228,14 +228,14 @@ export class Plan {
    */
   name?: string
 
-  pacing: Pacing
+  pacing: Pacing = new Pacing(this)
 
   readonly points: PlanPoint[]
 
   /**
    * Scales for factors
    */
-  get scales() {
+  get scales(): PlanScales {
     return this._scales
   }
   set scales(values: { altitude?: number; dark?: number } | undefined) {
@@ -253,14 +253,14 @@ export class Plan {
     if (this.event.start.getTime() === val.date.getTime() && this.event.timezone === val.timezone)
       return
     this.event = new Event(val.date, val.timezone, this.points[0].lat, this.points[0].lon)
-    this.version++
+    this._version++
   }
 
   /**
    * Plan stats object
    */
   get stats() {
-    if (this._stats && this._statsVersion === this.version2) return this._stats
+    if (this._stats && this._statsVersion === this.version) return this._stats
 
     // add in statistics
     // these are max and min values for each factor
@@ -307,7 +307,7 @@ export class Plan {
     })
 
     this._stats = { factors, sun }
-    this._statsVersion = this.version2
+    this._statsVersion = this.version
 
     return this._stats
   }
@@ -345,7 +345,7 @@ export class Plan {
     )
       return
     this._strategy = new Strategy(this, values)
-    this.version++
+    this._version++
   }
   private _strategy: Strategy
 
@@ -358,33 +358,33 @@ export class Plan {
   set target(value: number) {
     if (value === this._target) return
     this._target = value
-    this.version++
+    this._version++
   }
   private _target: number
 
   /**
    * Typical delay for the plan; amount of dwell time at 'aid' and 'water' waypoints
    */
-  get typicalDelay() {
-    return this._typicalDelay
+  get typicalDelay(): number {
+    return this._typicalDelay ?? 180
   }
-  set typicalDelay(value: number) {
+  set typicalDelay(value: number | undefined) {
     if (value === this._typicalDelay) return
     this._typicalDelay = value
-    this.version++
+    this._version++
   }
-  private _typicalDelay: number = 0
+  private _typicalDelay?: number
 
   /**
    * Version of plan update (non trivial changes that affect pacing)
    */
-  version: number = 0
+  _version: number = 0
 
   /**
    * Version of course & plan update (non trivial changes that affect pacing)
    */
-  get version2() {
-    return this.course.version + this.version
+  get version() {
+    return this._version + this.course.version + this.scales.version
   }
 
   constructor(course: Course, data: PlanData) {
@@ -398,13 +398,11 @@ export class Plan {
 
     this.id = data.id
 
-    this.pacing = new Pacing(this)
-
     this.points = this.course.points.map((point) => new PlanPoint(this, point))
 
     this._method = data.method
     this._target = data.target
-    this.typicalDelay = data.typicalDelay || 0
+    this.typicalDelay = data.typicalDelay
     if (data.delays) this.delays = data.delays
     this.cutoffMargin = data.cutoffMargin
     this.scales = data.scales
@@ -481,6 +479,10 @@ export class Plan {
 
     return point
   }
+
+  update(data: Partial<PlanData>) {
+    console.warn('Plan.update not yet implemented')
+  }
 }
 
 class PlanDelay {
@@ -531,7 +533,7 @@ class PlanScales {
   set altitude(value) {
     if (value === this._altitude) return
     this._altitude = value
-    this.plan.version++
+    this.version++
   }
   private _dark: number = 1
   get dark() {
@@ -540,8 +542,10 @@ class PlanScales {
   set dark(value) {
     if (value === this._dark) return
     this._dark = value
-    this.plan.version++
+    this.version++
   }
+
+  version: number = 0
 
   constructor(plan: Plan) {
     this.plan = plan
