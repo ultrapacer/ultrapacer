@@ -185,6 +185,9 @@ export class Course {
    */
   version: number = 0
 
+  /**
+   * @deprecated
+   */
   clearCache(level = 1) {
     // level 1 means route itself does not change (eg, changes to waypoints and trivial changes to course)
     // level 2 means route itself changes (eg, track, loops, dist, gain, loss)
