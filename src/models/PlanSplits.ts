@@ -19,8 +19,7 @@ export class PlanSplits {
   }
 
   get segments() {
-    if (!this._segments?.length && this._segmentsVersion === this.plan.version2)
-      return this._segments
+    if (this._segments && this._segmentsVersion === this.plan.version2) return this._segments
 
     this._segments = this.createSegments() as (PlanSegment & { waypoint: Waypoint })[]
     this._segmentsVersion = this.plan.version2
