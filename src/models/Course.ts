@@ -83,42 +83,68 @@ export class Course {
     this.clearCache(2)
   }
 
-  private _distOverride?: number
-  private _gainOverride?: number
-  private _lossOverride?: number
-  private _dist?: number
-  private _gain?: number
-  private _loss?: number
+  /**
+   * Total distance of course (in km)
+   */
+  get dist(): number {
+    return this._dist || (this._dist = this._distOverride || this.track.dist * this.loops)
+  }
   set dist(v) {
     d(`overriding dist to ${v}`)
     this._distOverride = v
+    this.version++
     this.clearCache(2)
+  }
+  private _dist?: number
+  private _distOverride?: number
+
+  /**
+   * Distance scale of course (in km), relative to calculated track distance
+   */
+  get distScale() {
+    return this._distOverride ? this._distOverride / (this.track.dist * this.loops) : 1
+  }
+
+  /**
+   * Total gain of course (in meters)
+   */
+  get gain(): number {
+    return this.gain || (this._gain = this._gainOverride || this.track.gain * this.loops)
   }
   set gain(v) {
     d(`overriding gain to ${v}`)
     this._gainOverride = v
+    this.version++
     this.clearCache(2)
+  }
+  private _gain?: number
+  private _gainOverride?: number
+
+  /**
+   * Gain scale of course (in meters), relative to calculated track gain
+   */
+  get gainScale() {
+    return this._gainOverride ? this._gainOverride / (this.track.gain * this.loops) : 1
+  }
+
+  /**
+   * Total loss of course (in meters)
+   */
+  get loss(): number {
+    return this._loss || (this._loss = this._lossOverride || this.track.loss * this.loops)
   }
   set loss(v) {
     d(`overriding loss to ${v}`)
     this._lossOverride = v
+    this.version++
     this.clearCache(2)
   }
-  get dist(): number {
-    return this._dist || (this._dist = this._distOverride || this.track.dist * this.loops)
-  }
-  get gain(): number {
-    return this.gain || (this._gain = this._gainOverride || this.track.gain * this.loops)
-  }
-  get loss(): number {
-    return this._loss || (this._loss = this._lossOverride || this.track.loss * this.loops)
-  }
-  get distScale() {
-    return this._distOverride ? this._distOverride / (this.track.dist * this.loops) : 1
-  }
-  get gainScale() {
-    return this._gainOverride ? this._gainOverride / (this.track.gain * this.loops) : 1
-  }
+  private _loss?: number
+  private _lossOverride?: number
+
+  /**
+   * Loss scale of course (in meters), relative to calculated track loss
+   */
   get lossScale() {
     return this._lossOverride ? this._lossOverride / (this.track.loss * this.loops) : 1
   }
