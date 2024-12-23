@@ -30,6 +30,9 @@ export declare class Site {
     tier: number;
     type: WaypointType;
     description?: string;
+    /**
+     * @deprecated - use a version tracker like Plan and Course
+     */
     clearCache(): void;
     get percent(): number;
     set percent(v: number);

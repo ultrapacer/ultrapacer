@@ -48,19 +48,33 @@ export type CourseData = {
 };
 export type CourseUpdateData = Partial<CourseData>;
 export declare class Course {
-    _data: CourseData;
+    private _cache;
+    get cache(): {
+        cutoffs?: CourseCutoff[];
+        dist?: number;
+        event?: Event;
+        gain?: number;
+        loss?: number;
+        points?: CoursePoint[];
+        sites?: Site[];
+        splits?: CourseSplits;
+        stats?: CourseStats;
+        terrain?: TerrainElement[];
+        waypoints?: Waypoint[];
+        version?: number;
+    };
+    /**
+     * Course data
+     */
+    private _data;
     /**
      * Course cutoffs
      */
     get cutoffs(): CourseCutoff[];
-    private _cutoffs?;
-    private _cutoffsVersion?;
     /**
      * Total distance of course (in km)
      */
     get dist(): number;
-    private _dist?;
-    private _distVersion?;
     /**
      * Distance scale of course (in km), relative to calculated track distance
      */
@@ -69,14 +83,10 @@ export declare class Course {
      * Event object
      */
     get event(): Event | undefined;
-    private _event?;
-    private _eventVersion?;
     /**
      * Total gain of course (in meters)
      */
     get gain(): number;
-    private _gain?;
-    private _gainVersion?;
     /**
      * Gain scale of course (in meters), relative to calculated track gain
      */
@@ -101,8 +111,6 @@ export declare class Course {
      * Total loss of course (in meters)
      */
     get loss(): number;
-    private _loss?;
-    private _lossVersion?;
     /**
      * Loss scale of course (in meters), relative to calculated track loss
      */
@@ -111,27 +119,40 @@ export declare class Course {
      * Course name
      */
     name?: string;
-    private _sites;
+    /**
+     * Course points
+     */
+    get points(): CoursePoint[];
+    /**
+     * Course sites
+     */
     get sites(): Site[];
-    set sites(data: Site[]);
+    /**
+     * Course splits
+     */
+    get splits(): CourseSplits;
+    /**
+     * Course stats
+     */
+    get stats(): CourseStats;
+    /**
+     * Terrain data
+     */
+    get terrain(): TerrainElement[];
+    /**
+     * Track object
+     */
+    readonly track: Track;
     /**
      * Version of course update (non-trivial changes that affect pacing)
      */
     version: number;
+    /**
+     * Course waypoints
+     */
+    get waypoints(): Waypoint[];
     constructor(track: Track, data: CourseData);
     update(data: CourseUpdateData): void;
-    /**
-     * @deprecated
-     */
-    clearCache(level?: number): void;
-    private _waypoints?;
-    get waypoints(): Waypoint[];
-    private _track;
-    set track(v: Track);
-    get track(): Track;
-    private _points?;
-    get points(): CoursePoint[];
-    set points(v: CoursePoint[]);
     /**
      * Finds and optionally inserts a point at an input location.
      *
@@ -140,31 +161,6 @@ export declare class Course {
      * @returns The CoursePoint at input location.
      */
     getPoint(loc: number, insert?: boolean): CoursePoint;
-    get terrain(): TerrainElement[];
-    set terrain(value: CourseData['terrain']);
-    private _terrain?;
-    private _splits?;
-    get splits(): CourseSplits;
-    private _stats?;
-    get stats(): {
-        altitude: {
-            avg: number;
-            max: number;
-            min: number;
-        };
-        grade: {
-            avg: number;
-            max: number;
-            min: number;
-        };
-        terrain: {
-            avg: number;
-            max: number;
-            min: number;
-            maxDist: number;
-            minDist: number;
-        };
-    };
     locationsToBreaks(locations: number[]): {
         start: number;
         end: number;
@@ -175,6 +171,25 @@ export declare class CourseCutoff {
     constructor(waypoint: Waypoint);
     get loc(): number;
     get time(): number;
+}
+interface CourseStats {
+    altitude: {
+        avg: number;
+        max: number;
+        min: number;
+    };
+    grade: {
+        avg: number;
+        max: number;
+        min: number;
+    };
+    terrain: {
+        avg: number;
+        max: number;
+        min: number;
+        maxDist: number;
+        minDist: number;
+    };
 }
 interface TerrainElement {
     /**

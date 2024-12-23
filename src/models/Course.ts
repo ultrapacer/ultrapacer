@@ -66,39 +66,50 @@ export type CourseData = {
 export type CourseUpdateData = Partial<CourseData>
 
 export class Course {
+  private _cache: {
+    cutoffs?: CourseCutoff[]
+    dist?: number
+    event?: Event
+    gain?: number
+    loss?: number
+    points?: CoursePoint[]
+    sites?: Site[]
+    splits?: CourseSplits
+    stats?: CourseStats
+    terrain?: TerrainElement[]
+    waypoints?: Waypoint[]
+    version?: number
+  } = {}
+  get cache() {
+    if (this._cache?.version === this.version) return this._cache
+    this._cache = { version: this.version }
+    return this._cache
+  }
+
   /**
    * Course data
    */
   private _data: CourseData
 
   /**
-   * Version of cached data
-   */
-  private _ver: { [key: string]: number } = {}
-
-  /**
    * Course cutoffs
    */
   get cutoffs(): CourseCutoff[] {
-    if (this._ver.cutoffs === this.version && this._cutoffs) return this._cutoffs
+    if ('cutoffs' in this.cache) return this.cache.cutoffs
 
-    this._cutoffs = this.waypoints.filter((wp) => wp.cutoff).map((wp) => new CourseCutoff(wp))
-    this._ver.cutoffs = this.version
+    this.cache.cutoffs = this.waypoints.filter((wp) => wp.cutoff).map((wp) => new CourseCutoff(wp))
 
-    return this._cutoffs
+    return this.cache.cutoffs
   }
-  private _cutoffs?: CourseCutoff[]
 
   /**
    * Total distance of course (in km)
    */
   get dist(): number {
-    if (this._ver.dist == this.version && this._dist) return this._dist
-    this._dist = this._data.dist || this.track.dist * this.loops
-    this._ver.dist = this.version
-    return this._dist
+    if ('dist' in this.cache) return this.cache.dist
+    this.cache.dist = this._data.dist || this.track.dist * this.loops
+    return this.cache.dist
   }
-  private _dist?: number
 
   /**
    * Distance scale of course (in km), relative to calculated track distance
@@ -111,30 +122,25 @@ export class Course {
    * Event object
    */
   get event(): Event | undefined {
-    if (this._event && this._ver.event === this.version) return this._event
-
-    this._ver.event = this.version
+    if ('event' in this.cache) return this.cache.event
 
     if (this._data.start)
-      return (this._event = new Event(
+      return (this.cache.event = new Event(
         this._data.start.date,
         this._data.start.timezone,
         this.points[0].lat,
         this.points[0].lon
       ))
   }
-  private _event?: Event
 
   /**
    * Total gain of course (in meters)
    */
   get gain(): number {
-    if (this._ver.gain == this.version && this._gain) return this._gain
-    this._gain = this._data.gain || this.track.gain * this.loops
-    this._ver.gain = this.version
-    return this._gain
+    if ('gain' in this.cache) return this.cache.gain
+    this.cache.gain = this._data.gain || this.track.gain * this.loops
+    return this.cache.gain
   }
-  private _gain?: number
 
   /**
    * Gain scale of course (in meters), relative to calculated track gain
@@ -175,12 +181,10 @@ export class Course {
    * Total loss of course (in meters)
    */
   get loss(): number {
-    if (this._ver.loss == this.version && this._loss) return this._loss
-    this._loss = this._data.loss || this.track.loss * this.loops
-    this._ver.loss = this.version
-    return this._loss
+    if ('loss' in this.cache) return this.cache.loss
+    this.cache.loss = this._data.loss || this.track.loss * this.loops
+    return this.cache.loss
   }
-  private _loss?: number
 
   /**
    * Loss scale of course (in meters), relative to calculated track loss
@@ -198,11 +202,11 @@ export class Course {
    * Course points
    */
   get points(): CoursePoint[] {
-    if (this._points) return this._points
+    if ('points' in this.cache) return this.cache.points
 
     d('generating points array')
 
-    this._points = new Array(this.track.points.length * this.loops)
+    this.cache.points = new Array(this.track.points.length * this.loops)
     for (let l = 0; l < this.loops; l++) {
       for (let i = 0; i < this.track.points.length; i++) {
         this.points[i + l * this.track.points.length] = new CoursePoint(
@@ -213,17 +217,16 @@ export class Course {
       }
     }
 
-    return this._points
+    return this.cache.points
   }
-  private _points?: CoursePoint[]
 
   /**
    * Course sites
    */
   get sites() {
-    if (this._sites && this._ver.sites === this.version) return this._sites
+    if ('sites' in this.cache) return this.cache.sites
 
-    this._sites = this._data.sites?.map((site) => new Site(this, site)) || [
+    this.cache.sites = this._data.sites?.map((site) => new Site(this, site)) || [
       new Site(this, {
         id: String(_.random(10000, 20000)),
         name: 'Start',
@@ -238,37 +241,31 @@ export class Course {
       })
     ]
     if (
-      this._sites.length < 2 ||
-      !this._sites.find((s) => s.type === 'start') ||
-      !this._sites.find((s) => s.type === 'finish')
+      this.cache.sites.length < 2 ||
+      !this.cache.sites.find((s) => s.type === 'start') ||
+      !this.cache.sites.find((s) => s.type === 'finish')
     )
       throw new Error('Course must have at least a start and finish')
 
-    this._ver.sites = this.version
-
-    return this._sites
+    return this.cache.sites
   }
-  private _sites?: Site[]
 
   /**
    * Course splits
    */
   get splits() {
-    if (this._splits && this._ver.splits === this.version) return this._splits
+    if ('splits' in this.cache) return this.cache.splits
 
-    this._splits = new CourseSplits(this)
+    this.cache.splits = new CourseSplits(this)
 
-    this._ver.splits = this.version
-
-    return this._splits
+    return this.cache.splits
   }
-  private _splits?: CourseSplits
 
   /**
    * Course stats
    */
-  get stats() {
-    if (this._stats && this._ver.stats === this.version) return this._stats
+  get stats(): CourseStats {
+    if ('stats' in this.cache) return this.cache.stats
 
     d('stats:calculate')
 
@@ -317,28 +314,22 @@ export class Course {
       minDist: terrainFactorDist(stats.terrain.min)
     })
 
-    this._stats = stats
-    this._ver.stats = this.version
+    this.cache.stats = stats
 
     return stats
-  }
-  private _stats?: {
-    altitude: { avg: number; max: number; min: number }
-    grade: { avg: number; max: number; min: number }
-    terrain: { avg: number; max: number; min: number; maxDist: number; minDist: number }
   }
 
   /**
    * Terrain data
    */
   get terrain(): TerrainElement[] {
-    if (this._terrain && this._ver.terrain === this.version) return this._terrain
+    if ('terrain' in this.cache) return this.cache.terrain
 
     if (this._data.terrain) {
       const value = [...this._data.terrain]
       value.sort((a, b) => a.percent - b.percent)
 
-      this._terrain = value.map((x, i) => {
+      this.cache.terrain = value.map((x, i) => {
         const v = _.isNumber(x.value)
           ? x.value
           : _.isString(x.value)
@@ -353,12 +344,11 @@ export class Course {
         return res
       })
     } else {
-      this._terrain = []
+      this.cache.terrain = []
     }
-    this._ver.terrain = this.version
-    return this._terrain
+
+    return this.cache.terrain
   }
-  private _terrain?: TerrainElement[]
 
   /**
    * Track object
@@ -374,7 +364,7 @@ export class Course {
    * Course waypoints
    */
   get waypoints(): Waypoint[] {
-    if (this._waypoints && this._ver.waypoints === this.version) return this._waypoints
+    if ('waypoints' in this.cache) return this.cache.waypoints
 
     if (!this.track?.dist) return []
 
@@ -384,11 +374,10 @@ export class Course {
     })
     waypoints = waypoints.sort((a, b) => a.loc - b.loc)
 
-    this._waypoints = waypoints
-    this._ver.waypoints = this.version
-    return this._waypoints
+    this.cache.waypoints = waypoints
+
+    return this.cache.waypoints
   }
-  private _waypoints?: Waypoint[]
 
   constructor(track: Track, data: CourseData) {
     d('constructor')
@@ -461,6 +450,12 @@ export class CourseCutoff {
     if (!this.waypoint.cutoff) throw new Error('Invalid cutoff')
     return this.waypoint.cutoff
   }
+}
+
+interface CourseStats {
+  altitude: { avg: number; max: number; min: number }
+  grade: { avg: number; max: number; min: number }
+  terrain: { avg: number; max: number; min: number; maxDist: number; minDist: number }
 }
 
 interface TerrainElement {

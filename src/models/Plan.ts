@@ -60,7 +60,67 @@ export type PlanData = {
 
 type PlanUpdateData = Partial<PlanData> & NonNullable<Partial<Pick<PlanData, 'method' | 'target'>>>
 
+type PlanStats = {
+  factors: {
+    [key: string]: {
+      min: number
+      max: number
+    }
+  }
+  sun: {
+    day: {
+      time: number
+      dist: number
+    }
+    twilight: {
+      time: number
+      dist: number
+    }
+    dark: {
+      time: number
+      dist: number
+    }
+  }
+}
+
+type PlanEvents = {
+  sun: { event: string; elapsed: number; loc: number }[]
+}
+
+type PlanHeatModel =
+  | {
+      start: number
+      stop: number
+      baseline: number
+      max: number
+    }
+  | undefined
+
+type PlanScales =
+  | {
+      altitude: number
+      dark: number
+    }
+  | undefined
+
 export class Plan {
+  private _cache: {
+    cutoffs?: PlanCutoff[]
+    delays?: PlanDelay[]
+    event?: Event
+    events?: PlanEvents
+    heatModel?: PlanHeatModel
+    scales?: PlanScales
+    stats?: PlanStats
+    strategy?: Strategy
+    version?: number
+  } = {}
+  get cache() {
+    if (this._cache?.version === this.version) return this._cache
+    this._cache = { version: this.version }
+    return this._cache
+  }
+
   private _data: PlanData
 
   readonly course: Course
@@ -74,28 +134,26 @@ export class Plan {
    * gets re-calculated if the course or plan version changes
    */
   get cutoffs() {
-    if (this._cutoffs && this._cutoffsVersion === this.version) return this._cutoffs
+    if ('cutoffs' in this.cache) return this.cache.cutoffs
 
-    this._cutoffs = this.cutoffMargin
+    this.cache.cutoffs = this.cutoffMargin
       ? this.course.cutoffs.map((c) => new PlanCutoff(this, c, this.getPoint(c.loc, true)))
       : []
 
     // if any cutoffs are extraneous, delete them
     let i = 0
-    while (this._cutoffs.length - 1 >= i) {
-      const cutoff = this._cutoffs[i]
-      if (this._cutoffs.find((c: { time: number }, j: number) => j > i && c.time <= cutoff.time)) {
+    while (this.cache.cutoffs.length - 1 >= i) {
+      const cutoff = this.cache.cutoffs[i]
+      if (
+        this.cache.cutoffs.find((c: { time: number }, j: number) => j > i && c.time <= cutoff.time)
+      ) {
         d(`get cutoffs: deleting extraneous cutoff at ${cutoff.loc} km`)
-        this._cutoffs.splice(i, 1)
+        this.cache.cutoffs.splice(i, 1)
       } else i++
     }
 
-    this._cutoffsVersion = this.version
-
-    return this._cutoffs
+    return this.cache.cutoffs
   }
-  private _cutoffs?: PlanCutoff[]
-  private _cutoffsVersion?: number
 
   /**
    * delay is sum of Plan.delays
@@ -109,7 +167,7 @@ export class Plan {
    * gets re-calculated if the course or plan version changes
    */
   get delays(): PlanDelay[] {
-    if (this._delays && this._delaysVersion === this.version) return this._delays
+    if ('delays' in this.cache) return this.cache.delays
 
     const delays = this.course.waypoints
       .map((waypoint) => {
@@ -130,39 +188,31 @@ export class Plan {
       } else i++
     }
 
-    this._delays = delays
+    this.cache.delays = delays
 
-    this._delaysVersion = this.version
-
-    return this._delays
+    return this.cache.delays
   }
-  private _delays?: PlanDelay[]
-  private _delaysVersion?: number
 
   /**
    * Event object
    * gets re-calculated if the course or plan version changes
    */
   get event(): Event {
-    if (this._event && this._eventVersion === this.version) return this._event
-
-    this._eventVersion = this.version
+    if ('event' in this.cache) return this.cache.event
 
     if (this._data.start)
-      return (this._event = new Event(
+      return (this.cache.event = new Event(
         this._data.start.date,
         this._data.start.timezone,
         this.points[0].lat,
         this.points[0].lon
       ))
-    if (this.course.event) return (this._event = this.course.event)
+    if (this.course.event) return (this.cache.event = this.course.event)
     throw new Error('Start date/timezone is required for either the plan or the course')
   }
-  private _event?: Event
-  private _eventVersion?: number
 
   get events() {
-    if (this._events && this._eventsVersion === this.version) return this._events
+    if ('events' in this.cache) return this.cache.events
 
     // create array of sun events during the course:
     d('calculating events.sun')
@@ -197,31 +247,23 @@ export class Plan {
     )
     const sun = eventTimes.map((s, i) => ({ ...s, loc: locs[i] }))
 
-    this._events = { sun }
+    this.cache.events = { sun }
 
-    this._eventsVersion = this.version
-
-    return this._events
+    return this.cache.events
   }
-  private _events?: { sun: { event: string; elapsed: number; loc: number }[] }
-  private _eventsVersion?: number
 
   get heatModel(): { start: number; stop: number; baseline: number; max: number } | undefined {
-    if (this._heatModelVersion === this.version) return this._heatModel
-
-    this._heatModelVersion = this.version
+    if ('heatModel' in this.cache) return this.cache.heatModel
 
     if (this._data.heatModel)
-      return (this._heatModel = {
+      return (this.cache.heatModel = {
         start: this.event.sun.sunrise + 1800,
         stop: this.event.sun.sunset + 7200,
         baseline: this._data.heatModel.baseline,
         max: this._data.heatModel.max
       })
-    return (this._heatModel = undefined)
+    return (this.cache.heatModel = undefined)
   }
-  private _heatModel?: { start: number; stop: number; baseline: number; max: number } | undefined
-  private _heatModelVersion?: number
 
   /**
    * Unique identifier for the plan
@@ -252,19 +294,14 @@ export class Plan {
    * Scales for factors
    */
   get scales() {
-    if (this._scales && this._scalesVersion === this._version) return this._scales
-    this._scales = {
-      altitude: this._data.scales?.altitude || 1,
-      dark: this._data.scales?.dark || 1
-    }
-    this._scalesVersion = this._version
-    return this._scales
+    if ('scales' in this.cache) return this.cache.scales
+    if (this._data.scales)
+      return (this.cache.scales = {
+        altitude: this._data.scales.altitude || 1,
+        dark: this._data.scales.dark || 1
+      })
+    return (this.cache.scales = undefined)
   }
-  private _scales?: {
-    altitude: number
-    dark: number
-  }
-  private _scalesVersion?: number
 
   /**
    * splits
@@ -275,7 +312,7 @@ export class Plan {
    * Plan stats object
    */
   get stats() {
-    if (this._stats && this._statsVersion === this.version) return this._stats
+    if ('stats' in this.cache) return this.cache.stats
 
     // add in statistics
     // these are max and min values for each factor
@@ -321,42 +358,15 @@ export class Plan {
       }
     })
 
-    this._stats = { factors, sun }
-    this._statsVersion = this.version
+    this.cache.stats = { factors, sun }
 
-    return this._stats
+    return this.cache.stats
   }
-  private _stats?: {
-    factors: {
-      [key: string]: {
-        min: number
-        max: number
-      }
-    }
-    sun: {
-      day: {
-        time: number
-        dist: number
-      }
-      twilight: {
-        time: number
-        dist: number
-      }
-      dark: {
-        time: number
-        dist: number
-      }
-    }
-  }
-  private _statsVersion?: number
 
   get strategy(): Strategy {
-    if (this._strategy && this._strategyVersion === this.version) return this._strategy
-    this._strategyVersion = this.version
-    return (this._strategy = new Strategy(this, this._data.strategy))
+    if ('strategy' in this.cache) return this.cache.strategy
+    return (this.cache.strategy = new Strategy(this, this._data.strategy))
   }
-  private _strategy?: Strategy
-  private _strategyVersion?: number
 
   /**
    * Target time in seconds

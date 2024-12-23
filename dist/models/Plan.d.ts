@@ -49,7 +49,58 @@ export type PlanData = {
     typicalDelay?: number | undefined;
 };
 type PlanUpdateData = Partial<PlanData> & NonNullable<Partial<Pick<PlanData, 'method' | 'target'>>>;
+type PlanStats = {
+    factors: {
+        [key: string]: {
+            min: number;
+            max: number;
+        };
+    };
+    sun: {
+        day: {
+            time: number;
+            dist: number;
+        };
+        twilight: {
+            time: number;
+            dist: number;
+        };
+        dark: {
+            time: number;
+            dist: number;
+        };
+    };
+};
+type PlanEvents = {
+    sun: {
+        event: string;
+        elapsed: number;
+        loc: number;
+    }[];
+};
+type PlanHeatModel = {
+    start: number;
+    stop: number;
+    baseline: number;
+    max: number;
+} | undefined;
+type PlanScales = {
+    altitude: number;
+    dark: number;
+} | undefined;
 export declare class Plan {
+    private _cache;
+    get cache(): {
+        cutoffs?: PlanCutoff[];
+        delays?: PlanDelay[];
+        event?: Event;
+        events?: PlanEvents;
+        heatModel?: PlanHeatModel;
+        scales?: PlanScales;
+        stats?: PlanStats;
+        strategy?: Strategy;
+        version?: number;
+    };
     private _data;
     readonly course: Course;
     get cutoffMargin(): number | undefined;
@@ -58,8 +109,6 @@ export declare class Plan {
      * gets re-calculated if the course or plan version changes
      */
     get cutoffs(): PlanCutoff[];
-    private _cutoffs?;
-    private _cutoffsVersion?;
     /**
      * delay is sum of Plan.delays
      */
@@ -69,32 +118,18 @@ export declare class Plan {
      * gets re-calculated if the course or plan version changes
      */
     get delays(): PlanDelay[];
-    private _delays?;
-    private _delaysVersion?;
     /**
      * Event object
      * gets re-calculated if the course or plan version changes
      */
     get event(): Event;
-    private _event?;
-    private _eventVersion?;
-    get events(): {
-        sun: {
-            event: string;
-            elapsed: number;
-            loc: number;
-        }[];
-    };
-    private _events?;
-    private _eventsVersion?;
+    get events(): PlanEvents;
     get heatModel(): {
         start: number;
         stop: number;
         baseline: number;
         max: number;
     } | undefined;
-    private _heatModel?;
-    private _heatModelVersion?;
     /**
      * Unique identifier for the plan
      */
@@ -112,12 +147,7 @@ export declare class Plan {
     /**
      * Scales for factors
      */
-    get scales(): {
-        altitude: number;
-        dark: number;
-    };
-    private _scales?;
-    private _scalesVersion?;
+    get scales(): PlanScales;
     /**
      * splits
      */
@@ -125,33 +155,8 @@ export declare class Plan {
     /**
      * Plan stats object
      */
-    get stats(): {
-        factors: {
-            [key: string]: {
-                min: number;
-                max: number;
-            };
-        };
-        sun: {
-            day: {
-                time: number;
-                dist: number;
-            };
-            twilight: {
-                time: number;
-                dist: number;
-            };
-            dark: {
-                time: number;
-                dist: number;
-            };
-        };
-    };
-    private _stats?;
-    private _statsVersion?;
+    get stats(): PlanStats;
     get strategy(): Strategy;
-    private _strategy?;
-    private _strategyVersion?;
     /**
      * Target time in seconds
      */
