@@ -14,56 +14,70 @@ type DelaysInput = {
     delay: number;
 }[];
 type PlanMethod = 'np' | 'pace' | 'time';
+/**
+ * Represents the data structure for a plan.
+ */
 export type PlanData = {
-    cutoffMargin?: number;
-    delays?: DelaysInput;
+    cutoffMargin?: number | undefined;
+    delays?: DelaysInput | undefined;
     heatModel?: {
         baseline: number;
         max: number;
-    };
+    } | undefined;
     /**
      * Unique identifier for the plan
      */
-    id?: string | null | number | symbol;
+    id?: string | null | number | symbol | undefined;
     /**
      * Method for calculating target time
      */
     method: PlanMethod;
-    name?: string;
+    name?: string | undefined;
     /**
      * Scales for factors
      */
     scales?: {
         altitude?: number;
         dark?: number;
-    };
+    } | undefined;
     /**
      * Start date and timezone
      */
-    start?: DateWithTimezone;
-    strategy?: StrategyValues;
+    start?: DateWithTimezone | undefined;
+    strategy?: StrategyValues | undefined;
     target: number;
-    typicalDelay?: number;
+    typicalDelay?: number | undefined;
 };
+type PlanUpdateData = Partial<PlanData> & NonNullable<Partial<Pick<PlanData, 'method' | 'target'>>>;
 export declare class Plan {
+    private _data;
     readonly course: Course;
     get cutoffMargin(): number | undefined;
-    set cutoffMargin(value: number | undefined);
-    private _cutoffMargin?;
+    /**
+     * cutoffs array is calculated on get as a combination of the course cutoffs and the plan points
+     * gets re-calculated if the course or plan version changes
+     */
     get cutoffs(): PlanCutoff[];
     private _cutoffs?;
+    private _cutoffsVersion?;
     /**
      * delay is sum of Plan.delays
      */
     get delay(): number;
     /**
      * delays array is calculated on get as a combination of the specified delays and default delays based on waypoint types
+     * gets re-calculated if the course or plan version changes
      */
     get delays(): PlanDelay[];
-    set delays(value: DelaysInput);
-    private _specifiedDelays;
     private _delays?;
-    event: Event;
+    private _delaysVersion?;
+    /**
+     * Event object
+     * gets re-calculated if the course or plan version changes
+     */
+    get event(): Event;
+    private _event?;
+    private _eventVersion?;
     get events(): {
         sun: {
             event: string;
@@ -72,54 +86,42 @@ export declare class Plan {
         }[];
     };
     private _events?;
+    private _eventsVersion?;
     get heatModel(): {
         start: number;
         stop: number;
         baseline: number;
         max: number;
     } | undefined;
-    set heatModel(value: {
-        baseline: number;
-        max: number;
-    } | undefined);
     private _heatModel?;
+    private _heatModelVersion?;
     /**
      * Unique identifier for the plan
      */
-    id?: string | null | number | symbol;
+    get id(): string | number | symbol | null | undefined;
     /**
      * Method for calculating target time
      */
     get method(): PlanMethod;
-    set method(value: PlanMethod);
-    private _method;
     /**
      * Display name for the plan
      */
-    name?: string;
+    get name(): string | undefined;
     pacing: Pacing;
     readonly points: PlanPoint[];
     /**
      * Scales for factors
      */
     get scales(): {
-        altitude?: number;
-        dark?: number;
-    } | undefined;
-    set scales(values: {
-        altitude?: number;
-        dark?: number;
-    } | undefined);
-    private _scales;
+        altitude: number;
+        dark: number;
+    };
+    private _scales?;
+    private _scalesVersion?;
     /**
-     * splits are calculaed on get
+     * splits
      */
-    get splits(): PlanSplits;
-    private _splits?;
-    set start(val: {
-        date: Date;
-        timezone: string;
-    });
+    readonly splits: PlanSplits;
     /**
      * Plan stats object
      */
@@ -146,24 +148,28 @@ export declare class Plan {
         };
     };
     private _stats?;
+    private _statsVersion?;
     get strategy(): Strategy;
-    set strategy(values: StrategyValues);
-    private _strategy;
+    private _strategy?;
+    private _strategyVersion?;
     /**
      * Target time in seconds
      */
     get target(): number;
-    set target(value: number);
-    private _target;
     /**
      * Typical delay for the plan; amount of dwell time at 'aid' and 'water' waypoints
      */
     get typicalDelay(): number;
-    set typicalDelay(value: number);
-    private _typicalDelay;
+    /**
+     * Version of plan update (non trivial changes that affect pacing)
+     */
+    _version: number;
+    /**
+     * Version of course & plan update (non trivial changes that affect pacing)
+     */
+    get version(): number;
     constructor(course: Course, data: PlanData);
     checkPacing(): boolean;
-    clearCache(): void;
     /**
      * get delay at input Waypoint
      * @param waypoint - waypoint of interest
@@ -184,7 +190,7 @@ export declare class Plan {
      * @returns The PlanPoint at input location.
      */
     getPoint(loc: number, insert?: boolean): PlanPoint;
-    invalidatePacing(): void;
+    update(data: PlanUpdateData): void;
 }
 declare class PlanDelay {
     delay: number;

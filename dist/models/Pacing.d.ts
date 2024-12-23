@@ -1,5 +1,5 @@
 import { Factors } from '../factors';
-import { PlanPoint } from '.';
+import { PlanPoint } from './PlanPoint';
 import { PaceChunk } from './PaceChunk';
 import { Plan } from './Plan';
 export declare class Pacing {
@@ -7,8 +7,6 @@ export declare class Pacing {
     plan: Plan;
     constructor(plan: Plan);
     clearCache(): void;
-    invalidate(): void;
-    private _elapsed?;
     get elapsed(): number;
     get pace(): number;
     private _factor?;
@@ -16,6 +14,10 @@ export declare class Pacing {
     clearFactor(): void;
     private _factors?;
     get factors(): Factors;
+    /**
+     * check if this pacing is current
+     */
+    get isCurrent(): boolean;
     get np(): number;
     get moving(): number;
     get status(): {
@@ -23,6 +25,10 @@ export declare class Pacing {
         success: boolean;
         chunks: number;
     };
+    /**
+     * last time this pacing was updated
+     */
+    version?: number;
     calculate(): void;
     /**
      * initialize pacing chunks array

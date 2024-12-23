@@ -39,20 +39,38 @@ export declare class Course {
     private _loops;
     get loops(): number;
     set loops(v: number);
-    private _distOverride?;
-    private _gainOverride?;
-    private _lossOverride?;
-    private _dist?;
-    private _gain?;
-    private _loss?;
-    set dist(v: number);
-    set gain(v: number);
-    set loss(v: number);
+    /**
+     * Total distance of course (in km)
+     */
     get dist(): number;
-    get gain(): number;
-    get loss(): number;
+    set dist(v: number);
+    private _dist?;
+    private _distOverride?;
+    /**
+     * Distance scale of course (in km), relative to calculated track distance
+     */
     get distScale(): number;
+    /**
+     * Total gain of course (in meters)
+     */
+    get gain(): number;
+    set gain(v: number);
+    private _gain?;
+    private _gainOverride?;
+    /**
+     * Gain scale of course (in meters), relative to calculated track gain
+     */
     get gainScale(): number;
+    /**
+     * Total loss of course (in meters)
+     */
+    get loss(): number;
+    set loss(v: number);
+    private _loss?;
+    private _lossOverride?;
+    /**
+     * Loss scale of course (in meters), relative to calculated track loss
+     */
     get lossScale(): number;
     get loopDist(): number;
     get loopGain(): number;
@@ -60,6 +78,13 @@ export declare class Course {
     private _sites;
     get sites(): Site[];
     set sites(data: Site[]);
+    /**
+     * Version of course update (non-trivial changes that affect pacing)
+     */
+    version: number;
+    /**
+     * @deprecated
+     */
     clearCache(level?: number): void;
     private _waypoints?;
     get waypoints(): Waypoint[];
@@ -120,7 +145,13 @@ interface TerrainElement {
      * Terrain value, not factor (eg, this is a number, eg 5, not a factor like 1.05)
      */
     value: number;
-    type?: string;
+    /**
+     * Terrain type, if applicable
+     */
+    type?: string | undefined;
+    /**
+     * Percent range of terrain
+     */
     percents: [number, number];
 }
 export {};

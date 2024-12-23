@@ -8,7 +8,7 @@ export type WaypointType = 'start' | 'finish' | 'aid' | 'water' | 'landmark' | '
 export type SiteData = {
     id: string | symbol;
     type: WaypointType;
-    name?: string;
+    name?: string | undefined;
     description?: string;
     cutoffs?: WaypointCutoff[];
     percent: number;
@@ -26,7 +26,7 @@ export declare class Site {
     course: Course;
     cutoffs: WaypointCutoff[];
     id: string | symbol;
-    name?: string;
+    name?: string | undefined;
     tier: number;
     type: WaypointType;
     description?: string;
