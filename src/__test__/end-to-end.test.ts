@@ -7,7 +7,7 @@ import { course, planData, start } from './data'
 type Rules = {
   np?: number
   pace?: number
-  elapsed?: number | string
+  elapsed?: number | string | undefined
   numChunks?: number
   factor?: number
 }

@@ -426,6 +426,14 @@ interface TerrainElement {
    * Terrain value, not factor (eg, this is a number, eg 5, not a factor like 1.05)
    */
   value: number
-  type?: string
+
+  /**
+   * Terrain type, if applicable
+   */
+  type?: string | undefined
+
+  /**
+   * Percent range of terrain
+   */
   percents: [number, number]
 }

@@ -19,41 +19,46 @@ type DelaysInput = { waypoint: { site: string; loop: number }; delay: number }[]
 
 type PlanMethod = 'np' | 'pace' | 'time'
 
+/**
+ * Represents the data structure for a plan.
+ */
 export type PlanData = {
-  cutoffMargin?: number
+  cutoffMargin?: number | undefined
 
-  delays?: DelaysInput
+  delays?: DelaysInput | undefined
 
-  heatModel?: { baseline: number; max: number }
+  heatModel?: { baseline: number; max: number } | undefined
 
   /**
    * Unique identifier for the plan
    */
-  id?: string | null | number | symbol
+  id?: string | null | number | symbol | undefined
 
   /**
    * Method for calculating target time
    */
   method: PlanMethod
 
-  name?: string
+  name?: string | undefined
 
   /**
    * Scales for factors
    */
-  scales?: { altitude?: number; dark?: number }
+  scales?: { altitude?: number; dark?: number } | undefined
 
   /**
    * Start date and timezone
    */
-  start?: DateWithTimezone
+  start?: DateWithTimezone | undefined
 
-  strategy?: StrategyValues
+  strategy?: StrategyValues | undefined
 
   target: number
 
-  typicalDelay?: number
+  typicalDelay?: number | undefined
 }
+
+type PlanUpdateData = Partial<PlanData> & NonNullable<Partial<Pick<PlanData, 'method' | 'target'>>>
 
 export class Plan {
   private _data: PlanData = {
@@ -459,7 +464,12 @@ export class Plan {
     return point
   }
 
-  update(data: Partial<PlanData>) {
+  update(data: PlanUpdateData) {
+    // check for invalid null or undefined values
+    const keys = ['target', 'method'] as (keyof PlanUpdateData)[]
+    const k = keys.find((k) => k in data && _.isNil(data[k]))
+    if (k) throw new Error(`Plan.${k} cannot be set to null or undefined`)
+
     Object.assign(this._data, data)
     this._version++
   }
