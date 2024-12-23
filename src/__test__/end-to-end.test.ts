@@ -299,7 +299,7 @@ function performTests(plan: Plan, r: Test['r'], update?: Partial<PlanData>) {
           ...(plan.heatModel && !('heatModel' in update) ? { heatModel: undefined } : {})
         }
 
-        Object.assign(plan, update2)
+        plan.update(update2)
       })
 
     test.sequential(`Elapsed times`, () => {
