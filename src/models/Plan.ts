@@ -61,10 +61,7 @@ export type PlanData = {
 type PlanUpdateData = Partial<PlanData> & NonNullable<Partial<Pick<PlanData, 'method' | 'target'>>>
 
 export class Plan {
-  private _data: PlanData = {
-    method: 'time',
-    target: 0
-  }
+  private _data: PlanData
 
   readonly course: Course
 
@@ -155,8 +152,8 @@ export class Plan {
       return (this._event = new Event(
         this._data.start.date,
         this._data.start.timezone,
-        this.course.points[0].lat,
-        this.course.points[0].lon
+        this.points[0].lat,
+        this.points[0].lon
       ))
     if (this.course.event) return (this._event = this.course.event)
     throw new Error('Start date/timezone is required for either the plan or the course')

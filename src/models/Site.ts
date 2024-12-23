@@ -51,6 +51,9 @@ export class Site {
   type: WaypointType
   description?: string
 
+  /**
+   * @deprecated - use a version tracker like Plan and Course
+   */
   clearCache() {
     d(`clearCache: ${this.name}`)
     delete this._waypoints
@@ -124,6 +127,6 @@ export class Site {
     this._alt = alt
 
     // TODO. clearing splits; not sure if this is the best place to put this
-    this.course.clearCache(1)
+    this.course.version++
   }
 }

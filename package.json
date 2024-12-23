@@ -20,7 +20,7 @@
     "build": "tsc && vite build",
     "build:watch": "tsc && vite build --watch",
     "dev": "vite",
-    "lint": "eslint . --ext .js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write ./",
     "test": "vitest",
     "type-check": "tsc --noEmit"
@@ -53,7 +53,7 @@
     "tslib": "^2.8.1",
     "typedoc": "^0.27.5",
     "typescript": "^5.7.2",
-    "vite": "^6.0.3",
+    "vite": "^6.0.5",
     "vitest": "^2.1.8"
   }
 }

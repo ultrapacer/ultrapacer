@@ -11,70 +11,106 @@ export declare const terrainTypes: {
     value: number;
 }[];
 export type CourseData = {
-    loops?: number;
-    dist?: number | null;
-    gain?: number | null;
-    loss?: number | null;
-    sites?: SiteData[];
+    /**
+     * Number of loops
+     */
+    loops?: number | undefined;
+    /**
+     * Specified (override) distance of course (in km)
+     */
+    dist?: number | undefined;
+    /**
+     * Specified (override) gain of course (in meters)
+     */
+    gain?: number | undefined;
+    /**
+     * Specified (override) loss of course (in meters)
+     */
+    loss?: number | undefined;
+    /**
+     * List of sites along course to create waypoints
+     */
+    sites?: SiteData[] | undefined;
     /**
      * Start date and timezone
      */
-    start?: DateWithTimezone;
+    start?: DateWithTimezone | undefined;
+    /**
+     * Terrain data
+     */
     terrain?: {
         percent: number;
         value: number | TerrainTypeIndex | {
             value: number;
             type: string;
         };
-    }[];
+    }[] | undefined;
 };
+export type CourseUpdateData = Partial<CourseData>;
 export declare class Course {
-    event?: Event;
-    name?: string;
-    _cache: {
-        splits?: [];
-        stats?: object;
-    };
-    constructor(track: Track, data: CourseData);
-    private _loops;
-    get loops(): number;
-    set loops(v: number);
+    _data: CourseData;
+    /**
+     * Course cutoffs
+     */
+    get cutoffs(): CourseCutoff[];
+    private _cutoffs?;
+    private _cutoffsVersion?;
     /**
      * Total distance of course (in km)
      */
     get dist(): number;
-    set dist(v: number);
     private _dist?;
-    private _distOverride?;
+    private _distVersion?;
     /**
      * Distance scale of course (in km), relative to calculated track distance
      */
     get distScale(): number;
     /**
+     * Event object
+     */
+    get event(): Event | undefined;
+    private _event?;
+    private _eventVersion?;
+    /**
      * Total gain of course (in meters)
      */
     get gain(): number;
-    set gain(v: number);
     private _gain?;
-    private _gainOverride?;
+    private _gainVersion?;
     /**
      * Gain scale of course (in meters), relative to calculated track gain
      */
     get gainScale(): number;
     /**
+     * Distance of each loop (in km)
+     */
+    get loopDist(): number;
+    /**
+     * Gain of each loop (in meters)
+     */
+    get loopGain(): number;
+    /**
+     * Loss of each loop (in meters)
+     */
+    get loopLoss(): number;
+    /**
+     * Number of loops for the track
+     */
+    get loops(): number;
+    /**
      * Total loss of course (in meters)
      */
     get loss(): number;
-    set loss(v: number);
     private _loss?;
-    private _lossOverride?;
+    private _lossVersion?;
     /**
      * Loss scale of course (in meters), relative to calculated track loss
      */
     get lossScale(): number;
-    get loopDist(): number;
-    get loopGain(): number;
-    get loopLoss(): number;
+    /**
+     * Course name
+     */
+    name?: string;
     private _sites;
     get sites(): Site[];
     set sites(data: Site[]);
@@ -82,6 +118,8 @@ export declare class Course {
      * Version of course update (non-trivial changes that affect pacing)
      */
     version: number;
+    constructor(track: Track, data: CourseData);
+    update(data: CourseUpdateData): void;
     /**
      * @deprecated
      */
@@ -105,8 +143,6 @@ export declare class Course {
     get terrain(): TerrainElement[];
     set terrain(value: CourseData['terrain']);
     private _terrain?;
-    private _cutoffs?;
-    get cutoffs(): CourseCutoff[];
     private _splits?;
     get splits(): CourseSplits;
     private _stats?;
