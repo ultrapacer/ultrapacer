@@ -10,6 +10,9 @@ export declare const terrainTypes: {
     type: TerrainTypeIndex;
     value: number;
 }[];
+/**
+ * Course data
+ */
 export type CourseData = {
     /**
      * Number of loops
@@ -46,7 +49,13 @@ export type CourseData = {
         };
     }[] | undefined;
 };
+/**
+ * Course update data
+ */
 export type CourseUpdateData = Partial<CourseData>;
+/**
+ * Course class
+ */
 export declare class Course {
     private _cache;
     get cache(): {

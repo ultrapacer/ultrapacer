@@ -22,6 +22,9 @@ export const terrainTypes: { type: TerrainTypeIndex; value: number }[] = [
   { type: 'technical', value: 30 }
 ]
 
+/**
+ * Course data
+ */
 export type CourseData = {
   /**
    * Number of loops
@@ -63,8 +66,15 @@ export type CourseData = {
       }[]
     | undefined
 }
+
+/**
+ * Course update data
+ */
 export type CourseUpdateData = Partial<CourseData>
 
+/**
+ * Course class
+ */
 export class Course {
   private _cache: {
     cutoffs?: CourseCutoff[]
