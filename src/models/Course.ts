@@ -62,7 +62,7 @@ export type CourseData = {
   terrain?:
     | {
         percent: number
-        value: number | TerrainTypeIndex | { value: number; type: string }
+        value: number | TerrainTypeIndex | { value: number; type?: string }
       }[]
     | undefined
 }

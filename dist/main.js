@@ -4224,19 +4224,7 @@ function A0(f, s) {
   function r(o) {
     return o < f.noon ? o + 86400 : o;
   }
-  return s >= f.sunrise && s <= f.sunset ? 0 : !isNaN(f.dawn) && !isNaN(f.dusk) && (s <= f.dawn || s >= f.dusk) ? 1 : r(s) >= r(f.nadir) ? ve(
-    r(isNaN(f.dawn) ? f.nadir : f.dawn),
-    r(f.sunrise),
-    1,
-    0,
-    r(s)
-  ) : ve(
-    r(f.sunset),
-    r(isNaN(f.dusk) ? f.nadir : f.dusk),
-    0,
-    1,
-    r(s)
-  );
+  return s >= f.sunrise && s <= f.sunset ? 0 : !isNaN(f.dawn) && !isNaN(f.dusk) && (s <= f.dawn || s >= f.dusk) ? 1 : r(s) >= r(f.nadir) ? ve(r(isNaN(f.dawn) ? f.nadir : f.dawn), r(f.sunrise), 1, 0, r(s)) : ve(r(f.sunset), r(isNaN(f.dusk) ? f.nadir : f.dusk), 0, 1, r(s));
 }
 function yu(f, s, r, o = au) {
   if (s === 1 || f >= r.sunrise && f <= r.sunset)
@@ -4265,7 +4253,8 @@ function Mu(f, s) {
   return (s === null || typeof s > "u") && (s = I0), f < s.lower.lim ? s.lower.m * f + s.lower.b : f > s.upper.lim ? s.upper.m * f + s.upper.b : s.a * f ** 2 + s.b * f + 1;
 }
 function Cu(f, s) {
-  if (!s) return 1;
+  if (!s)
+    return 1;
   const r = f.tod;
   let o = 1;
   if (r > s.start && r < s.stop) {
@@ -4341,7 +4330,8 @@ function Ss(f, s) {
 function Br(f, s) {
   var r, o;
   if (f.factors || (f.factors = new Cn()), Ss(f, s.course), s) {
-    if (f.factors === void 0) throw new Error("no factors");
+    if (f.factors === void 0)
+      throw new Error("no factors");
     f.factors.strategy = s.strategy.at(f.loc), Object.assign(f.factors, {
       heat: s.heatModel ? Cu(f, s.heatModel) : 1,
       dark: s.event.sun ? yu(f.tod, f.factors.terrain, s.event.sun) : 1
@@ -4378,9 +4368,7 @@ function Or(f) {
   return typeof f == "number" && !isNaN(f);
 }
 function T0(f, s, r) {
-  const o = f.filter(
-    (p, d) => d >= f.findIndex((v) => v === s) && d <= f.findIndex((v) => v === r)
-  ), c = o.map((p, d) => ({
+  const o = f.filter((p, d) => d >= f.findIndex((v) => v === s) && d <= f.findIndex((v) => v === r)), c = o.map((p, d) => ({
     factors: p.factors,
     dist: d === o.length - 1 ? 0 : o[d + 1].loc - o[d].loc
   }));
@@ -4538,7 +4526,8 @@ class k0 {
   createSegments() {
     hs("createSegments");
     const s = this.course.waypoints.filter((o) => o.tier < 3).sort((o, c) => o.loc - c.loc), r = this.calcSegments(this.course.locationsToBreaks(s.map((o) => o.loc)));
-    if (!r.length) throw new Error("createSegments result is empty");
+    if (!r.length)
+      throw new Error("createSegments result is empty");
     return r.forEach((o, c) => {
       o.waypoint = s[c + 1];
     }), r;
@@ -4548,7 +4537,8 @@ class k0 {
     const r = Au(s), o = K.range(this.course.dist * r).map((p) => p / r);
     this.course.dist - o[o.length - 1] > 1e-4 && o.push(this.course.dist);
     const c = this.calcSegments(this.course.locationsToBreaks(o));
-    if (!c.length) throw new Error("createSplits result is empty");
+    if (!c.length)
+      throw new Error("createSplits result is empty");
     return c;
   }
   calcSegments(s) {
@@ -4577,7 +4567,8 @@ class k0 {
     v = 1;
     for (let F = 0; F < p.length; F++) {
       const T = p[F], E = d[F];
-      for (; me(c[v].loc, T.point1.loc, 4); ) v++;
+      for (; me(c[v].loc, T.point1.loc, 4); )
+        v++;
       let N = T.point1;
       for (; v < c.length && me(c[v].loc, T.point2.loc, 4); ) {
         const q = c[v];
@@ -4822,7 +4813,8 @@ class uu {
     return (this.site.percent + this.loop - 1) * this.course.loopDist;
   }
   set loc(s) {
-    if (!K.isNumber(s)) throw new Error("Wrong format for Waypoint.loc");
+    if (!K.isNumber(s))
+      throw new Error("Wrong format for Waypoint.loc");
     this.type === "start" ? this.site.percent = 0 : this.type === "finish" ? this.site.percent = 1 : this.site.percent = s / this.course.loopDist % 1;
   }
   get lat() {
@@ -5157,14 +5149,10 @@ class t_ {
    * Event object
    */
   get event() {
-    if ("event" in this.cache) return this.cache.event;
+    if ("event" in this.cache)
+      return this.cache.event;
     if (this._data.start)
-      return this.cache.event = new Tu(
-        this._data.start.date,
-        this._data.start.timezone,
-        this.points[0].lat,
-        this.points[0].lon
-      );
+      return this.cache.event = new Tu(this._data.start.date, this._data.start.timezone, this.points[0].lat, this.points[0].lon);
   }
   /**
    * Total gain of course (in meters)
@@ -5218,15 +5206,12 @@ class t_ {
    * Course points
    */
   get points() {
-    if ("points" in this.cache) return this.cache.points;
+    if ("points" in this.cache)
+      return this.cache.points;
     Be("generating points array"), this.cache.points = new Array(this.track.points.length * this.loops);
     for (let s = 0; s < this.loops; s++)
       for (let r = 0; r < this.track.points.length; r++)
-        this.points[r + s * this.track.points.length] = new su(
-          this,
-          this.track.points[r],
-          s
-        );
+        this.points[r + s * this.track.points.length] = new su(this, this.track.points[r], s);
     return this.cache.points;
   }
   /**
@@ -5234,7 +5219,8 @@ class t_ {
    */
   get sites() {
     var s;
-    if ("sites" in this.cache) return this.cache.sites;
+    if ("sites" in this.cache)
+      return this.cache.sites;
     if (this.cache.sites = ((s = this._data.sites) == null ? void 0 : s.map((r) => new gs(this, r))) || [
       new gs(this, {
         id: String(K.random(1e4, 2e4)),
@@ -5262,16 +5248,15 @@ class t_ {
    * Course stats
    */
   get stats() {
-    if ("stats" in this.cache) return this.cache.stats;
+    if ("stats" in this.cache)
+      return this.cache.stats;
     Be("stats:calculate");
     const s = this.track.points.map((d) => d.alt), r = this.track.points.map((d) => d.grade), o = this.terrain.map((d) => d.value / 100 + 1), c = {
       altitude: {
-        avg: K.sum(
-          this.track.points.map((d, v) => {
-            var y;
-            return d.alt * (d.loc - (((y = this.track.points[v - 1]) == null ? void 0 : y.loc) || 0));
-          })
-        ) / this.track.dist,
+        avg: K.sum(this.track.points.map((d, v) => {
+          var y;
+          return d.alt * (d.loc - (((y = this.track.points[v - 1]) == null ? void 0 : y.loc) || 0));
+        })) / this.track.dist,
         max: K.max(s) || 0,
         min: K.min(s) || 0
       },
@@ -5287,10 +5272,7 @@ class t_ {
         maxDist: 0,
         minDist: 0
       }
-    }, p = (d) => this.terrain.reduce(
-      (v, y) => y.value / 100 + 1 === d ? v + (y.percents[1] - y.percents[0]) * this.dist : v,
-      0
-    );
+    }, p = (d) => this.terrain.reduce((v, y) => y.value / 100 + 1 === d ? v + (y.percents[1] - y.percents[0]) * this.dist : v, 0);
     return Object.assign(c.terrain, {
       maxDist: p(c.terrain.max),
       minDist: p(c.terrain.min)
@@ -5300,7 +5282,8 @@ class t_ {
    * Terrain data
    */
   get terrain() {
-    if ("terrain" in this.cache) return this.cache.terrain;
+    if ("terrain" in this.cache)
+      return this.cache.terrain;
     if (this._data.terrain) {
       const s = [...this._data.terrain];
       s.sort((r, o) => r.percent - o.percent), this.cache.terrain = s.map((r, o) => {
@@ -5321,8 +5304,10 @@ class t_ {
    */
   get waypoints() {
     var r;
-    if ("waypoints" in this.cache) return this.cache.waypoints;
-    if (!((r = this.track) != null && r.dist)) return [];
+    if ("waypoints" in this.cache)
+      return this.cache.waypoints;
+    if (!((r = this.track) != null && r.dist))
+      return [];
     let s = [];
     return this.sites.forEach((o) => {
       s.push(...o.waypoints);
@@ -5342,7 +5327,8 @@ class t_ {
    */
   getPoint(s, r = !1) {
     const o = this.points.findIndex((M) => Wr(M.loc, s, 4)), c = this.points[o];
-    if (Ue(c.loc, s, 4)) return c;
+    if (Ue(c.loc, s, 4))
+      return c;
     Be(`getPoint: ${r ? "inserting" : "creating"} new CoursePoint at ${s}`);
     const p = o - 1, d = this.points[p], v = Ru(d.point, c.point, s % this.loopDist / this.distScale), y = new su(this, v, Math.floor(s / this.loopDist));
     return r && this.points.splice(o, 0, y), y;
@@ -5361,7 +5347,8 @@ class $0 {
     return this.waypoint.loc;
   }
   get time() {
-    if (!this.waypoint.cutoff) throw new Error("Invalid cutoff");
+    if (!this.waypoint.cutoff)
+      throw new Error("Invalid cutoff");
     return this.waypoint.cutoff;
   }
 }
@@ -5576,14 +5563,10 @@ class hu {
    * iterate applyPacing method until tests pass
    */
   calculate() {
-    const o = G0.extend(
-      ys.vsprintf("calculate:%.2f-%.2f", [this.points[0].loc, this.points[this.points.length - 1].loc])
-    );
+    const o = G0.extend(ys.vsprintf("calculate:%.2f-%.2f", [this.points[0].loc, this.points[this.points.length - 1].loc]));
     let c = this.factor || 0, p;
     const d = new z0();
-    for (p = 0; p < 20 && (this.applyPacing(), d.iterations = p >= 2, d.factor = !K.round(c - this.factor, 10), c = this.factor, d.target = Math.abs(
-      (K.isFunction(this.constraints[1]) ? this.constraints[1]() : this.constraints[1]) - this.points[this.points.length - 1].elapsed
-    ) < 0.1, o(ys.vsprintf("%i|%s", [p, d.statusString])), !d.passing); p++)
+    for (p = 0; p < 20 && (this.applyPacing(), d.iterations = p >= 2, d.factor = !K.round(c - this.factor, 10), c = this.factor, d.target = Math.abs((K.isFunction(this.constraints[1]) ? this.constraints[1]() : this.constraints[1]) - this.points[this.points.length - 1].elapsed) < 0.1, o(ys.vsprintf("%i|%s", [p, d.statusString])), !d.passing); p++)
       ;
     o("iteration complete"), this.status = {
       tests: d,
@@ -5649,9 +5632,7 @@ class H0 {
   calculate() {
     var o, c;
     const s = cn.extend("calculate");
-    s("exec"), s("clearing cache"), this.clearCache(), s("adding points at each terrain factor break"), (o = this.plan.course.terrain) == null || o.forEach(
-      (p) => this.plan.getPoint(p.percents[0] * this.plan.course.dist, !0)
-    ), s("adding points at each cutoff"), this.plan.cutoffMargin && this.plan.cutoffs.forEach((p) => {
+    s("exec"), s("clearing cache"), this.clearCache(), s("adding points at each terrain factor break"), (o = this.plan.course.terrain) == null || o.forEach((p) => this.plan.getPoint(p.percents[0] * this.plan.course.dist, !0)), s("adding points at each cutoff"), this.plan.cutoffMargin && this.plan.cutoffs.forEach((p) => {
       p.point = this.plan.getPoint(p.loc, !0);
     }), this.plan.points.filter((p) => p.delay).forEach((p) => {
       p.delay = 0;
@@ -5661,7 +5642,8 @@ class H0 {
     }), s("creating pace chunks"), this.initChunks(), [null, ...K.reverse([...this.plan.cutoffs]), null].forEach((p) => {
       for (; this.chunks.find((d) => !d.status); )
         this.calcChunks(), this.validateChunks();
-      if (!p) return !0;
+      if (!p)
+        return !0;
       if (p.point.elapsed - p.time > 0.5) {
         s(`cutoff at ${p.loc} missed`);
         const d = this.chunks[0];
@@ -5725,7 +5707,8 @@ class H0 {
    */
   mergeChunks(s, r) {
     const o = this.chunks.findIndex((p) => p === s), c = this.chunks.findIndex((p) => p === r);
-    if (c - o !== 1) throw new Error("chunks must be sequential");
+    if (c - o !== 1)
+      throw new Error("chunks must be sequential");
     cn(ys.sprintf("calcChunks: merging %i&%i (%.2f&%.2f)", o, c, s.np, r.np)), s.points.pop(), s.points.push(...r.points), s.delay += r.delay, delete s.status, s.points.forEach((p) => {
       p._chunk = s;
     }), s.constraints = [s.constraints[0], r.constraints[1]], this.chunks.splice(c, 1);
@@ -5766,7 +5749,8 @@ class pu {
    */
   get np() {
     var s;
-    if (!this._chunk) throw new Error("PlanPoint._chunk not defined");
+    if (!this._chunk)
+      throw new Error("PlanPoint._chunk not defined");
     return (s = this._chunk) == null ? void 0 : s.np;
   }
   get factor() {
@@ -5810,19 +5794,19 @@ class K0 {
   createSegments() {
     vs("createSegments");
     const s = this.plan.course.waypoints.filter((o) => o.tier < 3).sort((o, c) => o.loc - c.loc), r = this.calcSegments(this.plan.course.locationsToBreaks(s.map((o) => o.loc)));
-    if (!r.length) throw new Error("createSegments result is empty");
+    if (!r.length)
+      throw new Error("createSegments result is empty");
     return r.forEach((o, c) => {
       o.waypoint = s[c + 1];
     }), r;
   }
   createSplits(s) {
     vs(`createSplits:${s}`);
-    const r = Au(s), o = K.range(this.plan.course.dist * r).map(
-      (p) => p / r
-    );
+    const r = Au(s), o = K.range(this.plan.course.dist * r).map((p) => p / r);
     this.plan.course.dist - o[o.length - 1] > 1e-4 && o.push(this.plan.course.dist);
     const c = this.calcSegments(this.plan.course.locationsToBreaks(o));
-    if (!c.length) throw new Error("createSplits result is empty");
+    if (!c.length)
+      throw new Error("createSplits result is empty");
     return c;
   }
   calcSegments(s) {
@@ -5851,7 +5835,8 @@ class K0 {
     y = 1;
     for (let T = 0; T < d.length; T++) {
       const E = d[T], N = v[T];
-      for (; me(p[y].loc, E.point1.loc, 4); ) y++;
+      for (; me(p[y].loc, E.point1.loc, 4); )
+        y++;
       let q = E.point1;
       for (; y < p.length && me(p[y].loc, E.point2.loc, 4); ) {
         const Z = p[y];
@@ -5892,7 +5877,8 @@ class n_ {
    * gets re-calculated if the course or plan version changes
    */
   get cutoffs() {
-    if ("cutoffs" in this.cache) return this.cache.cutoffs;
+    if ("cutoffs" in this.cache)
+      return this.cache.cutoffs;
     this.cache.cutoffs = this.cutoffMargin ? this.course.cutoffs.map((r) => new J0(this, r, this.getPoint(r.loc, !0))) : [];
     let s = 0;
     for (; this.cache.cutoffs.length - 1 >= s; ) {
@@ -5912,7 +5898,8 @@ class n_ {
    * gets re-calculated if the course or plan version changes
    */
   get delays() {
-    if ("delays" in this.cache) return this.cache.delays;
+    if ("delays" in this.cache)
+      return this.cache.delays;
     const s = this.course.waypoints.map((o) => {
       var d;
       const c = (d = this._data.delays) == null ? void 0 : d.find((v) => ws(v.waypoint, o)), p = c ? c.delay : o.hasTypicalDelay ? this.typicalDelay : 0;
@@ -5928,19 +5915,17 @@ class n_ {
    * gets re-calculated if the course or plan version changes
    */
   get event() {
-    if ("event" in this.cache) return this.cache.event;
+    if ("event" in this.cache)
+      return this.cache.event;
     if (this._data.start)
-      return this.cache.event = new Tu(
-        this._data.start.date,
-        this._data.start.timezone,
-        this.points[0].lat,
-        this.points[0].lon
-      );
-    if (this.course.event) return this.cache.event = this.course.event;
+      return this.cache.event = new Tu(this._data.start.date, this._data.start.timezone, this.points[0].lat, this.points[0].lon);
+    if (this.course.event)
+      return this.cache.event = this.course.event;
     throw new Error("Start date/timezone is required for either the plan or the course");
   }
   get events() {
-    if ("events" in this.cache) return this.cache.events;
+    if ("events" in this.cache)
+      return this.cache.events;
     zn("calculating events.sun");
     const s = [], r = this.event.elapsedToTimeOfDay(0), o = Math.ceil((r + this.points[this.points.length - 1].elapsed) / 86400);
     for (let d = 0; d < o; d++)
@@ -5954,11 +5939,7 @@ class n_ {
         M >= 0 && M <= this.points[this.points.length - 1].elapsed && s.push({ event: y.event, elapsed: M });
       });
     s.sort((d, v) => d.elapsed - v.elapsed);
-    const c = _u(
-      this.points.map((d) => d.elapsed),
-      this.points.map((d) => d.loc),
-      s.map((d) => d.elapsed)
-    ), p = s.map((d, v) => ({ ...d, loc: c[v] }));
+    const c = _u(this.points.map((d) => d.elapsed), this.points.map((d) => d.loc), s.map((d) => d.elapsed)), p = s.map((d, v) => ({ ...d, loc: c[v] }));
     return this.cache.events = { sun: p }, this.cache.events;
   }
   get heatModel() {
@@ -6000,20 +5981,19 @@ class n_ {
    * Plan stats object
    */
   get stats() {
-    if ("stats" in this.cache) return this.cache.stats;
+    if ("stats" in this.cache)
+      return this.cache.stats;
     zn("calculating stats.factors");
-    const s = K.fromPairs(
-      bu.map((p) => {
-        const d = this.points.map((v) => v.factors.get(p));
-        return [
-          p,
-          {
-            min: Number(K.min(d)),
-            max: Number(K.max(d))
-          }
-        ];
-      })
-    );
+    const s = K.fromPairs(bu.map((p) => {
+      const d = this.points.map((v) => v.factors.get(p));
+      return [
+        p,
+        {
+          min: Number(K.min(d)),
+          max: Number(K.max(d))
+        }
+      ];
+    }));
     zn("calculating stats.sun");
     const r = {
       day: { time: 0, dist: 0 },
@@ -6049,7 +6029,8 @@ class n_ {
   }
   checkPacing() {
     var s, r;
-    if (zn("checkPacing"), (!((s = this.pacing.status) != null && s.complete) || !this.pacing.isCurrent) && (zn("checkPacing: calculate"), this.pacing.calculate()), !((r = this.points) != null && r.length)) throw new Error("No plan points");
+    if (zn("checkPacing"), (!((s = this.pacing.status) != null && s.complete) || !this.pacing.isCurrent) && (zn("checkPacing: calculate"), this.pacing.calculate()), !((r = this.points) != null && r.length))
+      throw new Error("No plan points");
     return !0;
   }
   /**
@@ -6078,7 +6059,8 @@ class n_ {
    */
   getPoint(s, r = !1) {
     const o = this.points.findIndex((y) => Wr(y.loc, s, 4)), c = this.points[o];
-    if (Ue(c.loc, s, 4)) return c;
+    if (Ue(c.loc, s, 4))
+      return c;
     zn(`getPoint: ${r ? "inserting" : "creating"} new PlanPoint at ${s}`);
     const p = o - 1, d = this.points[p], v = new pu(this, this.course.getPoint(s, r));
     if (!isNaN(d.time) && !isNaN(c.time)) {
@@ -6089,7 +6071,8 @@ class n_ {
   }
   update(s) {
     const o = ["target", "method"].find((c) => c in s && K.isNil(s[c]));
-    if (o) throw new Error(`Plan.${o} cannot be set to null or undefined`);
+    if (o)
+      throw new Error(`Plan.${o} cannot be set to null or undefined`);
     Object.assign(this._data, s), this._version++;
   }
 }
@@ -6133,12 +6116,7 @@ const Fu = (f, s, r, o) => {
   }), p;
 };
 function Y0(f, s) {
-  return Fu(
-    s,
-    f.map((o) => o.alt),
-    s,
-    0.05
-  ).map((o) => o.grade);
+  return Fu(s, f.map((o) => o.alt), s, 0.05).map((o) => o.grade);
 }
 const X0 = (f) => {
   let s = 0, r = 0;
@@ -6171,7 +6149,8 @@ class bs {
   getLLA(s) {
     s > this.dist && (s = s % this.dist);
     let r;
-    if (s === 0) r = this.points[0];
+    if (s === 0)
+      r = this.points[0];
     else {
       const o = this.points.findIndex((c) => c.loc >= s);
       r = Ru(this.points[o - 1], this.points[o], s);
@@ -6215,12 +6194,7 @@ class bs {
       return o("Does not meet criteria"), this;
     const c = this.dist, p = Math.floor(c / s) + 1, d = Array(p).fill(0).map((I, m) => Nt(m++ * s, 3));
     d[d.length - 1] < c && d.push(c);
-    const v = Fu(
-      this.points.map((I) => I.loc),
-      this.points.map((I) => I.alt),
-      d,
-      2 * s
-    ), y = d.map((I) => this.getLLA(I)).map((I, m) => ({
+    const v = Fu(this.points.map((I) => I.loc), this.points.map((I) => I.alt), d, 2 * s), y = d.map((I) => this.getLLA(I)).map((I, m) => ({
       lat: Nt(I.lat, 6),
       lon: Nt(I.lon, 6),
       alt: Nt(v[m].alt, 2)
