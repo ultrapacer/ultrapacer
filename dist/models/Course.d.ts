@@ -181,7 +181,7 @@ export declare class CourseCutoff {
     get loc(): number;
     get time(): number;
 }
-interface CourseStats {
+export interface CourseStats {
     altitude: {
         avg: number;
         max: number;

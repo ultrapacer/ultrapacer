@@ -462,7 +462,7 @@ export class CourseCutoff {
   }
 }
 
-interface CourseStats {
+export interface CourseStats {
   altitude: { avg: number; max: number; min: number }
   grade: { avg: number; max: number; min: number }
   terrain: { avg: number; max: number; min: number; maxDist: number; minDist: number }
