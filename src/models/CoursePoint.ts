@@ -2,8 +2,12 @@ import { Factors } from '../factors/Factors'
 import { Course } from './Course'
 import { TrackPoint } from './Point'
 
+function isCoursePoint(point: TrackPoint | CoursePoint): point is CoursePoint {
+  return 'course' in point
+}
+
 export class CoursePoint extends TrackPoint {
-  _source: TrackPoint
+  _source: TrackPoint | CoursePoint
 
   factors: Factors = new Factors()
 
@@ -18,6 +22,9 @@ export class CoursePoint extends TrackPoint {
    * grade, scaled, as a percentage
    */
   get grade(): number {
+    // if source is a course point, it is already scaled
+    if (isCoursePoint(this._source)) return this._source.grade
+
     return (
       this._source.grade * (this._source.grade > 0 ? this.course.gainScale : this.course.lossScale)
     )
@@ -27,6 +34,9 @@ export class CoursePoint extends TrackPoint {
    * location, scaled, with loop, in kilometers
    */
   get loc(): number {
+    // if source is a course point, it is already scaled/looped
+    if (isCoursePoint(this._source)) return this._source.loc
+
     let l = this._source.loc * this.course.distScale
     if (this.loop) l += this.course.loopDist * this.loop
     return l

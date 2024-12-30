@@ -2,7 +2,7 @@ import { Factors } from '../factors/Factors';
 import { Course } from './Course';
 import { TrackPoint } from './Point';
 export declare class CoursePoint extends TrackPoint {
-    _source: TrackPoint;
+    _source: TrackPoint | CoursePoint;
     factors: Factors;
     readonly course: Course;
     /**
