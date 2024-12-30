@@ -21,5 +21,5 @@ export function interpolatePoint(p1: TrackPoint, p2: TrackPoint, loc: number) {
   // linear interpolation of other fields
   const alt = interp(p1.loc, p2.loc, p1.alt, p2.alt, loc)
 
-  return new TrackPoint([lat, lon, alt], loc, grade)
+  return new TrackPoint({ lat, lon, alt }, loc, grade)
 }

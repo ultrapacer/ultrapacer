@@ -1,22 +1,33 @@
 import { Factors } from '../factors/Factors'
 import { Course } from './Course'
-import { Point, TrackPoint } from './Point'
+import { TrackPoint } from './Point'
 
 export class CoursePoint extends TrackPoint {
-  _data: TrackPoint
+  _source: TrackPoint
 
   factors: Factors = new Factors()
 
-  course: Course
+  readonly course: Course
+
+  /**
+   * zero-indexed loop number
+   */
   loop: number
 
+  /**
+   * grade, scaled, as a percentage
+   */
   get grade(): number {
-    const g = this._data?.grade
-    return g * (g > 0 ? this.course.gainScale : this.course.lossScale)
+    return (
+      this._source.grade * (this._source.grade > 0 ? this.course.gainScale : this.course.lossScale)
+    )
   }
 
+  /**
+   * location, scaled, with loop, in kilometers
+   */
   get loc(): number {
-    let l = this._data.loc * this.course.distScale
+    let l = this._source.loc * this.course.distScale
     if (this.loop) l += this.course.loopDist * this.loop
     return l
   }
@@ -26,6 +37,6 @@ export class CoursePoint extends TrackPoint {
 
     this.course = course
     this.loop = loop
-    this._data = point
+    this._source = point
   }
 }

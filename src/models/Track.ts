@@ -22,15 +22,13 @@ export class Track {
   constructor(llas: TrackData) {
     d('Creating new Track object')
 
-    const points = llas.map((p) => new Point([p.lat, p.lon, p.alt]))
+    const points = llas.map((p) => new Point(p))
 
     const locations = getLocations(points)
 
     const grades = getGrades(points, locations)
 
-    this.points = points.map(
-      (p, i) => new TrackPoint([p.lat, p.lon, p.alt], locations[i], grades[i])
-    )
+    this.points = points.map((p, i) => new TrackPoint(p, locations[i], grades[i]))
 
     d(`set-points - ${points.length} points`)
 

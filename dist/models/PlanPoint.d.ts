@@ -2,10 +2,11 @@ import { Factors } from '../factors';
 import { CoursePoint } from './CoursePoint';
 import { PaceChunk } from './PaceChunk';
 import { Plan } from './Plan';
-export declare class PlanPoint extends CoursePoint {
+export declare class PlanPoint {
     _chunk?: PaceChunk;
-    _data: CoursePoint;
     _plan: Plan;
+    private _point;
+    get alt(): number;
     delay: number;
     /**
      * elapsed time in seconds
@@ -13,6 +14,11 @@ export declare class PlanPoint extends CoursePoint {
     elapsed: number;
     get factor(): number;
     factors: Factors;
+    get grade(): number;
+    get lat(): number;
+    get latlon(): import("sgeo").latlon;
+    get loc(): number;
+    get lon(): number;
     /**
      * np for a point is the same as its parent chunk
      */

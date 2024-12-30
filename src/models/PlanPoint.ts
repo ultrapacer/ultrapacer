@@ -3,10 +3,14 @@ import { CoursePoint } from './CoursePoint'
 import { PaceChunk } from './PaceChunk'
 import { Plan } from './Plan'
 
-export class PlanPoint extends CoursePoint {
+export class PlanPoint {
   _chunk?: PaceChunk
-  _data: CoursePoint
   _plan: Plan
+  private _point: CoursePoint
+
+  get alt() {
+    return this._point.alt
+  }
 
   delay: number = 0
 
@@ -20,6 +24,26 @@ export class PlanPoint extends CoursePoint {
   }
 
   factors: Factors = new Factors()
+
+  get grade() {
+    return this._point.grade
+  }
+
+  get lat() {
+    return this._point.lat
+  }
+
+  get latlon() {
+    return this._point.latlon
+  }
+
+  get loc() {
+    return this._point.loc
+  }
+
+  get lon() {
+    return this._point.lon
+  }
 
   /**
    * np for a point is the same as its parent chunk
@@ -44,8 +68,7 @@ export class PlanPoint extends CoursePoint {
   tod: number = 0
 
   constructor(plan: Plan, point: CoursePoint) {
-    super(plan.course, point, point.loop)
-    this._data = point
     this._plan = plan
+    this._point = point
   }
 }

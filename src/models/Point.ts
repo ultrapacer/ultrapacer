@@ -1,8 +1,16 @@
 import { latlon as LatLon } from 'sgeo'
 
-type LLA = [number, number, number]
+export type LLA = {
+  alt: number
+  lat: number
+  lon: number
+}
+export function isSourcePoint(arg: LLA | Point): arg is Point {
+  return 'latlon' in arg
+}
+
 export class Point {
-  _data:
+  _source:
     | {
         alt: number
         lat: number
@@ -11,29 +19,23 @@ export class Point {
     | Point
 
   get alt(): number {
-    return this._data.alt
+    return this._source.alt
   }
 
   get lat(): number {
-    return this._data.lat
+    return this._source.lat
   }
 
   get latlon(): LatLon {
-    return 'latlon' in this._data ? this._data.latlon : new LatLon(this.lat, this.lon)
+    return isSourcePoint(this._source) ? this._source.latlon : new LatLon(this.lat, this.lon)
   }
 
   get lon(): number {
-    return this._data.lon
+    return this._source.lon
   }
 
   constructor(arg: Point | LLA) {
-    this._data = Array.isArray(arg)
-      ? {
-          lat: arg[0],
-          lon: arg[1],
-          alt: arg[2]
-        }
-      : arg
+    this._source = arg
   }
 }
 

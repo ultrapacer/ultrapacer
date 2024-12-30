@@ -1,7 +1,12 @@
 import { latlon as LatLon } from 'sgeo';
-type LLA = [number, number, number];
+export type LLA = {
+    alt: number;
+    lat: number;
+    lon: number;
+};
+export declare function isSourcePoint(arg: LLA | Point): arg is Point;
 export declare class Point {
-    _data: {
+    _source: {
         alt: number;
         lat: number;
         lon: number;
@@ -18,4 +23,3 @@ export declare class TrackPoint extends Point {
     get loc(): number;
     constructor(arg: Point | LLA, loc: number, grade: number);
 }
-export {};
