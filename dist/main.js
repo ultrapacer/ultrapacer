@@ -4278,7 +4278,15 @@ function Su(f, s) {
   const r = K.findLast(s.terrain, (o) => me(o.percents[0] * s.dist, f.loc, 4));
   return r ? r.value / 100 + 1 : 1;
 }
-const bu = ["altitude", "grade", "terrain", "heat", "dark", "fatigue", "strategy"];
+const bu = [
+  "altitude",
+  "grade",
+  "terrain",
+  "heat",
+  "dark",
+  "fatigue",
+  "strategy"
+];
 function Cs(f) {
   const s = new Cn().init(0);
   return f.forEach(({ factors: r, dist: o }) => {
@@ -4361,8 +4369,8 @@ const j0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   getGradeFactor: Mu,
   getHeatFactor: Cu,
   getTerrainFactor: Su,
-  list: bu,
-  rollup: Cs
+  rollup: Cs,
+  typeList: bu
 }, Symbol.toStringTag, { value: "Module" }));
 function Au(f) {
   switch (f) {

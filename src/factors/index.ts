@@ -44,7 +44,7 @@ export function generatePlanFactors(point: PlanPoint, plan: Plan) {
   point.factors.dark = applyScale(point.factors.dark, plan.scales?.dark)
 }
 
-export { list } from './list'
+export { typeList } from './list'
 export { rollup } from './rollup'
 export { Strategy } from './strategy'
 export {

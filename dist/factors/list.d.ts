@@ -1,1 +1,2 @@
-export declare const list: string[];
+export type FactorType = 'altitude' | 'grade' | 'terrain' | 'heat' | 'dark' | 'fatigue' | 'strategy';
+export declare const typeList: FactorType[];

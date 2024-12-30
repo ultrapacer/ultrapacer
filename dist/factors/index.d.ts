@@ -11,7 +11,7 @@ import { getTerrainFactor } from './terrain';
 export declare function applyScale(fact: number, scale?: number): number;
 export declare function generateCourseFactors(point: CoursePoint | PlanPoint, course: Course): void;
 export declare function generatePlanFactors(point: PlanPoint, plan: Plan): void;
-export { list } from './list';
+export { typeList } from './list';
 export { rollup } from './rollup';
 export { Strategy } from './strategy';
 export { getAltitudeFactor, getDarkFactor, getGradeFactor, getHeatFactor, getTerrainFactor, Factors };

@@ -1,7 +1,7 @@
 import _, { pick } from 'lodash'
 
 import { createDebug } from '../debug'
-import { list as fKeys } from '../factors'
+import { typeList as fKeys } from '../factors'
 import { Strategy, StrategyValues } from '../factors/strategy'
 import { areSameWaypoint } from '../util/areSameWaypoint'
 import { interp, interpArray, req, rgte } from '../util/math'
