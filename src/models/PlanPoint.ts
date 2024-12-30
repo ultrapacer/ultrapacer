@@ -4,44 +4,46 @@ import { PaceChunk } from './PaceChunk'
 import { Plan } from './Plan'
 
 export class PlanPoint {
-  factors: Factors = new Factors()
-
-  constructor(plan: Plan, point: CoursePoint) {
-    this._plan = plan
-    this._point = point
-
-    this.time = 0
-    this.elapsed = 0
-    this.tod = 0
-    this.delay = 0
-  }
-
   _chunk?: PaceChunk
-
   _plan: Plan
-  _point: CoursePoint
-  elapsed: number
-  time: number
-  tod: number
-  delay: number
+  private _point: CoursePoint
 
-  get lat() {
-    return this._point.lat
-  }
-  get lon() {
-    return this._point.lon
-  }
   get alt() {
     return this._point.alt
   }
-  get latlon() {
-    return this._point.latlon
+
+  delay: number = 0
+
+  /**
+   * elapsed time in seconds
+   */
+  elapsed: number = 0
+
+  get factor() {
+    return this.factors?.combined
   }
+
+  factors: Factors = new Factors()
+
   get grade() {
     return this._point.grade
   }
+
+  /** {@inheritDoc CoursePoint} */
+  get lat() {
+    return this._point.lat
+  }
+
+  get latlon() {
+    return this._point.latlon
+  }
+
   get loc() {
     return this._point.loc
+  }
+
+  get lon() {
+    return this._point.lon
   }
 
   /**
@@ -52,11 +54,22 @@ export class PlanPoint {
     return this._chunk?.np
   }
 
-  get factor() {
-    return this.factors?.combined
-  }
-
   get pace() {
     return this.np * this.factor
+  }
+
+  /**
+   * moving time in seconds
+   */
+  time: number = 0
+
+  /**
+   * time of day in seconds
+   */
+  tod: number = 0
+
+  constructor(plan: Plan, point: CoursePoint) {
+    this._plan = plan
+    this._point = point
   }
 }

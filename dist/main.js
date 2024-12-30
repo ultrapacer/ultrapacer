@@ -5733,33 +5733,47 @@ class K0 {
 }
 class gu {
   constructor(s, r) {
-    A(this, "factors", new Cn());
     A(this, "_chunk");
     A(this, "_plan");
     A(this, "_point");
-    A(this, "elapsed");
-    A(this, "time");
-    A(this, "tod");
-    A(this, "delay");
-    this._plan = s, this._point = r, this.time = 0, this.elapsed = 0, this.tod = 0, this.delay = 0;
-  }
-  get lat() {
-    return this._point.lat;
-  }
-  get lon() {
-    return this._point.lon;
+    A(this, "delay", 0);
+    /**
+     * elapsed time in seconds
+     */
+    A(this, "elapsed", 0);
+    A(this, "factors", new Cn());
+    /**
+     * moving time in seconds
+     */
+    A(this, "time", 0);
+    /**
+     * time of day in seconds
+     */
+    A(this, "tod", 0);
+    this._plan = s, this._point = r;
   }
   get alt() {
     return this._point.alt;
   }
-  get latlon() {
-    return this._point.latlon;
+  get factor() {
+    var s;
+    return (s = this.factors) == null ? void 0 : s.combined;
   }
   get grade() {
     return this._point.grade;
   }
+  /** {@inheritDoc CoursePoint} */
+  get lat() {
+    return this._point.lat;
+  }
+  get latlon() {
+    return this._point.latlon;
+  }
   get loc() {
     return this._point.loc;
+  }
+  get lon() {
+    return this._point.lon;
   }
   /**
    * np for a point is the same as its parent chunk
@@ -5768,10 +5782,6 @@ class gu {
     var s;
     if (!this._chunk) throw new Error("PlanPoint._chunk not defined");
     return (s = this._chunk) == null ? void 0 : s.np;
-  }
-  get factor() {
-    var s;
-    return (s = this.factors) == null ? void 0 : s.combined;
   }
   get pace() {
     return this.np * this.factor;
