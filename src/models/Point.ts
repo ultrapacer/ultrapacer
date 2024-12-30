@@ -1,16 +1,63 @@
 import { latlon as LatLon } from 'sgeo'
 
+/**
+ * Latitude, Longitude, Altitude (LLA) object for creation of a point
+ */
 export type LLA = {
+  /**
+   * altitude in meters
+   */
   alt: number
+  /**
+   * latitude in degrees
+   */
   lat: number
+  /**
+   * longitude in degrees
+   */
   lon: number
 }
+
 export function isSourcePoint(arg: LLA | Point): arg is Point {
   return 'latlon' in arg
 }
 
+/**
+ * Point object for use as a basis in a track or course
+ */
 export class Point {
-  _source:
+  /**
+   * altitude in meters
+   */
+  get alt(): number {
+    return this.source.alt
+  }
+
+  /**
+   * latitude in degrees
+   */
+  get lat(): number {
+    return this.source.lat
+  }
+
+  /**
+   * latitude and longitude object (see sgeo)
+   */
+  get latlon(): LatLon {
+    return isSourcePoint(this.source) ? this.source.latlon : new LatLon(this.lat, this.lon)
+  }
+
+  /**
+   * longitude in degrees
+   */
+  get lon(): number {
+    return this.source.lon
+  }
+
+  /**
+   * source (parent) point/data
+   */
+  source:
     | {
         alt: number
         lat: number
@@ -18,27 +65,14 @@ export class Point {
       }
     | Point
 
-  get alt(): number {
-    return this._source.alt
-  }
-
-  get lat(): number {
-    return this._source.lat
-  }
-
-  get latlon(): LatLon {
-    return isSourcePoint(this._source) ? this._source.latlon : new LatLon(this.lat, this.lon)
-  }
-
-  get lon(): number {
-    return this._source.lon
-  }
-
   constructor(arg: Point | LLA) {
-    this._source = arg
+    this.source = arg
   }
 }
 
+/**
+ * TrackPoint object for use in a track, with additional data (loc, grade)
+ */
 export class TrackPoint extends Point {
   private _trackData: {
     loc: number

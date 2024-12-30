@@ -1,14 +1,15 @@
 import { Factors } from '../factors/Factors';
 import { Course } from './Course';
 import { TrackPoint } from './Point';
+/**
+ * CoursePoint object for use in a course, including scaling and loop data
+ */
 export declare class CoursePoint extends TrackPoint {
-    _source: TrackPoint | CoursePoint;
-    factors: Factors;
-    readonly course: Course;
+    private _course;
     /**
-     * zero-indexed loop number
+     * pacing factors at this point
      */
-    loop: number;
+    factors: Factors;
     /**
      * grade, scaled, as a percentage
      */
@@ -17,5 +18,13 @@ export declare class CoursePoint extends TrackPoint {
      * location, scaled, with loop, in kilometers
      */
     get loc(): number;
+    /**
+     * loop number (zero-indexed)
+     */
+    loop: number;
+    /**
+     * source (parent) point
+     */
+    readonly source: TrackPoint | CoursePoint;
     constructor(course: Course, point: TrackPoint, loop: number);
 }

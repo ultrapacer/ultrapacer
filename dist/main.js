@@ -4354,20 +4354,35 @@ function P0(f) {
 }
 class Cu {
   constructor(s) {
-    A(this, "_source");
-    this._source = s;
+    /**
+     * source (parent) point/data
+     */
+    A(this, "source");
+    this.source = s;
   }
+  /**
+   * altitude in meters
+   */
   get alt() {
-    return this._source.alt;
+    return this.source.alt;
   }
+  /**
+   * latitude in degrees
+   */
   get lat() {
-    return this._source.lat;
+    return this.source.lat;
   }
+  /**
+   * latitude and longitude object (see sgeo)
+   */
   get latlon() {
-    return P0(this._source) ? this._source.latlon : new I0.latlon(this.lat, this.lon);
+    return P0(this.source) ? this.source.latlon : new I0.latlon(this.lat, this.lon);
   }
+  /**
+   * longitude in degrees
+   */
   get lon() {
-    return this._source.lon;
+    return this.source.lon;
   }
 }
 class bs extends Cu {
@@ -4384,33 +4399,39 @@ class bs extends Cu {
   }
 }
 function cu(f) {
-  return "course" in f;
+  return "_course" in f;
 }
 class ws extends bs {
   constructor(r, a, l) {
     super(a, a.loc, a.grade);
-    A(this, "_source");
-    A(this, "factors", new Cn());
-    A(this, "course");
+    A(this, "_course");
     /**
-     * zero-indexed loop number
+     * pacing factors at this point
+     */
+    A(this, "factors", new Cn());
+    /**
+     * loop number (zero-indexed)
      */
     A(this, "loop");
-    this.course = r, this.loop = l, this._source = a;
+    /**
+     * source (parent) point
+     */
+    A(this, "source");
+    this._course = r, this.loop = l, this.source = a;
   }
   /**
    * grade, scaled, as a percentage
    */
   get grade() {
-    return cu(this._source) ? this._source.grade : this._source.grade * (this._source.grade > 0 ? this.course.gainScale : this.course.lossScale);
+    return cu(this.source) ? this.source.grade : this.source.grade * (this.source.grade > 0 ? this._course.gainScale : this._course.lossScale);
   }
   /**
    * location, scaled, with loop, in kilometers
    */
   get loc() {
-    if (cu(this._source)) return this._source.loc;
-    let r = this._source.loc * this.course.distScale;
-    return this.loop && (r += this.course.loopDist * this.loop), r;
+    if (cu(this.source)) return this.source.loc;
+    let r = this.source.loc * this._course.distScale;
+    return this.loop && (r += this._course.loopDist * this.loop), r;
   }
 }
 const E0 = {
@@ -5362,8 +5383,8 @@ class r_ {
     if ($e(l.loc, s, 4)) return l;
     We(`getPoint: ${r ? "inserting" : "creating"} new CoursePoint at ${s}`);
     const p = a - 1, d = this.points[p], v = Tu(
-      d._source,
-      l._source,
+      d.source,
+      l.source,
       s % this.loopDist / this.distScale
     ), y = new ws(this, v, Math.floor(s / this.loopDist));
     return r && this.points.splice(a, 0, y), y;
@@ -5755,9 +5776,8 @@ class J0 {
 class _u extends ws {
   constructor(r, a) {
     super(r.course, a, a.loop);
-    A(this, "_chunk");
     A(this, "_plan");
-    A(this, "_source");
+    A(this, "_chunk");
     /**
      * delay in seconds at this point (not cumulative)
      */
@@ -5766,7 +5786,14 @@ class _u extends ws {
      * elapsed time in seconds
      */
     A(this, "elapsed", 0);
+    /**
+     * pacing factors at this point
+     */
     A(this, "factors", new Cn());
+    /**
+     * source (parent) course point
+     */
+    A(this, "source");
     /**
      * moving time in seconds
      */
@@ -5775,7 +5802,7 @@ class _u extends ws {
      * time of day in seconds
      */
     A(this, "tod", 0);
-    this._source = a, this._plan = r;
+    this._plan = r, this.source = a;
   }
   /**
    * combined pacing factor at this point

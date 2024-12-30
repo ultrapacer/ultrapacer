@@ -3,10 +3,13 @@ import { CoursePoint } from './CoursePoint'
 import { PaceChunk } from './PaceChunk'
 import { Plan } from './Plan'
 
+/**
+ * PlanPoint object for use in a plan, including pacing and time data
+ */
 export class PlanPoint extends CoursePoint {
+  private _plan: Plan
+
   _chunk?: PaceChunk
-  _plan: Plan
-  _source: CoursePoint
 
   /**
    * delay in seconds at this point (not cumulative)
@@ -25,6 +28,9 @@ export class PlanPoint extends CoursePoint {
     return this.factors?.combined
   }
 
+  /**
+   * pacing factors at this point
+   */
   factors: Factors = new Factors()
 
   /**
@@ -43,6 +49,11 @@ export class PlanPoint extends CoursePoint {
   }
 
   /**
+   * source (parent) course point
+   */
+  source: CoursePoint
+
+  /**
    * moving time in seconds
    */
   time: number = 0
@@ -54,7 +65,8 @@ export class PlanPoint extends CoursePoint {
 
   constructor(plan: Plan, point: CoursePoint) {
     super(plan.course, point, point.loop)
-    this._source = point
+
     this._plan = plan
+    this.source = point
   }
 }

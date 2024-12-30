@@ -3,30 +3,29 @@ import { Course } from './Course'
 import { TrackPoint } from './Point'
 
 function isCoursePoint(point: TrackPoint | CoursePoint): point is CoursePoint {
-  return 'course' in point
+  return '_course' in point
 }
 
+/**
+ * CoursePoint object for use in a course, including scaling and loop data
+ */
 export class CoursePoint extends TrackPoint {
-  _source: TrackPoint | CoursePoint
-
-  factors: Factors = new Factors()
-
-  readonly course: Course
+  private _course: Course
 
   /**
-   * zero-indexed loop number
+   * pacing factors at this point
    */
-  loop: number
+  factors: Factors = new Factors()
 
   /**
    * grade, scaled, as a percentage
    */
   get grade(): number {
     // if source is a course point, it is already scaled
-    if (isCoursePoint(this._source)) return this._source.grade
+    if (isCoursePoint(this.source)) return this.source.grade
 
     return (
-      this._source.grade * (this._source.grade > 0 ? this.course.gainScale : this.course.lossScale)
+      this.source.grade * (this.source.grade > 0 ? this._course.gainScale : this._course.lossScale)
     )
   }
 
@@ -35,18 +34,28 @@ export class CoursePoint extends TrackPoint {
    */
   get loc(): number {
     // if source is a course point, it is already scaled/looped
-    if (isCoursePoint(this._source)) return this._source.loc
+    if (isCoursePoint(this.source)) return this.source.loc
 
-    let l = this._source.loc * this.course.distScale
-    if (this.loop) l += this.course.loopDist * this.loop
+    let l = this.source.loc * this._course.distScale
+    if (this.loop) l += this._course.loopDist * this.loop
     return l
   }
+
+  /**
+   * loop number (zero-indexed)
+   */
+  loop: number
+
+  /**
+   * source (parent) point
+   */
+  readonly source: TrackPoint | CoursePoint
 
   constructor(course: Course, point: TrackPoint, loop: number) {
     super(point, point.loc, point.grade)
 
-    this.course = course
+    this._course = course
     this.loop = loop
-    this._source = point
+    this.source = point
   }
 }

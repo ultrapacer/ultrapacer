@@ -429,8 +429,8 @@ export class Course {
 
     // create a new point
     const trackPoint = interpolatePoint(
-      p1._source,
-      p2._source,
+      p1.source,
+      p2.source,
       (loc % this.loopDist) / this.distScale
     )
     const point = new CoursePoint(this, trackPoint, Math.floor(loc / this.loopDist))
