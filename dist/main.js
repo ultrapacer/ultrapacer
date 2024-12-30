@@ -4074,7 +4074,15 @@ const j0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   rlte: we,
   round: Nt,
   wlslr: wu
-}, Symbol.toStringTag, { value: "Module" }));
+}, Symbol.toStringTag, { value: "Module" })), ve = [
+  "altitude",
+  "grade",
+  "terrain",
+  "heat",
+  "dark",
+  "fatigue",
+  "strategy"
+];
 class Cn {
   constructor(s) {
     A(this, "_data", {
@@ -4145,6 +4153,12 @@ class Cn {
     ve.forEach((a) => this._data[a] = s(this._data[a], r[a]));
   }
   /**
+   * get object representation
+   */
+  toObject() {
+    return this._data;
+  }
+  /**
    * scale each factor
    * @param scale - scale to apply
    */
@@ -4152,15 +4166,6 @@ class Cn {
     return ve.forEach((r) => this._data[r] *= s), delete this._combined, this;
   }
 }
-const ve = [
-  "altitude",
-  "grade",
-  "terrain",
-  "heat",
-  "dark",
-  "fatigue",
-  "strategy"
-];
 class au {
   constructor(s, r, a) {
     A(this, "factors", new Cn());

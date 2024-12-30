@@ -1,15 +1,18 @@
+export type FactorsObject = {
+    altitude: number;
+    grade: number;
+    terrain: number;
+    heat: number;
+    dark: number;
+    fatigue: number;
+    strategy: number;
+};
+export type FactorsKeys = keyof FactorsObject;
+export declare const factorKeys: FactorsKeys[];
 export declare class Factors {
     private _data;
     private _combined?;
-    constructor(value?: {
-        altitude?: number;
-        grade?: number;
-        terrain?: number;
-        heat?: number;
-        dark?: number;
-        fatigue?: number;
-        strategy?: number;
-    });
+    constructor(value?: Partial<FactorsObject>);
     init(val: number): this;
     get altitude(): number;
     set altitude(v: number);
@@ -32,10 +35,12 @@ export declare class Factors {
      */
     applyEach(f: (val: number, factor2: number) => number, factors: Factors): void;
     /**
+     * get object representation
+     */
+    toObject(): FactorsObject;
+    /**
      * scale each factor
      * @param scale - scale to apply
      */
     scaleEach(scale: number): this;
 }
-export type FactorKeys = 'altitude' | 'grade' | 'terrain' | 'heat' | 'dark' | 'fatigue' | 'strategy';
-export declare const factorKeys: FactorKeys[];

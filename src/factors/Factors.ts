@@ -1,5 +1,27 @@
+export type FactorsObject = {
+  altitude: number
+  grade: number
+  terrain: number
+  heat: number
+  dark: number
+  fatigue: number
+  strategy: number
+}
+
+export type FactorsKeys = keyof FactorsObject
+
+export const factorKeys: FactorsKeys[] = [
+  'altitude',
+  'grade',
+  'terrain',
+  'heat',
+  'dark',
+  'fatigue',
+  'strategy'
+]
+
 export class Factors {
-  private _data = {
+  private _data: FactorsObject = {
     altitude: 1,
     grade: 1,
     terrain: 1,
@@ -11,15 +33,7 @@ export class Factors {
 
   private _combined?: number
 
-  constructor(value?: {
-    altitude?: number
-    grade?: number
-    terrain?: number
-    heat?: number
-    dark?: number
-    fatigue?: number
-    strategy?: number
-  }) {
+  constructor(value?: Partial<FactorsObject>) {
     Object.assign(this, value)
   }
 
@@ -94,6 +108,13 @@ export class Factors {
   }
 
   /**
+   * get object representation
+   */
+  toObject() {
+    return this._data
+  }
+
+  /**
    * scale each factor
    * @param scale - scale to apply
    */
@@ -105,15 +126,3 @@ export class Factors {
     return this
   }
 }
-
-export type FactorKeys = 'altitude' | 'grade' | 'terrain' | 'heat' | 'dark' | 'fatigue' | 'strategy'
-
-export const factorKeys: FactorKeys[] = [
-  'altitude',
-  'grade',
-  'terrain',
-  'heat',
-  'dark',
-  'fatigue',
-  'strategy'
-]
