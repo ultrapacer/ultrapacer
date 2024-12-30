@@ -4,7 +4,7 @@ import { Plan } from '../models/Plan'
 import { PlanPoint } from '../models/PlanPoint'
 import { getAltitudeFactor } from './altitude'
 import { getDarkFactor } from './dark'
-import { Factors } from './Factors'
+import { factorKeys, Factors } from './Factors'
 import { getGradeFactor } from './grade'
 import { getHeatFactor } from './heat'
 import { getTerrainFactor } from './terrain'
@@ -53,5 +53,6 @@ export {
   getGradeFactor,
   getHeatFactor,
   getTerrainFactor,
+  factorKeys,
   Factors
 }

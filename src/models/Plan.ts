@@ -1,7 +1,7 @@
 import _, { pick } from 'lodash'
 
 import { createDebug } from '../debug'
-import { typeList as fKeys } from '../factors'
+import { typeList as fKeys, factorKeys } from '../factors'
 import { Strategy, StrategyValues } from '../factors/strategy'
 import { areSameWaypoint } from '../util/areSameWaypoint'
 import { interp, interpArray, req, rgte } from '../util/math'
@@ -318,8 +318,8 @@ export class Plan {
     // these are max and min values for each factor
     d('calculating stats.factors')
     const factors = _.fromPairs(
-      fKeys.map((k: string) => {
-        const values = this.points.map((p) => p.factors.get(k))
+      factorKeys.map((k) => {
+        const values = this.points.map((p) => p.factors[k])
         return [
           k,
           {

@@ -1,11 +1,13 @@
 export class Factors {
-  private _altitude: number = 1
-  private _grade: number = 1
-  private _terrain: number = 1
-  private _heat: number = 1
-  private _dark: number = 1
-  private _fatigue: number = 1
-  private _strategy: number = 1
+  private _data = {
+    altitude: 1,
+    grade: 1,
+    terrain: 1,
+    heat: 1,
+    dark: 1,
+    fatigue: 1,
+    strategy: 1
+  }
 
   private _combined?: number
 
@@ -22,105 +24,65 @@ export class Factors {
   }
 
   init(val: number) {
-    this._altitude = val
-    this._grade = val
-    this._terrain = val
-    this._heat = val
-    this._dark = val
-    this._fatigue = val
-    this._strategy = val
+    factorKeys.forEach((key) => (this._data[key] = val))
     return this
   }
 
   get altitude() {
-    return this._altitude
+    return this._data.altitude
   }
   set altitude(v) {
-    this._altitude = v
+    this._data.altitude = v
     delete this._combined
   }
   get grade() {
-    return this._grade
+    return this._data.grade
   }
   set grade(v) {
-    this._grade = v
+    this._data.grade = v
     delete this._combined
   }
   get terrain() {
-    return this._terrain
+    return this._data.terrain
   }
   set terrain(v) {
-    this._terrain = v
+    this._data.terrain = v
     delete this._combined
   }
   get heat() {
-    return this._heat
+    return this._data.heat
   }
   set heat(v) {
-    this._heat = v
+    this._data.heat = v
     delete this._combined
   }
   get dark() {
-    return this._dark
+    return this._data.dark
   }
   set dark(v) {
-    this._dark = v
+    this._data.dark = v
     delete this._combined
   }
   get fatigue() {
-    return this._fatigue
+    return this._data.fatigue
   }
   set fatigue(v) {
-    this._fatigue = v
+    this._data.fatigue = v
     delete this._combined
   }
   get strategy() {
-    return this._strategy
+    return this._data.strategy
   }
   set strategy(v) {
-    this._strategy = v
+    this._data.strategy = v
     delete this._combined
   }
 
   get combined() {
     if (this._combined === undefined) {
-      this._combined =
-        this._altitude *
-        this._grade *
-        this._terrain *
-        this._heat *
-        this._dark *
-        this._fatigue *
-        this._strategy
+      this._combined = factorKeys.reduce((acc, key) => acc * this._data[key], 1)
     }
     return this._combined
-  }
-
-  /**
-   * lookup a factor by name
-   * @param name - factor name
-   * @returns factor value
-   */
-  get(name: string): number {
-    switch (name) {
-      case 'altitude':
-        return this.altitude
-      case 'grade':
-        return this.grade
-      case 'terrain':
-        return this.terrain
-      case 'heat':
-        return this.heat
-      case 'dark':
-        return this.dark
-      case 'fatigue':
-        return this.fatigue
-      case 'strategy':
-        return this.strategy
-
-      default:
-        throw new Error(`${name} is not a valid factor`)
-    }
   }
 
   /**
@@ -128,13 +90,7 @@ export class Factors {
    * @param factors - factor list to apply
    */
   applyEach(f: (val: number, factor2: number) => number, factors: Factors) {
-    this._altitude = f(this._altitude, factors.altitude)
-    this._grade = f(this._grade, factors.grade)
-    this._terrain = f(this._terrain, factors.terrain)
-    this._heat = f(this._heat, factors.heat)
-    this._dark = f(this._dark, factors.dark)
-    this._fatigue = f(this._fatigue, factors.fatigue)
-    this._strategy = f(this._strategy, factors.strategy)
+    factorKeys.forEach((key) => (this._data[key] = f(this._data[key], factors[key])))
   }
 
   /**
@@ -142,16 +98,22 @@ export class Factors {
    * @param scale - scale to apply
    */
   scaleEach(scale: number) {
-    this._altitude *= scale
-    this._grade *= scale
-    this._terrain *= scale
-    this._heat *= scale
-    this._dark *= scale
-    this._fatigue *= scale
-    this._strategy *= scale
+    factorKeys.forEach((key) => (this._data[key] *= scale))
 
     delete this._combined
 
     return this
   }
 }
+
+export type FactorKeys = 'altitude' | 'grade' | 'terrain' | 'heat' | 'dark' | 'fatigue' | 'strategy'
+
+export const factorKeys: FactorKeys[] = [
+  'altitude',
+  'grade',
+  'terrain',
+  'heat',
+  'dark',
+  'fatigue',
+  'strategy'
+]
