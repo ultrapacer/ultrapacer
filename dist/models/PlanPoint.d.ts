@@ -15,7 +15,6 @@ export declare class PlanPoint {
     get factor(): number;
     factors: Factors;
     get grade(): number;
-    /** {@inheritDoc CoursePoint} */
     get lat(): number;
     get latlon(): import("sgeo").latlon;
     get loc(): number;

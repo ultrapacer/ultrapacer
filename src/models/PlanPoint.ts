@@ -29,7 +29,6 @@ export class PlanPoint {
     return this._point.grade
   }
 
-  /** {@inheritDoc CoursePoint} */
   get lat() {
     return this._point.lat
   }
