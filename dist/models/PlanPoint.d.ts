@@ -6,17 +6,26 @@ export declare class PlanPoint extends CoursePoint {
     _chunk?: PaceChunk;
     _plan: Plan;
     _source: CoursePoint;
+    /**
+     * delay in seconds at this point (not cumulative)
+     */
     delay: number;
     /**
      * elapsed time in seconds
      */
     elapsed: number;
+    /**
+     * combined pacing factor at this point
+     */
     get factor(): number;
     factors: Factors;
     /**
-     * np for a point is the same as its parent chunk
+     * normalized pace at this point (from last point) in seconds per kilometer
      */
     get np(): number;
+    /**
+     * pace at this point (from last point) in seconds per kilometer
+     */
     get pace(): number;
     /**
      * moving time in seconds

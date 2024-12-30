@@ -8,6 +8,9 @@ export class PlanPoint extends CoursePoint {
   _plan: Plan
   _source: CoursePoint
 
+  /**
+   * delay in seconds at this point (not cumulative)
+   */
   delay: number = 0
 
   /**
@@ -15,6 +18,9 @@ export class PlanPoint extends CoursePoint {
    */
   elapsed: number = 0
 
+  /**
+   * combined pacing factor at this point
+   */
   get factor() {
     return this.factors?.combined
   }
@@ -22,13 +28,16 @@ export class PlanPoint extends CoursePoint {
   factors: Factors = new Factors()
 
   /**
-   * np for a point is the same as its parent chunk
+   * normalized pace at this point (from last point) in seconds per kilometer
    */
   get np() {
     if (!this._chunk) throw new Error('PlanPoint._chunk not defined')
     return this._chunk?.np
   }
 
+  /**
+   * pace at this point (from last point) in seconds per kilometer
+   */
   get pace() {
     return this.np * this.factor
   }

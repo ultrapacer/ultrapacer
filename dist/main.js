@@ -5758,6 +5758,9 @@ class _u extends ws {
     A(this, "_chunk");
     A(this, "_plan");
     A(this, "_source");
+    /**
+     * delay in seconds at this point (not cumulative)
+     */
     A(this, "delay", 0);
     /**
      * elapsed time in seconds
@@ -5774,18 +5777,24 @@ class _u extends ws {
     A(this, "tod", 0);
     this._source = a, this._plan = r;
   }
+  /**
+   * combined pacing factor at this point
+   */
   get factor() {
     var r;
     return (r = this.factors) == null ? void 0 : r.combined;
   }
   /**
-   * np for a point is the same as its parent chunk
+   * normalized pace at this point (from last point) in seconds per kilometer
    */
   get np() {
     var r;
     if (!this._chunk) throw new Error("PlanPoint._chunk not defined");
     return (r = this._chunk) == null ? void 0 : r.np;
   }
+  /**
+   * pace at this point (from last point) in seconds per kilometer
+   */
   get pace() {
     return this.np * this.factor;
   }
