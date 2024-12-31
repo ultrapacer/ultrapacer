@@ -1,10 +1,20 @@
 import { expect, test } from 'vitest'
 
 import { getDarkFactor } from '../'
+import { Sun } from '~/models/Sun'
 
-const sun = { nadir: 0, nadirAltitude: -20, sunrise: 21600, sunset: 72000 }
-sun.dawn = sun.sunrise - 3600
-sun.dusk = sun.sunset + 3600
+const sunrise = 21600
+const sunset = 72000
+
+const sun: Sun = {
+  nadir: 0,
+  nadirAltitude: -20,
+  noon: sunrise + (sunset - sunrise) / 2,
+  sunrise,
+  sunset,
+  dawn: sunrise - 3600,
+  dusk: sunset + 3600
+}
 
 const model = {
   baseline: 0.025,
