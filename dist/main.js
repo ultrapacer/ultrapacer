@@ -4537,11 +4537,17 @@ class Pu {
   get alt() {
     return this.source.alt;
   }
+  set alt(s) {
+    this.source.alt = s;
+  }
   /**
    * latitude in degrees
    */
   get lat() {
     return this.source.lat;
+  }
+  set lat(s) {
+    this.source.lat = s;
   }
   /**
    * latitude and longitude object (see sgeo)
@@ -4554,6 +4560,9 @@ class Pu {
    */
   get lon() {
     return this.source.lon;
+  }
+  set lon(s) {
+    this.source.lon = s;
   }
 }
 class As extends Pu {

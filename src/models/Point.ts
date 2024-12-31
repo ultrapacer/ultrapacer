@@ -32,12 +32,18 @@ export class Point {
   get alt(): number {
     return this.source.alt
   }
+  set alt(value: number) {
+    this.source.alt = value
+  }
 
   /**
    * latitude in degrees
    */
   get lat(): number {
     return this.source.lat
+  }
+  set lat(value: number) {
+    this.source.lat = value
   }
 
   /**
@@ -52,6 +58,9 @@ export class Point {
    */
   get lon(): number {
     return this.source.lon
+  }
+  set lon(value: number) {
+    this.source.lon = value
   }
 
   /**

@@ -25,10 +25,12 @@ export declare class Point {
      * altitude in meters
      */
     get alt(): number;
+    set alt(value: number);
     /**
      * latitude in degrees
      */
     get lat(): number;
+    set lat(value: number);
     /**
      * latitude and longitude object (see sgeo)
      */
@@ -37,6 +39,7 @@ export declare class Point {
      * longitude in degrees
      */
     get lon(): number;
+    set lon(value: number);
     /**
      * source (parent) point/data
      */
