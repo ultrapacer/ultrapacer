@@ -4,8 +4,8 @@ import { Event } from './Event';
 import { Pacing } from './Pacing';
 import { PlanPoint } from './PlanPoint';
 import { PlanSplits } from './PlanSplits';
-import { Waypoint } from './Waypoint';
 import { DateWithTimezone } from './types';
+import { Waypoint } from './Waypoint';
 type DelaysInput = {
     waypoint: {
         site: string;

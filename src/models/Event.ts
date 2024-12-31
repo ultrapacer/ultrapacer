@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import { getPosition, getTimes } from 'suncalc'
 
 import { dateToTODSeconds } from '../util/dateToTODSeconds'

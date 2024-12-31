@@ -3,9 +3,9 @@ import { sprintf } from 'sprintf-js'
 
 import { createDebug } from '../debug'
 import { Factors, rollup } from '../factors'
-import { PlanPoint } from './PlanPoint'
 import { PaceChunk } from './PaceChunk'
 import { Plan } from './Plan'
+import { PlanPoint } from './PlanPoint'
 
 const d = createDebug('Pacing')
 

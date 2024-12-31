@@ -1,5 +1,5 @@
-import { StrategyElement } from './StrategyElement';
 import { Course } from '~/models';
+import { StrategyElement } from './StrategyElement';
 export type StrategyValues = {
     onset: number;
     value: number;

@@ -1,4 +1,3 @@
-import { PlanPoint } from '../../models/PlanPoint'
 import { HeatModel } from './HeatModel'
 
 /**

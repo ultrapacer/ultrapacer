@@ -4,7 +4,7 @@ import { Plan } from '../models/Plan'
 import { PlanPoint } from '../models/PlanPoint'
 import { getAltitudeFactor } from './altitude'
 import { getDarkFactor } from './dark'
-import { factorKeys, Factors, type FactorsObject, type FactorsKeys } from './Factors'
+import { factorKeys, Factors, type FactorsKeys, type FactorsObject } from './Factors'
 import { getGradeFactor } from './grade'
 import { getHeatFactor } from './heat'
 import { getTerrainFactor } from './terrain'
@@ -48,12 +48,12 @@ export { typeList } from './list'
 export { rollup } from './rollup'
 export { Strategy } from './strategy'
 export {
+  factorKeys,
+  Factors,
   getAltitudeFactor,
   getDarkFactor,
   getGradeFactor,
   getHeatFactor,
-  getTerrainFactor,
-  factorKeys,
-  Factors
+  getTerrainFactor
 }
-export type { FactorsObject, FactorsKeys }
+export type { FactorsKeys, FactorsObject }

@@ -1,10 +1,10 @@
 import { CoursePoint } from './CoursePoint';
 import { CourseSplits } from './CourseSplits';
+import { Event } from './Event';
 import { Site, type SiteData } from './Site';
 import { Track } from './Track';
-import { Waypoint } from './Waypoint';
 import { DateWithTimezone } from './types';
-import { Event } from './Event';
+import { Waypoint } from './Waypoint';
 export type TerrainTypeIndex = 'paved' | 'dirt road' | 'doubletrack' | 'singletrack' | 'technical';
 export declare const terrainTypes: {
     type: TerrainTypeIndex;

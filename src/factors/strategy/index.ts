@@ -1,9 +1,10 @@
 import _ from 'lodash'
 
+import { Course } from '~/models'
+
 import { adjust } from './adjust'
 import { defaults as def } from './default'
 import { StrategyElement } from './StrategyElement'
-import { Course } from '~/models'
 
 function getFact(loc: number, values: StrategyElement[], length: number) {
   let a = -adjust(values, length)

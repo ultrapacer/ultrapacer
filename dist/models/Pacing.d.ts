@@ -1,7 +1,7 @@
 import { Factors } from '../factors';
-import { PlanPoint } from './PlanPoint';
 import { PaceChunk } from './PaceChunk';
 import { Plan } from './Plan';
+import { PlanPoint } from './PlanPoint';
 export declare class Pacing {
     chunks: PaceChunk[];
     plan: Plan;

@@ -1,12 +1,13 @@
 import _ from 'lodash'
 
+import { isNumber } from '~/util/isNumber'
+
 import { Factors, rollup } from '../factors'
 import { Plan } from '.'
 import { Course } from './Course'
 import { CoursePoint } from './CoursePoint'
 import { PlanPoint } from './PlanPoint'
 import { Waypoint } from './Waypoint'
-import { isNumber } from '~/util/isNumber'
 
 /**
  * create Factors for segment for points between point1 and point2

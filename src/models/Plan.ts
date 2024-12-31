@@ -1,7 +1,7 @@
-import _, { pick } from 'lodash'
+import _ from 'lodash'
 
 import { createDebug } from '../debug'
-import { typeList as fKeys, factorKeys } from '../factors'
+import { factorKeys } from '../factors'
 import { Strategy, StrategyValues } from '../factors/strategy'
 import { areSameWaypoint } from '../util/areSameWaypoint'
 import { interp, interpArray, req, rgte } from '../util/math'
@@ -10,8 +10,8 @@ import { Event } from './Event'
 import { Pacing } from './Pacing'
 import { PlanPoint } from './PlanPoint'
 import { PlanSplits } from './PlanSplits'
-import { Waypoint } from './Waypoint'
 import { DateWithTimezone } from './types'
+import { Waypoint } from './Waypoint'
 
 const d = createDebug('models:Plan')
 

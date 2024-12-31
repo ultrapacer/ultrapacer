@@ -1,8 +1,241 @@
 var _0 = Object.defineProperty;
 var v0 = (f, s, r) => s in f ? _0(f, s, { enumerable: !0, configurable: !0, writable: !0, value: r }) : f[s] = r;
 var A = (f, s, r) => v0(f, typeof s != "symbol" ? s + "" : s, r);
+const m0 = {
+  rate: 6,
+  // %
+  span: 1e3,
+  // m
+  th: 750
+  // m
+};
+function vu(f, s) {
+  (s === null || typeof s > "u") && (s = m0);
+  let r = 0;
+  return Array.isArray(f) ? r = (f[0] + f[1]) / 2 : r = f, r <= s.th ? 1 : (1 + s.rate / s.span / 100) ** (r - s.th);
+}
+const iu = {
+  baseline: 0,
+  terrainScale: 1
+};
+function Nt(f, s = 0) {
+  return Math.round(f * 10 ** s) / 10 ** s;
+}
+function me(f, s, r, a, l) {
+  return r + (l - f) / (s - f) * (a - r);
+}
+function mu(f, s, r) {
+  let a = 0, l = 0;
+  const p = [];
+  for (a = 0; a < r.length; a++)
+    if (r[a] < f[l])
+      p.push(s[l]);
+    else {
+      for (; l < f.length - 1 && f[l + 1] <= r[a]; )
+        l++;
+      l === f.length - 1 || r[a] === f[l] ? p.push(s[l]) : p.push(me(f[l], f[l + 1], s[l], s[l + 1], r[a]));
+    }
+  return p;
+}
+function wu(f) {
+  let s, r, a, l, p = 0, d = 0, v = 0, y = 0, M = 0;
+  for (s = 0; s < f.length; s++)
+    r = f[s][0], a = f[s][1], l = f[s][2], M += l, p += l * r, v += l * (r * r), d += l * a, y += l * (r * a);
+  const I = (d * v - p * y) / (M * v - p * p);
+  return [(M * y - p * d) / (M * v - p * p), I];
+}
+function yu(f, s, r, a) {
+  let l = 0, p = 0;
+  const d = [];
+  return r.forEach((v) => {
+    for (; f[l] < v - a; )
+      l++;
+    for (l > 0 && f[l] >= v && l--; p < f.length - 1 && f[p + 1] <= v + a; )
+      p++;
+    p < f.length - 1 && f[p] <= v && p++;
+    const y = Math.max(a, Math.abs(v - f[l]) + 1e-3, Math.abs(v - f[p]) + 1e-3), M = [];
+    let I = 0;
+    for (let m = l; m <= p; m++)
+      I = (1 - (Math.abs(v - f[m]) / y) ** 3) ** 3, M.push([f[m], s[m], I]);
+    d.push(wu(M));
+  }), d;
+}
+function Ss(f, s, r) {
+  return Nt(f, r) < Nt(s, r);
+}
+function w0(f, s, r) {
+  return Nt(f, r) > Nt(s, r);
+}
+function we(f, s, r) {
+  return Nt(f, r) <= Nt(s, r);
+}
+function Ur(f, s, r) {
+  return Nt(f, r) >= Nt(s, r);
+}
+function $e(f, s, r) {
+  return Nt(f, r) === Nt(s, r);
+}
+const n_ = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  interp: me,
+  interpArray: mu,
+  linearRegression: wu,
+  req: $e,
+  rgt: w0,
+  rgte: Ur,
+  rlt: Ss,
+  rlte: we,
+  round: Nt,
+  wlslr: yu
+}, Symbol.toStringTag, { value: "Module" }));
+function y0(f, s) {
+  function r(a) {
+    return a < f.noon ? a + 86400 : a;
+  }
+  return s >= f.sunrise && s <= f.sunset ? 0 : !isNaN(f.dawn) && !isNaN(f.dusk) && (s <= f.dawn || s >= f.dusk) ? 1 : r(s) >= r(f.nadir) ? me(
+    r(isNaN(f.dawn) ? f.nadir : f.dawn),
+    r(f.sunrise),
+    1,
+    0,
+    r(s)
+  ) : me(
+    r(f.sunset),
+    r(isNaN(f.dusk) ? f.nadir : f.dusk),
+    0,
+    1,
+    r(s)
+  );
+}
+function Mu(f, s, r, a = iu) {
+  if (s === 1 || f >= r.sunrise && f <= r.sunset)
+    return 1;
+  (a === null || typeof a > "u") && (a = iu);
+  const l = r.nadirAltitude < -6 ? 1 : -(r.nadirAltitude / 6), p = (a.terrainScale * (s - 1) + a.baseline) * l, d = y0(r, f);
+  return 1 + p * d;
+}
+const ve = [
+  "altitude",
+  "grade",
+  "terrain",
+  "heat",
+  "dark",
+  "fatigue",
+  "strategy"
+];
+class Cn {
+  constructor(s) {
+    A(this, "_data", {
+      altitude: 1,
+      grade: 1,
+      terrain: 1,
+      heat: 1,
+      dark: 1,
+      fatigue: 1,
+      strategy: 1
+    });
+    A(this, "_combined");
+    Object.assign(this, s);
+  }
+  init(s) {
+    return ve.forEach((r) => this._data[r] = s), this;
+  }
+  get altitude() {
+    return this._data.altitude;
+  }
+  set altitude(s) {
+    this._data.altitude = s, delete this._combined;
+  }
+  get grade() {
+    return this._data.grade;
+  }
+  set grade(s) {
+    this._data.grade = s, delete this._combined;
+  }
+  get terrain() {
+    return this._data.terrain;
+  }
+  set terrain(s) {
+    this._data.terrain = s, delete this._combined;
+  }
+  get heat() {
+    return this._data.heat;
+  }
+  set heat(s) {
+    this._data.heat = s, delete this._combined;
+  }
+  get dark() {
+    return this._data.dark;
+  }
+  set dark(s) {
+    this._data.dark = s, delete this._combined;
+  }
+  get fatigue() {
+    return this._data.fatigue;
+  }
+  set fatigue(s) {
+    this._data.fatigue = s, delete this._combined;
+  }
+  get strategy() {
+    return this._data.strategy;
+  }
+  set strategy(s) {
+    this._data.strategy = s, delete this._combined;
+  }
+  get combined() {
+    return this._combined === void 0 && (this._combined = ve.reduce((s, r) => s * this._data[r], 1)), this._combined;
+  }
+  /**
+   * @param f - function to apply
+   * @param factors - factor list to apply
+   */
+  applyEach(s, r) {
+    ve.forEach((a) => this._data[a] = s(this._data[a], r[a]));
+  }
+  /**
+   * get object representation
+   */
+  toObject() {
+    return this._data;
+  }
+  /**
+   * scale each factor
+   * @param scale - scale to apply
+   */
+  scaleEach(s) {
+    return ve.forEach((r) => this._data[r] *= s), delete this._combined, this;
+  }
+}
+const M0 = {
+  // f = a*x^2 + b*x
+  // goes linear at lower and upper bounds
+  a: 21e-4,
+  b: 0.034,
+  lower: {
+    lim: -22,
+    m: -0.0584,
+    b: -0.0164
+  },
+  upper: {
+    lim: 16,
+    m: 0.1012,
+    b: 0.4624
+  }
+};
+function Cu(f, s) {
+  return (s === null || typeof s > "u") && (s = M0), f < s.lower.lim ? s.lower.m * f + s.lower.b : f > s.upper.lim ? s.upper.m * f + s.upper.b : s.a * f ** 2 + s.b * f + 1;
+}
+function Su(f, s) {
+  if (!s) return 1;
+  const r = f.tod;
+  let a = 1;
+  if (r > s.start && r < s.stop) {
+    const l = (r - s.start) / (s.stop - s.start) * Math.PI;
+    a += (s.max - s.baseline) * Math.sin(l) / 100;
+  }
+  return a += s.baseline / 100, a;
+}
 var kr = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : typeof global < "u" ? global : typeof self < "u" ? self : {};
-function vu(f) {
+function bu(f) {
   return f && f.__esModule && Object.prototype.hasOwnProperty.call(f, "default") ? f.default : f;
 }
 var Ue = { exports: {} };
@@ -14,9 +247,9 @@ var Ue = { exports: {} };
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
  * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  */
-var m0 = Ue.exports, iu;
-function w0() {
-  return iu || (iu = 1, function(f, s) {
+var C0 = Ue.exports, su;
+function S0() {
+  return su || (su = 1, function(f, s) {
     (function() {
       var r, a = "4.17.21", l = 200, p = "Unsupported core-js use. Try https://npms.io/search?q=ponyfill.", d = "Expected a function", v = "Invalid `variable` option passed into `_.template`", y = "__lodash_hash_undefined__", M = 500, I = "__lodash_placeholder__", m = 1, R = 2, F = 4, T = 1, E = 2, N = 1, q = 2, Z = 4, J = 8, it = 16, _t = 32, Bt = 64, St = 128, jt = 256, Ht = 512, Tt = 30, ye = "...", qe = 800, $r = 16, Me = 1, Ge = 2, qr = 3, Sn = 1 / 0, _n = 9007199254740991, ze = 17976931348623157e292, bn = NaN, k = 4294967295, $ = k - 1, G = k >>> 1, ft = [
         ["ary", St],
@@ -3675,15 +3908,114 @@ function print() { __p += __j.call(arguments, '') }
         }], j.prototype.clone = Pl, j.prototype.reverse = El, j.prototype.value = Rl, u.prototype.at = ap, u.prototype.chain = op, u.prototype.commit = up, u.prototype.next = cp, u.prototype.plant = fp, u.prototype.reverse = hp, u.prototype.toJSON = u.prototype.valueOf = u.prototype.value = pp, u.prototype.first = u.prototype.head, xe && (u.prototype[xe] = lp), u;
       }, oe = ol();
       Zn ? ((Zn.exports = oe)._ = oe, si._ = oe) : It._ = oe;
-    }).call(m0);
+    }).call(C0);
   }(Ue, Ue.exports)), Ue.exports;
 }
-var mu = w0();
-const K = /* @__PURE__ */ vu(mu);
-var Or = { exports: {} }, ls, su;
-function y0() {
-  if (su) return ls;
-  su = 1;
+var xu = S0();
+const K = /* @__PURE__ */ bu(xu);
+function Au(f, s) {
+  const r = K.findLast(s.terrain, (a) => we(a.percents[0] * s.dist, f.loc, 4));
+  return r ? r.value / 100 + 1 : 1;
+}
+const b0 = [
+  "altitude",
+  "grade",
+  "terrain",
+  "heat",
+  "dark",
+  "fatigue",
+  "strategy"
+];
+function bs(f) {
+  const s = new Cn().init(0);
+  return f.forEach(({ factors: r, dist: a }) => {
+    s.applyEach((l, p) => l + a * p, r);
+  }), s.scaleEach(1 / xu.sumBy(f, "dist")), s;
+}
+function x0(f, s) {
+  let r = 0, a = 0;
+  return f.forEach((l, p) => {
+    const d = p === f.length - 1 ? s : f[p + 1].onset, v = l.type === "linear" ? l.value / 2 : l.value;
+    a += (r + v) * (d - l.onset), r += l.value;
+  }), a / s;
+}
+function A0(f) {
+  return f < 30 ? 2 : f < 60 ? 5 : f < 90 ? 10 : f < 120 ? 15 : 20;
+}
+function I0(f, s, r) {
+  let a = -x0(s, r);
+  return s.forEach((l, p) => {
+    if (f >= l.onset) {
+      if (l.type === "step")
+        a += l.value;
+      else if (l.type === "linear") {
+        const d = p === s.length - 1 ? r : s[p + 1].onset;
+        f > d ? a += l.value : a += l.value * (f - l.onset) / (d - l.onset);
+      }
+    }
+  }), a;
+}
+class Iu {
+  constructor(s, r) {
+    A(this, "plan");
+    A(this, "values");
+    this.plan = s, this.values = r ? K.cloneDeep(r) : [{ onset: 0, value: A0(this.plan.course.dist), type: "linear" }];
+  }
+  /**
+   * Returns strategy factor at location.
+   *
+   * @param loc - The location (in km) to determine value.
+   * @returns  The strategy factor at input location.
+   */
+  at(s) {
+    return 1 + I0(s, this.values, this.plan.course.dist) / 100;
+  }
+  addValue(s) {
+    const r = this.values.findIndex((a) => a.onset >= s.onset);
+    r >= 0 ? this.values.splice(r, 0, s) : this.values.push(s);
+  }
+}
+function ws(f, s) {
+  return s === void 0 ? f : (f - 1) * s + 1;
+}
+function xs(f, s) {
+  f.factors || (f.factors = new Cn()), Object.assign(f.factors, {
+    grade: Cu(f.grade),
+    altitude: vu(f.alt),
+    terrain: Au(f, s)
+  });
+}
+function Wr(f, s) {
+  var r, a;
+  if (f.factors || (f.factors = new Cn()), xs(f, s.course), s) {
+    if (f.factors === void 0) throw new Error("no factors");
+    f.factors.strategy = s.strategy.at(f.loc), Object.assign(f.factors, {
+      heat: s.heatModel ? Su(f, s.heatModel) : 1,
+      dark: s.event.sun ? Mu(f.tod, f.factors.terrain, s.event.sun) : 1
+    });
+  }
+  f.factors.altitude = ws(f.factors.altitude, (r = s.scales) == null ? void 0 : r.altitude), f.factors.dark = ws(f.factors.dark, (a = s.scales) == null ? void 0 : a.dark);
+}
+const e_ = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  Factors: Cn,
+  Strategy: Iu,
+  applyScale: ws,
+  factorKeys: ve,
+  generateCourseFactors: xs,
+  generatePlanFactors: Wr,
+  getAltitudeFactor: vu,
+  getDarkFactor: Mu,
+  getGradeFactor: Cu,
+  getHeatFactor: Su,
+  getTerrainFactor: Au,
+  rollup: bs,
+  typeList: b0
+}, Symbol.toStringTag, { value: "Module" }));
+var Or = { exports: {} }, ls, au;
+function P0() {
+  if (au) return ls;
+  au = 1;
   var f = 1e3, s = f * 60, r = s * 60, a = r * 24, l = a * 7, p = a * 365.25;
   ls = function(I, m) {
     m = m || {};
@@ -3762,12 +4094,12 @@ function y0() {
   }
   return ls;
 }
-var fs, au;
-function M0() {
-  if (au) return fs;
-  au = 1;
+var fs, ou;
+function E0() {
+  if (ou) return fs;
+  ou = 1;
   function f(s) {
-    a.debug = a, a.default = a, a.coerce = M, a.disable = v, a.enable = p, a.enabled = y, a.humanize = y0(), a.destroy = I, Object.keys(s).forEach((m) => {
+    a.debug = a, a.default = a, a.coerce = M, a.disable = v, a.enable = p, a.enabled = y, a.humanize = P0(), a.destroy = I, Object.keys(s).forEach((m) => {
       a[m] = s[m];
     }), a.names = [], a.skips = [], a.formatters = {};
     function r(m) {
@@ -3855,9 +4187,9 @@ function M0() {
   }
   return fs = f, fs;
 }
-var ou;
-function C0() {
-  return ou || (ou = 1, function(f, s) {
+var uu;
+function R0() {
+  return uu || (uu = 1, function(f, s) {
     s.formatArgs = a, s.save = l, s.load = p, s.useColors = r, s.storage = d(), s.destroy = /* @__PURE__ */ (() => {
       let y = !1;
       return () => {
@@ -3985,7 +4317,7 @@ function C0() {
       } catch {
       }
     }
-    f.exports = M0()(s);
+    f.exports = E0()(s);
     const { formatters: v } = f.exports;
     v.j = function(y) {
       try {
@@ -3996,179 +4328,18 @@ function C0() {
     };
   }(Or, Or.exports)), Or.exports;
 }
-var S0 = C0();
-const b0 = /* @__PURE__ */ vu(S0), hs = {};
+var T0 = R0();
+const F0 = /* @__PURE__ */ bu(T0), hs = {};
 function Kn(f) {
   if (!hs[f]) {
-    const s = b0("ultraPacer:core");
+    const s = F0("ultraPacer:core");
     s(`loading debug for namespace "${f}"`), hs[f] = s.extend(f);
   }
   return hs[f];
 }
-function Nt(f, s = 0) {
-  return Math.round(f * 10 ** s) / 10 ** s;
-}
-function me(f, s, r, a, l) {
-  return r + (l - f) / (s - f) * (a - r);
-}
-function wu(f, s, r) {
-  let a = 0, l = 0;
-  const p = [];
-  for (a = 0; a < r.length; a++)
-    if (r[a] < f[l])
-      p.push(s[l]);
-    else {
-      for (; l < f.length - 1 && f[l + 1] <= r[a]; )
-        l++;
-      l === f.length - 1 || r[a] === f[l] ? p.push(s[l]) : p.push(me(f[l], f[l + 1], s[l], s[l + 1], r[a]));
-    }
-  return p;
-}
-function yu(f) {
-  let s, r, a, l, p = 0, d = 0, v = 0, y = 0, M = 0;
-  for (s = 0; s < f.length; s++)
-    r = f[s][0], a = f[s][1], l = f[s][2], M += l, p += l * r, v += l * (r * r), d += l * a, y += l * (r * a);
-  const I = (d * v - p * y) / (M * v - p * p);
-  return [(M * y - p * d) / (M * v - p * p), I];
-}
-function Mu(f, s, r, a) {
-  let l = 0, p = 0;
-  const d = [];
-  return r.forEach((v) => {
-    for (; f[l] < v - a; )
-      l++;
-    for (l > 0 && f[l] >= v && l--; p < f.length - 1 && f[p + 1] <= v + a; )
-      p++;
-    p < f.length - 1 && f[p] <= v && p++;
-    const y = Math.max(a, Math.abs(v - f[l]) + 1e-3, Math.abs(v - f[p]) + 1e-3), M = [];
-    let I = 0;
-    for (let m = l; m <= p; m++)
-      I = (1 - (Math.abs(v - f[m]) / y) ** 3) ** 3, M.push([f[m], s[m], I]);
-    d.push(yu(M));
-  }), d;
-}
-function Ss(f, s, r) {
-  return Nt(f, r) < Nt(s, r);
-}
-function x0(f, s, r) {
-  return Nt(f, r) > Nt(s, r);
-}
-function we(f, s, r) {
-  return Nt(f, r) <= Nt(s, r);
-}
-function Ur(f, s, r) {
-  return Nt(f, r) >= Nt(s, r);
-}
-function $e(f, s, r) {
-  return Nt(f, r) === Nt(s, r);
-}
-const n_ = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  interp: me,
-  interpArray: wu,
-  linearRegression: yu,
-  req: $e,
-  rgt: x0,
-  rgte: Ur,
-  rlt: Ss,
-  rlte: we,
-  round: Nt,
-  wlslr: Mu
-}, Symbol.toStringTag, { value: "Module" })), ve = [
-  "altitude",
-  "grade",
-  "terrain",
-  "heat",
-  "dark",
-  "fatigue",
-  "strategy"
-];
-class Cn {
-  constructor(s) {
-    A(this, "_data", {
-      altitude: 1,
-      grade: 1,
-      terrain: 1,
-      heat: 1,
-      dark: 1,
-      fatigue: 1,
-      strategy: 1
-    });
-    A(this, "_combined");
-    Object.assign(this, s);
-  }
-  init(s) {
-    return ve.forEach((r) => this._data[r] = s), this;
-  }
-  get altitude() {
-    return this._data.altitude;
-  }
-  set altitude(s) {
-    this._data.altitude = s, delete this._combined;
-  }
-  get grade() {
-    return this._data.grade;
-  }
-  set grade(s) {
-    this._data.grade = s, delete this._combined;
-  }
-  get terrain() {
-    return this._data.terrain;
-  }
-  set terrain(s) {
-    this._data.terrain = s, delete this._combined;
-  }
-  get heat() {
-    return this._data.heat;
-  }
-  set heat(s) {
-    this._data.heat = s, delete this._combined;
-  }
-  get dark() {
-    return this._data.dark;
-  }
-  set dark(s) {
-    this._data.dark = s, delete this._combined;
-  }
-  get fatigue() {
-    return this._data.fatigue;
-  }
-  set fatigue(s) {
-    this._data.fatigue = s, delete this._combined;
-  }
-  get strategy() {
-    return this._data.strategy;
-  }
-  set strategy(s) {
-    this._data.strategy = s, delete this._combined;
-  }
-  get combined() {
-    return this._combined === void 0 && (this._combined = ve.reduce((s, r) => s * this._data[r], 1)), this._combined;
-  }
-  /**
-   * @param f - function to apply
-   * @param factors - factor list to apply
-   */
-  applyEach(s, r) {
-    ve.forEach((a) => this._data[a] = s(this._data[a], r[a]));
-  }
-  /**
-   * get object representation
-   */
-  toObject() {
-    return this._data;
-  }
-  /**
-   * scale each factor
-   * @param scale - scale to apply
-   */
-  scaleEach(s) {
-    return ve.forEach((r) => this._data[r] *= s), delete this._combined, this;
-  }
-}
-var ps = {}, uu;
-function A0() {
-  return uu || (uu = 1, function(f) {
+var ps = {}, cu;
+function L0() {
+  return cu || (cu = 1, function(f) {
     f.parseDMS = function(r) {
       if (typeof l == "object") throw new TypeError("geo.parseDMS - dmsStr is [DOM?] object");
       if (typeof r == "number" && isFinite(r)) return Number(r);
@@ -4348,11 +4519,11 @@ function A0() {
     });
   }(ps)), ps;
 }
-var I0 = A0();
-function P0(f) {
+var k0 = L0();
+function O0(f) {
   return "latlon" in f;
 }
-class Cu {
+class Pu {
   constructor(s) {
     /**
      * source (parent) point/data
@@ -4376,7 +4547,7 @@ class Cu {
    * latitude and longitude object (see sgeo)
    */
   get latlon() {
-    return P0(this.source) ? this.source.latlon : new I0.latlon(this.lat, this.lon);
+    return O0(this.source) ? this.source.latlon : new k0.latlon(this.lat, this.lon);
   }
   /**
    * longitude in degrees
@@ -4385,7 +4556,7 @@ class Cu {
     return this.source.lon;
   }
 }
-class bs extends Cu {
+class As extends Pu {
   constructor(r, a, l) {
     super(r);
     A(this, "_trackData");
@@ -4398,10 +4569,10 @@ class bs extends Cu {
     return this._trackData.loc;
   }
 }
-function cu(f) {
+function lu(f) {
   return "_course" in f;
 }
-class ws extends bs {
+class ys extends As {
   constructor(r, a, l) {
     super(a, a.loc, a.grade);
     A(this, "_course");
@@ -4423,187 +4594,17 @@ class ws extends bs {
    * grade, scaled, as a percentage
    */
   get grade() {
-    return cu(this.source) ? this.source.grade : this.source.grade * (this.source.grade > 0 ? this._course.gainScale : this._course.lossScale);
+    return lu(this.source) ? this.source.grade : this.source.grade * (this.source.grade > 0 ? this._course.gainScale : this._course.lossScale);
   }
   /**
    * location, scaled, with loop, in kilometers
    */
   get loc() {
-    if (cu(this.source)) return this.source.loc;
+    if (lu(this.source)) return this.source.loc;
     let r = this.source.loc * this._course.distScale;
     return this.loop && (r += this._course.loopDist * this.loop), r;
   }
 }
-const E0 = {
-  rate: 6,
-  // %
-  span: 1e3,
-  // m
-  th: 750
-  // m
-};
-function Su(f, s) {
-  (s === null || typeof s > "u") && (s = E0);
-  let r = 0;
-  return Array.isArray(f) ? r = (f[0] + f[1]) / 2 : r = f, r <= s.th ? 1 : (1 + s.rate / s.span / 100) ** (r - s.th);
-}
-const lu = {
-  baseline: 0,
-  terrainScale: 1
-};
-function R0(f, s) {
-  function r(a) {
-    return a < f.noon ? a + 86400 : a;
-  }
-  return s >= f.sunrise && s <= f.sunset ? 0 : !isNaN(f.dawn) && !isNaN(f.dusk) && (s <= f.dawn || s >= f.dusk) ? 1 : r(s) >= r(f.nadir) ? me(
-    r(isNaN(f.dawn) ? f.nadir : f.dawn),
-    r(f.sunrise),
-    1,
-    0,
-    r(s)
-  ) : me(
-    r(f.sunset),
-    r(isNaN(f.dusk) ? f.nadir : f.dusk),
-    0,
-    1,
-    r(s)
-  );
-}
-function bu(f, s, r, a = lu) {
-  if (s === 1 || f >= r.sunrise && f <= r.sunset)
-    return 1;
-  (a === null || typeof a > "u") && (a = lu);
-  const l = r.nadirAltitude < -6 ? 1 : -(r.nadirAltitude / 6), p = (a.terrainScale * (s - 1) + a.baseline) * l, d = R0(r, f);
-  return 1 + p * d;
-}
-const T0 = {
-  // f = a*x^2 + b*x
-  // goes linear at lower and upper bounds
-  a: 21e-4,
-  b: 0.034,
-  lower: {
-    lim: -22,
-    m: -0.0584,
-    b: -0.0164
-  },
-  upper: {
-    lim: 16,
-    m: 0.1012,
-    b: 0.4624
-  }
-};
-function xu(f, s) {
-  return (s === null || typeof s > "u") && (s = T0), f < s.lower.lim ? s.lower.m * f + s.lower.b : f > s.upper.lim ? s.upper.m * f + s.upper.b : s.a * f ** 2 + s.b * f + 1;
-}
-function Au(f, s) {
-  if (!s) return 1;
-  const r = f.tod;
-  let a = 1;
-  if (r > s.start && r < s.stop) {
-    const l = (r - s.start) / (s.stop - s.start) * Math.PI;
-    a += (s.max - s.baseline) * Math.sin(l) / 100;
-  }
-  return a += s.baseline / 100, a;
-}
-function Iu(f, s) {
-  const r = K.findLast(s.terrain, (a) => we(a.percents[0] * s.dist, f.loc, 4));
-  return r ? r.value / 100 + 1 : 1;
-}
-const F0 = [
-  "altitude",
-  "grade",
-  "terrain",
-  "heat",
-  "dark",
-  "fatigue",
-  "strategy"
-];
-function xs(f) {
-  const s = new Cn().init(0);
-  return f.forEach(({ factors: r, dist: a }) => {
-    s.applyEach((l, p) => l + a * p, r);
-  }), s.scaleEach(1 / mu.sumBy(f, "dist")), s;
-}
-function L0(f, s) {
-  let r = 0, a = 0;
-  return f.forEach((l, p) => {
-    const d = p === f.length - 1 ? s : f[p + 1].onset, v = l.type === "linear" ? l.value / 2 : l.value;
-    a += (r + v) * (d - l.onset), r += l.value;
-  }), a / s;
-}
-function k0(f) {
-  return f < 30 ? 2 : f < 60 ? 5 : f < 90 ? 10 : f < 120 ? 15 : 20;
-}
-function O0(f, s, r) {
-  let a = -L0(s, r);
-  return s.forEach((l, p) => {
-    if (f >= l.onset) {
-      if (l.type === "step")
-        a += l.value;
-      else if (l.type === "linear") {
-        const d = p === s.length - 1 ? r : s[p + 1].onset;
-        f > d ? a += l.value : a += l.value * (f - l.onset) / (d - l.onset);
-      }
-    }
-  }), a;
-}
-class Pu {
-  constructor(s, r) {
-    A(this, "plan");
-    A(this, "values");
-    this.plan = s, this.values = r ? K.cloneDeep(r) : [{ onset: 0, value: k0(this.plan.course.dist), type: "linear" }];
-  }
-  /**
-   * Returns strategy factor at location.
-   *
-   * @param loc - The location (in km) to determine value.
-   * @returns  The strategy factor at input location.
-   */
-  at(s) {
-    return 1 + O0(s, this.values, this.plan.course.dist) / 100;
-  }
-  addValue(s) {
-    const r = this.values.findIndex((a) => a.onset >= s.onset);
-    r >= 0 ? this.values.splice(r, 0, s) : this.values.push(s);
-  }
-}
-function ys(f, s) {
-  return s === void 0 ? f : (f - 1) * s + 1;
-}
-function As(f, s) {
-  f.factors || (f.factors = new Cn()), Object.assign(f.factors, {
-    grade: xu(f.grade),
-    altitude: Su(f.alt),
-    terrain: Iu(f, s)
-  });
-}
-function Wr(f, s) {
-  var r, a;
-  if (f.factors || (f.factors = new Cn()), As(f, s.course), s) {
-    if (f.factors === void 0) throw new Error("no factors");
-    f.factors.strategy = s.strategy.at(f.loc), Object.assign(f.factors, {
-      heat: s.heatModel ? Au(f, s.heatModel) : 1,
-      dark: s.event.sun ? bu(f.tod, f.factors.terrain, s.event.sun) : 1
-    });
-  }
-  f.factors.altitude = ys(f.factors.altitude, (r = s.scales) == null ? void 0 : r.altitude), f.factors.dark = ys(f.factors.dark, (a = s.scales) == null ? void 0 : a.dark);
-}
-const e_ = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  Factors: Cn,
-  Strategy: Pu,
-  applyScale: ys,
-  factorKeys: ve,
-  generateCourseFactors: As,
-  generatePlanFactors: Wr,
-  getAltitudeFactor: Su,
-  getDarkFactor: bu,
-  getGradeFactor: xu,
-  getHeatFactor: Au,
-  getTerrainFactor: Iu,
-  rollup: xs,
-  typeList: F0
-}, Symbol.toStringTag, { value: "Module" }));
 function Eu(f) {
   switch (f) {
     case "kilometers":
@@ -4624,7 +4625,7 @@ function D0(f, s, r) {
     factors: p.factors,
     dist: d === a.length - 1 ? 0 : a[d + 1].loc - a[d].loc
   }));
-  return l.pop(), xs(l);
+  return l.pop(), bs(l);
 }
 class Ru {
   constructor(s) {
@@ -4810,7 +4811,7 @@ class W0 {
     }
     const m = (F, T, E, N) => {
       const q = E.alt - T.alt;
-      F[q > 0 ? "gain" : "loss"] += q * (q > 0 ? a.gainScale : a.lossScale), As(T, a);
+      F[q > 0 ? "gain" : "loss"] += q * (q > 0 ? a.gainScale : a.lossScale), xs(T, a);
       const Z = E.loc - T.loc;
       N.applyEach((J, it) => J + it * Z, T.factors);
     };
@@ -4828,135 +4829,9 @@ class W0 {
     return p;
   }
 }
-function Tu(f, s, r) {
-  if (f.loc > s.loc && r > f.loc || s.loc > f.loc && r > s.loc)
-    throw new Error("Input location must be between points");
-  const a = Math.abs(f.loc - r), l = f.latlon.bearingTo(s.latlon), { lat: p, lng: d } = f.latlon.destinationPoint(l, a), v = f.grade, y = me(f.loc, s.loc, f.alt, s.alt, r);
-  return new bs({ lat: p, lon: d, alt: y }, r, v);
-}
-function U0(f, s) {
-  return (typeof f == "object" ? String(f.id) : f) === (typeof s == "object" ? String(s.id) : s);
-}
-function Ms(f, s) {
-  return !!(f && s && U0(f.site, s.site) && f.loop === s.loop);
-}
-class fu {
-  constructor(s, r = 1) {
-    A(this, "_data");
-    A(this, "loop");
-    A(this, "site");
-    this._data = {}, this.site = s, this.loop = r;
-  }
-  get course() {
-    return this.site.course;
-  }
-  get name() {
-    return this.loop >= 2 && this.type !== "finish" ? `${this.site.name} ${this.loop}` : this.site.name;
-  }
-  get description() {
-    return this.site.description;
-  }
-  get loc() {
-    return (this.site.percent + this.loop - 1) * this.course.loopDist;
-  }
-  set loc(s) {
-    if (!K.isNumber(s)) throw new Error("Wrong format for Waypoint.loc");
-    this.type === "start" ? this.site.percent = 0 : this.type === "finish" ? this.site.percent = 1 : this.site.percent = s / this.course.loopDist % 1;
-  }
-  get lat() {
-    return this.site.lat;
-  }
-  get lon() {
-    return this.site.lon;
-  }
-  get alt() {
-    return this.site.alt;
-  }
-  get tier() {
-    return this.site.tier || 1;
-  }
-  get type() {
-    return this.site.type;
-  }
-  get hasTypicalDelay() {
-    return this.type === "aid" || this.type === "water" || this.loop >= 2 && this.type === "start";
-  }
-  get cutoff() {
-    var s;
-    if (this.tier === 1) {
-      const r = (s = this.site.cutoffs) == null ? void 0 : s.find((a) => a.loop === this.loop);
-      if (r)
-        return r.time;
-    }
-    return null;
-  }
-  set cutoff(s) {
-    var a;
-    const r = (a = this.site.cutoffs) == null ? void 0 : a.findIndex((l) => l.loop === this.loop);
-    r >= 0 ? s ? this.site.cutoffs[r].time = s : this.site.cutoffs.splice(r, 1) : s && (this.site.cutoffs || (this.site.cutoffs = []), this.site.cutoffs.push({ time: s, loop: this.loop }));
-  }
-  matchingSegment(s) {
-    return s.find((r) => r.waypoint && Ms(this, r.waypoint));
-  }
-}
-const Nr = Kn("models:Waypoint");
-class ds {
-  constructor(s, r) {
-    A(this, "_waypoints");
-    A(this, "_lat", NaN);
-    A(this, "_lon", NaN);
-    A(this, "_alt", NaN);
-    A(this, "_data");
-    A(this, "course");
-    A(this, "cutoffs", []);
-    A(this, "id");
-    A(this, "name");
-    A(this, "tier", 1);
-    A(this, "type");
-    A(this, "description");
-    this._data = { percent: r.percent }, this.course = s, this.id = r.id, this.type = r.type, this.name = r.name, r.cutoffs && (this.cutoffs = r.cutoffs), r.tier !== void 0 && (this.tier = r.tier), r.description && (this.description = r.description), Nr(`constructor: ${this.name}`);
-  }
-  /**
-   * @deprecated - use a version tracker like Plan and Course
-   */
-  clearCache() {
-    Nr(`clearCache: ${this.name}`), delete this._waypoints, this._lat = NaN, this._lon = NaN, this._alt = NaN;
-  }
-  get percent() {
-    switch (this.type) {
-      case "start":
-        return 0;
-      case "finish":
-        return 1;
-      default:
-        return this._data.percent;
-    }
-  }
-  set percent(s) {
-    this._data.percent = s;
-  }
-  get waypoints() {
-    return this._waypoints ? this._waypoints : (Nr(`generating waypoints array: ${this.name}`), this.type === "finish" ? this._waypoints = [new fu(this, this.course.loops)] : this._waypoints = K.range(this.course.loops).map((s) => new fu(this, s + 1)), this._waypoints);
-  }
-  get lat() {
-    return K.isNaN(this._lat) && this.refreshLLA(), this._lat;
-  }
-  get lon() {
-    return K.isNaN(this._lon) && this.refreshLLA(), this._lon;
-  }
-  get alt() {
-    return K.isNaN(this._alt) && this.refreshLLA(), this._alt;
-  }
-  // function updates the lat/lon/alt of a waypoint
-  refreshLLA() {
-    Nr("refreshLLA");
-    let s, r, a;
-    this.type === "start" ? { lat: s, lon: r, alt: a } = this.course.track.points[0] : this.type === "finish" ? { lat: s, lon: r, alt: a } = this.course.track.points[this.course.track.points.length - 1] : { lat: s, lon: r, alt: a } = this.course.track.getLLA(this.percent * this.course.track.dist), this._lat = s, this._lon = r, this._alt = a, this.course.version++;
-  }
-}
-var _s = { exports: {} }, hu;
-function $0() {
-  return hu || (hu = 1, function(f, s) {
+var ds = { exports: {} }, fu;
+function U0() {
+  return fu || (fu = 1, function(f, s) {
     (function() {
       var r = Math.PI, a = Math.sin, l = Math.cos, p = Math.tan, d = Math.asin, v = Math.atan2, y = Math.acos, M = r / 180, I = 1e3 * 60 * 60 * 24, m = 2440588, R = 2451545;
       function F(k) {
@@ -5086,9 +4961,9 @@ function $0() {
         return Kt && (mn.rise = bn(nt, Kt)), Ft && (mn.set = bn(nt, Ft)), !Kt && !Ft && (mn[Lt > 0 ? "alwaysUp" : "alwaysDown"] = !0), mn;
       }, f.exports = Tt;
     })();
-  }(_s)), _s.exports;
+  }(ds)), ds.exports;
 }
-var pu = $0();
+var hu = U0();
 function Hn(f, s) {
   const r = f.toLocaleString([], {
     hour: "2-digit",
@@ -5099,7 +4974,7 @@ function Hn(f, s) {
   }).split(":").map((a) => Number(a));
   return r[0] * 60 * 60 + r[1] * 60 + r[2];
 }
-class q0 {
+class $0 {
   constructor(s) {
     A(this, "nadir", 0);
     A(this, "dawn", 0);
@@ -5111,7 +4986,7 @@ class q0 {
     Object.assign(this, s);
   }
 }
-class Fu {
+class Tu {
   constructor(s, r, a, l) {
     A(this, "start");
     A(this, "lat");
@@ -5120,8 +4995,8 @@ class Fu {
     A(this, "sun");
     A(this, "startTime");
     this.start = s, this.lat = a, this.lon = l, this.timezone = r;
-    const p = pu.getTimes(this.start, this.lat, this.lon), d = pu.getPosition(p.nadir, this.lat, this.lon);
-    this.sun = new q0({
+    const p = hu.getTimes(this.start, this.lat, this.lon), d = hu.getPosition(p.nadir, this.lat, this.lon);
+    this.sun = new $0({
       nadir: Hn(p.nadir, this.timezone),
       dawn: Hn(p.dawn, this.timezone),
       sunrise: Hn(p.sunrise, this.timezone),
@@ -5139,6 +5014,132 @@ class Fu {
   // return seconds since midnight for an input elapsed amount of time since start
   elapsedToTimeOfDay(s) {
     return (this.startTime + s) % 86400;
+  }
+}
+function Fu(f, s, r) {
+  if (f.loc > s.loc && r > f.loc || s.loc > f.loc && r > s.loc)
+    throw new Error("Input location must be between points");
+  const a = Math.abs(f.loc - r), l = f.latlon.bearingTo(s.latlon), { lat: p, lng: d } = f.latlon.destinationPoint(l, a), v = f.grade, y = me(f.loc, s.loc, f.alt, s.alt, r);
+  return new As({ lat: p, lon: d, alt: y }, r, v);
+}
+function q0(f, s) {
+  return (typeof f == "object" ? String(f.id) : f) === (typeof s == "object" ? String(s.id) : s);
+}
+function Ms(f, s) {
+  return !!(f && s && q0(f.site, s.site) && f.loop === s.loop);
+}
+class pu {
+  constructor(s, r = 1) {
+    A(this, "_data");
+    A(this, "loop");
+    A(this, "site");
+    this._data = {}, this.site = s, this.loop = r;
+  }
+  get course() {
+    return this.site.course;
+  }
+  get name() {
+    return this.loop >= 2 && this.type !== "finish" ? `${this.site.name} ${this.loop}` : this.site.name;
+  }
+  get description() {
+    return this.site.description;
+  }
+  get loc() {
+    return (this.site.percent + this.loop - 1) * this.course.loopDist;
+  }
+  set loc(s) {
+    if (!K.isNumber(s)) throw new Error("Wrong format for Waypoint.loc");
+    this.type === "start" ? this.site.percent = 0 : this.type === "finish" ? this.site.percent = 1 : this.site.percent = s / this.course.loopDist % 1;
+  }
+  get lat() {
+    return this.site.lat;
+  }
+  get lon() {
+    return this.site.lon;
+  }
+  get alt() {
+    return this.site.alt;
+  }
+  get tier() {
+    return this.site.tier || 1;
+  }
+  get type() {
+    return this.site.type;
+  }
+  get hasTypicalDelay() {
+    return this.type === "aid" || this.type === "water" || this.loop >= 2 && this.type === "start";
+  }
+  get cutoff() {
+    var s;
+    if (this.tier === 1) {
+      const r = (s = this.site.cutoffs) == null ? void 0 : s.find((a) => a.loop === this.loop);
+      if (r)
+        return r.time;
+    }
+    return null;
+  }
+  set cutoff(s) {
+    var a;
+    const r = (a = this.site.cutoffs) == null ? void 0 : a.findIndex((l) => l.loop === this.loop);
+    r >= 0 ? s ? this.site.cutoffs[r].time = s : this.site.cutoffs.splice(r, 1) : s && (this.site.cutoffs || (this.site.cutoffs = []), this.site.cutoffs.push({ time: s, loop: this.loop }));
+  }
+  matchingSegment(s) {
+    return s.find((r) => r.waypoint && Ms(this, r.waypoint));
+  }
+}
+const Nr = Kn("models:Waypoint");
+class _s {
+  constructor(s, r) {
+    A(this, "_waypoints");
+    A(this, "_lat", NaN);
+    A(this, "_lon", NaN);
+    A(this, "_alt", NaN);
+    A(this, "_data");
+    A(this, "course");
+    A(this, "cutoffs", []);
+    A(this, "id");
+    A(this, "name");
+    A(this, "tier", 1);
+    A(this, "type");
+    A(this, "description");
+    this._data = { percent: r.percent }, this.course = s, this.id = r.id, this.type = r.type, this.name = r.name, r.cutoffs && (this.cutoffs = r.cutoffs), r.tier !== void 0 && (this.tier = r.tier), r.description && (this.description = r.description), Nr(`constructor: ${this.name}`);
+  }
+  /**
+   * @deprecated - use a version tracker like Plan and Course
+   */
+  clearCache() {
+    Nr(`clearCache: ${this.name}`), delete this._waypoints, this._lat = NaN, this._lon = NaN, this._alt = NaN;
+  }
+  get percent() {
+    switch (this.type) {
+      case "start":
+        return 0;
+      case "finish":
+        return 1;
+      default:
+        return this._data.percent;
+    }
+  }
+  set percent(s) {
+    this._data.percent = s;
+  }
+  get waypoints() {
+    return this._waypoints ? this._waypoints : (Nr(`generating waypoints array: ${this.name}`), this.type === "finish" ? this._waypoints = [new pu(this, this.course.loops)] : this._waypoints = K.range(this.course.loops).map((s) => new pu(this, s + 1)), this._waypoints);
+  }
+  get lat() {
+    return K.isNaN(this._lat) && this.refreshLLA(), this._lat;
+  }
+  get lon() {
+    return K.isNaN(this._lon) && this.refreshLLA(), this._lon;
+  }
+  get alt() {
+    return K.isNaN(this._alt) && this.refreshLLA(), this._alt;
+  }
+  // function updates the lat/lon/alt of a waypoint
+  refreshLLA() {
+    Nr("refreshLLA");
+    let s, r, a;
+    this.type === "start" ? { lat: s, lon: r, alt: a } = this.course.track.points[0] : this.type === "finish" ? { lat: s, lon: r, alt: a } = this.course.track.points[this.course.track.points.length - 1] : { lat: s, lon: r, alt: a } = this.course.track.getLLA(this.percent * this.course.track.dist), this._lat = s, this._lon = r, this._alt = a, this.course.version++;
   }
 }
 const We = Kn("models:Course"), G0 = [
@@ -5197,7 +5198,7 @@ class r_ {
   get event() {
     if ("event" in this.cache) return this.cache.event;
     if (this._data.start)
-      return this.cache.event = new Fu(
+      return this.cache.event = new Tu(
         this._data.start.date,
         this._data.start.timezone,
         this.points[0].lat,
@@ -5260,7 +5261,7 @@ class r_ {
     We("generating points array"), this.cache.points = new Array(this.track.points.length * this.loops);
     for (let s = 0; s < this.loops; s++)
       for (let r = 0; r < this.track.points.length; r++)
-        this.points[r + s * this.track.points.length] = new ws(
+        this.points[r + s * this.track.points.length] = new ys(
           this,
           this.track.points[r],
           s
@@ -5273,14 +5274,14 @@ class r_ {
   get sites() {
     var s;
     if ("sites" in this.cache) return this.cache.sites;
-    if (this.cache.sites = ((s = this._data.sites) == null ? void 0 : s.map((r) => new ds(this, r))) || [
-      new ds(this, {
+    if (this.cache.sites = ((s = this._data.sites) == null ? void 0 : s.map((r) => new _s(this, r))) || [
+      new _s(this, {
         id: String(K.random(1e4, 2e4)),
         name: "Start",
         type: "start",
         percent: 0
       }),
-      new ds(this, {
+      new _s(this, {
         id: String(K.random(3e4, 4e4)),
         name: "Finish",
         type: "finish",
@@ -5382,11 +5383,11 @@ class r_ {
     const a = this.points.findIndex((M) => Ur(M.loc, s, 4)), l = this.points[a];
     if ($e(l.loc, s, 4)) return l;
     We(`getPoint: ${r ? "inserting" : "creating"} new CoursePoint at ${s}`);
-    const p = a - 1, d = this.points[p], v = Tu(
+    const p = a - 1, d = this.points[p], v = Fu(
       d.source,
       l.source,
       s % this.loopDist / this.distScale
-    ), y = new ws(this, v, Math.floor(s / this.loopDist));
+    ), y = new ys(this, v, Math.floor(s / this.loopDist));
     return r && this.points.splice(a, 0, y), y;
   }
   locationsToBreaks(s) {
@@ -5663,7 +5664,7 @@ class J0 {
     delete this._factor;
   }
   get factors() {
-    return ln("factors:get"), this._factors || (ln("factors:update"), this._factors = xs(this.chunks)), this._factors;
+    return ln("factors:get"), this._factors || (ln("factors:update"), this._factors = bs(this.chunks)), this._factors;
   }
   /**
    * check if this pacing is current
@@ -5773,7 +5774,7 @@ class J0 {
     }), s.constraints = [s.constraints[0], r.constraints[1]], this.chunks.splice(l, 1);
   }
 }
-class _u extends ws {
+class _u extends ys {
   constructor(r, a) {
     super(r.course, a, a.loop);
     A(this, "_plan");
@@ -5979,7 +5980,7 @@ class i_ {
   get event() {
     if ("event" in this.cache) return this.cache.event;
     if (this._data.start)
-      return this.cache.event = new Fu(
+      return this.cache.event = new Tu(
         this._data.start.date,
         this._data.start.timezone,
         this.points[0].lat,
@@ -6003,7 +6004,7 @@ class i_ {
         M >= 0 && M <= this.points[this.points.length - 1].elapsed && s.push({ event: y.event, elapsed: M });
       });
     s.sort((d, v) => d.elapsed - v.elapsed);
-    const l = wu(
+    const l = mu(
       this.points.map((d) => d.elapsed),
       this.points.map((d) => d.loc),
       s.map((d) => d.elapsed)
@@ -6076,7 +6077,7 @@ class i_ {
     }), this.cache.stats = { factors: s, sun: r }, this.cache.stats;
   }
   get strategy() {
-    return "strategy" in this.cache ? this.cache.strategy : this.cache.strategy = new Pu(this, this._data.strategy);
+    return "strategy" in this.cache ? this.cache.strategy : this.cache.strategy = new Iu(this, this._data.strategy);
   }
   /**
    * Target time in seconds
@@ -6170,7 +6171,7 @@ class Q0 {
   }
 }
 const Lu = (f, s, r, a) => {
-  const l = Mu(f, s, r, a), p = [];
+  const l = yu(f, s, r, a), p = [];
   return r.forEach((d, v) => {
     let y = l[v][0] / 10;
     y > 50 ? y = 50 : y < -50 && (y = -50);
@@ -6203,8 +6204,8 @@ class Is {
     A(this, "loss");
     A(this, "points");
     Br("Creating new Track object");
-    const r = s.map((M) => new Cu(M)), a = j0(r), l = V0(r, a);
-    this.points = r.map((M, I) => new bs(M, a[I], l[I])), Br(`set-points - ${r.length} points`), Br("Calculating"), this.dist = this.points[this.points.length - 1].loc;
+    const r = s.map((M) => new Pu(M)), a = j0(r), l = V0(r, a);
+    this.points = r.map((M, I) => new As(M, a[I], l[I])), Br(`set-points - ${r.length} points`), Br("Calculating"), this.dist = this.points[this.points.length - 1].loc;
     let p = 0, d = 0, v = 0, y = this.points[0].alt;
     this.points.forEach((M) => {
       v = M.alt - y, v < 0 ? d += v : p += v, y = M.alt;
@@ -6223,7 +6224,7 @@ class Is {
     if (s === 0) r = this.points[0];
     else {
       const a = this.points.findIndex((l) => l.loc >= s);
-      r = Tu(this.points[a - 1], this.points[a], s);
+      r = Fu(this.points[a - 1], this.points[a], s);
     }
     return K.pick(r, ["lat", "lon", "alt"]);
   }
@@ -6288,26 +6289,26 @@ const a_ = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
 export {
   r_ as Course,
   z0 as CourseCutoff,
-  ws as CoursePoint,
+  ys as CoursePoint,
   N0 as CourseSegment,
-  Fu as Event,
+  Tu as Event,
   Cn as Factors,
   J0 as Pacing,
   i_ as Plan,
   _u as PlanPoint,
   B0 as PlanSegment,
-  Cu as Point,
-  ds as Site,
-  Pu as Strategy,
+  Pu as Point,
+  _s as Site,
+  Iu as Strategy,
   Is as Track,
-  bs as TrackPoint,
-  fu as Waypoint,
-  L0 as adjustStrategy,
+  As as TrackPoint,
+  pu as Waypoint,
+  x0 as adjustStrategy,
   s_ as createTrackFromArrays,
   e_ as factors,
-  Tu as interpolatePoint,
+  Fu as interpolatePoint,
   n_ as math,
-  R0 as scaleDark,
+  y0 as scaleDark,
   G0 as terrainTypes,
   a_ as util
 };

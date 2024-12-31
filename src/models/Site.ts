@@ -107,7 +107,7 @@ export class Site {
   refreshLLA() {
     d('refreshLLA')
 
-    let lat, lon, alt, ind
+    let lat, lon, alt
 
     // if start use start lla
     if (this.type === 'start') {
