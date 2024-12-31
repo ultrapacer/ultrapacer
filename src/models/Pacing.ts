@@ -163,6 +163,12 @@ export class Pacing {
 
     d(`pacing status=${this.status.success ? 'PASS' : 'FAIL'}.`)
 
+    // clear out any interpolated points from previous runs
+    while (this.plan.points.find((p) => p.interpolated)) {
+      const i = this.plan.points.findIndex((p) => p.interpolated)
+      this.plan.points.splice(i, 1)
+    }
+
     this.version = this.plan.version
   }
 
