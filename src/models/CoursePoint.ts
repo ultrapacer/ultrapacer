@@ -30,6 +30,11 @@ export class CoursePoint extends TrackPoint {
   }
 
   /**
+   * flag for interpolated points (not part of original course)
+   */
+  interpolated?: boolean
+
+  /**
    * location, scaled, with loop, in kilometers
    */
   get loc(): number {

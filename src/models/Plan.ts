@@ -456,7 +456,7 @@ export class Plan {
     const p1 = this.points[i1]
 
     // create a new point
-    const point = new PlanPoint(this, this.course.getPoint(loc, insert))
+    const point = new PlanPoint(this, this.course.getPoint(loc))
 
     // add in interpolated time values if they exist
     if (!isNaN(p1.time) && !isNaN(p2.time)) {

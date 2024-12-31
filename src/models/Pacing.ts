@@ -97,6 +97,12 @@ export class Pacing {
     d2('clearing cache')
     this.clearCache()
 
+    // clear out any interpolated points from previous runs
+    while (this.plan.points.find((p) => p.interpolated)) {
+      const i = this.plan.points.findIndex((p) => p.interpolated)
+      this.plan.points.splice(i, 1)
+    }
+
     d2('adding points at each terrain factor break')
     this.plan.course.terrain?.forEach((tf) =>
       this.plan.getPoint(tf.percents[0] * this.plan.course.dist, true)

@@ -163,13 +163,12 @@ export declare class Course {
     constructor(track: Track, data: CourseData);
     update(data: CourseUpdateData): void;
     /**
-     * Finds and optionally inserts a point at an input location.
+     * Finds or creates a point at an input location.
      *
      * @param loc - The location (in km) to determine value.
-     * @param insert - Whether to also insert a created point into the points array. Defaults to false.
      * @returns The CoursePoint at input location.
      */
-    getPoint(loc: number, insert?: boolean): CoursePoint;
+    getPoint(loc: number): CoursePoint;
     locationsToBreaks(locations: number[]): {
         start: number;
         end: number;

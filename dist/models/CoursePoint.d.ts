@@ -15,6 +15,10 @@ export declare class CoursePoint extends TrackPoint {
      */
     get grade(): number;
     /**
+     * flag for interpolated points (not part of original course)
+     */
+    interpolated?: boolean;
+    /**
      * location, scaled, with loop, in kilometers
      */
     get loc(): number;

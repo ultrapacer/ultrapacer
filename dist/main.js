@@ -38,25 +38,25 @@ function mu(f, s, r) {
   return p;
 }
 function wu(f) {
-  let s, r, a, l, p = 0, d = 0, v = 0, y = 0, M = 0;
+  let s, r, a, l, p = 0, d = 0, _ = 0, y = 0, M = 0;
   for (s = 0; s < f.length; s++)
-    r = f[s][0], a = f[s][1], l = f[s][2], M += l, p += l * r, v += l * (r * r), d += l * a, y += l * (r * a);
-  const I = (d * v - p * y) / (M * v - p * p);
-  return [(M * y - p * d) / (M * v - p * p), I];
+    r = f[s][0], a = f[s][1], l = f[s][2], M += l, p += l * r, _ += l * (r * r), d += l * a, y += l * (r * a);
+  const I = (d * _ - p * y) / (M * _ - p * p);
+  return [(M * y - p * d) / (M * _ - p * p), I];
 }
 function yu(f, s, r, a) {
   let l = 0, p = 0;
   const d = [];
-  return r.forEach((v) => {
-    for (; f[l] < v - a; )
+  return r.forEach((_) => {
+    for (; f[l] < _ - a; )
       l++;
-    for (l > 0 && f[l] >= v && l--; p < f.length - 1 && f[p + 1] <= v + a; )
+    for (l > 0 && f[l] >= _ && l--; p < f.length - 1 && f[p + 1] <= _ + a; )
       p++;
-    p < f.length - 1 && f[p] <= v && p++;
-    const y = Math.max(a, Math.abs(v - f[l]) + 1e-3, Math.abs(v - f[p]) + 1e-3), M = [];
+    p < f.length - 1 && f[p] <= _ && p++;
+    const y = Math.max(a, Math.abs(_ - f[l]) + 1e-3, Math.abs(_ - f[p]) + 1e-3), M = [];
     let I = 0;
     for (let m = l; m <= p; m++)
-      I = (1 - (Math.abs(v - f[m]) / y) ** 3) ** 3, M.push([f[m], s[m], I]);
+      I = (1 - (Math.abs(_ - f[m]) / y) ** 3) ** 3, M.push([f[m], s[m], I]);
     d.push(wu(M));
   }), d;
 }
@@ -251,7 +251,7 @@ var C0 = Ue.exports, su;
 function S0() {
   return su || (su = 1, function(f, s) {
     (function() {
-      var r, a = "4.17.21", l = 200, p = "Unsupported core-js use. Try https://npms.io/search?q=ponyfill.", d = "Expected a function", v = "Invalid `variable` option passed into `_.template`", y = "__lodash_hash_undefined__", M = 500, I = "__lodash_placeholder__", m = 1, R = 2, F = 4, T = 1, E = 2, N = 1, q = 2, Z = 4, J = 8, it = 16, _t = 32, Bt = 64, St = 128, jt = 256, Ht = 512, Tt = 30, ye = "...", qe = 800, $r = 16, Me = 1, Ge = 2, qr = 3, Sn = 1 / 0, _n = 9007199254740991, ze = 17976931348623157e292, bn = NaN, k = 4294967295, $ = k - 1, G = k >>> 1, ft = [
+      var r, a = "4.17.21", l = 200, p = "Unsupported core-js use. Try https://npms.io/search?q=ponyfill.", d = "Expected a function", _ = "Invalid `variable` option passed into `_.template`", y = "__lodash_hash_undefined__", M = 500, I = "__lodash_placeholder__", m = 1, R = 2, F = 4, T = 1, E = 2, N = 1, q = 2, Z = 4, J = 8, it = 16, _t = 32, Bt = 64, St = 128, jt = 256, Ht = 512, Tt = 30, ye = "...", qe = 800, $r = 16, Me = 1, Ge = 2, qr = 3, Sn = 1 / 0, _n = 9007199254740991, ze = 17976931348623157e292, bn = NaN, k = 4294967295, $ = k - 1, G = k >>> 1, ft = [
         ["ary", St],
         ["bind", N],
         ["bindKey", q],
@@ -519,281 +519,281 @@ function S0() {
         "\u2029": "u2029"
       }, Oc = parseFloat, Dc = parseInt, Xs = typeof kr == "object" && kr && kr.Object === Object && kr, Nc = typeof self == "object" && self && self.Object === Object && self, It = Xs || Nc || Function("return this")(), si = s && !s.nodeType && s, Zn = si && !0 && f && !f.nodeType && f, Qs = Zn && Zn.exports === si, ai = Qs && Xs.process, nn = function() {
         try {
-          var _ = Zn && Zn.require && Zn.require("util").types;
-          return _ || ai && ai.binding && ai.binding("util");
+          var v = Zn && Zn.require && Zn.require("util").types;
+          return v || ai && ai.binding && ai.binding("util");
         } catch {
         }
       }(), Vs = nn && nn.isArrayBuffer, js = nn && nn.isDate, ta = nn && nn.isMap, na = nn && nn.isRegExp, ea = nn && nn.isSet, ra = nn && nn.isTypedArray;
-      function Zt(_, S, C) {
+      function Zt(v, S, C) {
         switch (C.length) {
           case 0:
-            return _.call(S);
+            return v.call(S);
           case 1:
-            return _.call(S, C[0]);
+            return v.call(S, C[0]);
           case 2:
-            return _.call(S, C[0], C[1]);
+            return v.call(S, C[0], C[1]);
           case 3:
-            return _.call(S, C[0], C[1], C[2]);
+            return v.call(S, C[0], C[1], C[2]);
         }
-        return _.apply(S, C);
+        return v.apply(S, C);
       }
-      function Bc(_, S, C, O) {
-        for (var z = -1, et = _ == null ? 0 : _.length; ++z < et; ) {
-          var bt = _[z];
-          S(O, bt, C(bt), _);
+      function Bc(v, S, C, O) {
+        for (var z = -1, et = v == null ? 0 : v.length; ++z < et; ) {
+          var bt = v[z];
+          S(O, bt, C(bt), v);
         }
         return O;
       }
-      function en(_, S) {
-        for (var C = -1, O = _ == null ? 0 : _.length; ++C < O && S(_[C], C, _) !== !1; )
+      function en(v, S) {
+        for (var C = -1, O = v == null ? 0 : v.length; ++C < O && S(v[C], C, v) !== !1; )
           ;
-        return _;
+        return v;
       }
-      function Wc(_, S) {
-        for (var C = _ == null ? 0 : _.length; C-- && S(_[C], C, _) !== !1; )
+      function Wc(v, S) {
+        for (var C = v == null ? 0 : v.length; C-- && S(v[C], C, v) !== !1; )
           ;
-        return _;
+        return v;
       }
-      function ia(_, S) {
-        for (var C = -1, O = _ == null ? 0 : _.length; ++C < O; )
-          if (!S(_[C], C, _))
+      function ia(v, S) {
+        for (var C = -1, O = v == null ? 0 : v.length; ++C < O; )
+          if (!S(v[C], C, v))
             return !1;
         return !0;
       }
-      function On(_, S) {
-        for (var C = -1, O = _ == null ? 0 : _.length, z = 0, et = []; ++C < O; ) {
-          var bt = _[C];
-          S(bt, C, _) && (et[z++] = bt);
+      function On(v, S) {
+        for (var C = -1, O = v == null ? 0 : v.length, z = 0, et = []; ++C < O; ) {
+          var bt = v[C];
+          S(bt, C, v) && (et[z++] = bt);
         }
         return et;
       }
-      function Ye(_, S) {
-        var C = _ == null ? 0 : _.length;
-        return !!C && ie(_, S, 0) > -1;
+      function Ye(v, S) {
+        var C = v == null ? 0 : v.length;
+        return !!C && ie(v, S, 0) > -1;
       }
-      function oi(_, S, C) {
-        for (var O = -1, z = _ == null ? 0 : _.length; ++O < z; )
-          if (C(S, _[O]))
+      function oi(v, S, C) {
+        for (var O = -1, z = v == null ? 0 : v.length; ++O < z; )
+          if (C(S, v[O]))
             return !0;
         return !1;
       }
-      function gt(_, S) {
-        for (var C = -1, O = _ == null ? 0 : _.length, z = Array(O); ++C < O; )
-          z[C] = S(_[C], C, _);
+      function gt(v, S) {
+        for (var C = -1, O = v == null ? 0 : v.length, z = Array(O); ++C < O; )
+          z[C] = S(v[C], C, v);
         return z;
       }
-      function Dn(_, S) {
-        for (var C = -1, O = S.length, z = _.length; ++C < O; )
-          _[z + C] = S[C];
-        return _;
+      function Dn(v, S) {
+        for (var C = -1, O = S.length, z = v.length; ++C < O; )
+          v[z + C] = S[C];
+        return v;
       }
-      function ui(_, S, C, O) {
-        var z = -1, et = _ == null ? 0 : _.length;
-        for (O && et && (C = _[++z]); ++z < et; )
-          C = S(C, _[z], z, _);
+      function ui(v, S, C, O) {
+        var z = -1, et = v == null ? 0 : v.length;
+        for (O && et && (C = v[++z]); ++z < et; )
+          C = S(C, v[z], z, v);
         return C;
       }
-      function Uc(_, S, C, O) {
-        var z = _ == null ? 0 : _.length;
-        for (O && z && (C = _[--z]); z--; )
-          C = S(C, _[z], z, _);
+      function Uc(v, S, C, O) {
+        var z = v == null ? 0 : v.length;
+        for (O && z && (C = v[--z]); z--; )
+          C = S(C, v[z], z, v);
         return C;
       }
-      function ci(_, S) {
-        for (var C = -1, O = _ == null ? 0 : _.length; ++C < O; )
-          if (S(_[C], C, _))
+      function ci(v, S) {
+        for (var C = -1, O = v == null ? 0 : v.length; ++C < O; )
+          if (S(v[C], C, v))
             return !0;
         return !1;
       }
       var $c = li("length");
-      function qc(_) {
-        return _.split("");
+      function qc(v) {
+        return v.split("");
       }
-      function Gc(_) {
-        return _.match(Qu) || [];
+      function Gc(v) {
+        return v.match(Qu) || [];
       }
-      function sa(_, S, C) {
+      function sa(v, S, C) {
         var O;
-        return C(_, function(z, et, bt) {
+        return C(v, function(z, et, bt) {
           if (S(z, et, bt))
             return O = et, !1;
         }), O;
       }
-      function Xe(_, S, C, O) {
-        for (var z = _.length, et = C + (O ? 1 : -1); O ? et-- : ++et < z; )
-          if (S(_[et], et, _))
+      function Xe(v, S, C, O) {
+        for (var z = v.length, et = C + (O ? 1 : -1); O ? et-- : ++et < z; )
+          if (S(v[et], et, v))
             return et;
         return -1;
       }
-      function ie(_, S, C) {
-        return S === S ? nl(_, S, C) : Xe(_, aa, C);
+      function ie(v, S, C) {
+        return S === S ? nl(v, S, C) : Xe(v, aa, C);
       }
-      function zc(_, S, C, O) {
-        for (var z = C - 1, et = _.length; ++z < et; )
-          if (O(_[z], S))
+      function zc(v, S, C, O) {
+        for (var z = C - 1, et = v.length; ++z < et; )
+          if (O(v[z], S))
             return z;
         return -1;
       }
-      function aa(_) {
-        return _ !== _;
+      function aa(v) {
+        return v !== v;
       }
-      function oa(_, S) {
-        var C = _ == null ? 0 : _.length;
-        return C ? hi(_, S) / C : bn;
+      function oa(v, S) {
+        var C = v == null ? 0 : v.length;
+        return C ? hi(v, S) / C : bn;
       }
-      function li(_) {
+      function li(v) {
         return function(S) {
-          return S == null ? r : S[_];
+          return S == null ? r : S[v];
         };
       }
-      function fi(_) {
+      function fi(v) {
         return function(S) {
-          return _ == null ? r : _[S];
+          return v == null ? r : v[S];
         };
       }
-      function ua(_, S, C, O, z) {
-        return z(_, function(et, bt, at) {
+      function ua(v, S, C, O, z) {
+        return z(v, function(et, bt, at) {
           C = O ? (O = !1, et) : S(C, et, bt, at);
         }), C;
       }
-      function Hc(_, S) {
-        var C = _.length;
-        for (_.sort(S); C--; )
-          _[C] = _[C].value;
-        return _;
+      function Hc(v, S) {
+        var C = v.length;
+        for (v.sort(S); C--; )
+          v[C] = v[C].value;
+        return v;
       }
-      function hi(_, S) {
-        for (var C, O = -1, z = _.length; ++O < z; ) {
-          var et = S(_[O]);
+      function hi(v, S) {
+        for (var C, O = -1, z = v.length; ++O < z; ) {
+          var et = S(v[O]);
           et !== r && (C = C === r ? et : C + et);
         }
         return C;
       }
-      function pi(_, S) {
-        for (var C = -1, O = Array(_); ++C < _; )
+      function pi(v, S) {
+        for (var C = -1, O = Array(v); ++C < v; )
           O[C] = S(C);
         return O;
       }
-      function Kc(_, S) {
+      function Kc(v, S) {
         return gt(S, function(C) {
-          return [C, _[C]];
+          return [C, v[C]];
         });
       }
-      function ca(_) {
-        return _ && _.slice(0, pa(_) + 1).replace(jr, "");
+      function ca(v) {
+        return v && v.slice(0, pa(v) + 1).replace(jr, "");
       }
-      function Jt(_) {
+      function Jt(v) {
         return function(S) {
-          return _(S);
+          return v(S);
         };
       }
-      function gi(_, S) {
+      function gi(v, S) {
         return gt(S, function(C) {
-          return _[C];
+          return v[C];
         });
       }
-      function be(_, S) {
-        return _.has(S);
+      function be(v, S) {
+        return v.has(S);
       }
-      function la(_, S) {
-        for (var C = -1, O = _.length; ++C < O && ie(S, _[C], 0) > -1; )
+      function la(v, S) {
+        for (var C = -1, O = v.length; ++C < O && ie(S, v[C], 0) > -1; )
           ;
         return C;
       }
-      function fa(_, S) {
-        for (var C = _.length; C-- && ie(S, _[C], 0) > -1; )
+      function fa(v, S) {
+        for (var C = v.length; C-- && ie(S, v[C], 0) > -1; )
           ;
         return C;
       }
-      function Zc(_, S) {
-        for (var C = _.length, O = 0; C--; )
-          _[C] === S && ++O;
+      function Zc(v, S) {
+        for (var C = v.length, O = 0; C--; )
+          v[C] === S && ++O;
         return O;
       }
       var Jc = fi(Tc), Yc = fi(Fc);
-      function Xc(_) {
-        return "\\" + kc[_];
+      function Xc(v) {
+        return "\\" + kc[v];
       }
-      function Qc(_, S) {
-        return _ == null ? r : _[S];
+      function Qc(v, S) {
+        return v == null ? r : v[S];
       }
-      function se(_) {
-        return Ic.test(_);
+      function se(v) {
+        return Ic.test(v);
       }
-      function Vc(_) {
-        return Pc.test(_);
+      function Vc(v) {
+        return Pc.test(v);
       }
-      function jc(_) {
-        for (var S, C = []; !(S = _.next()).done; )
+      function jc(v) {
+        for (var S, C = []; !(S = v.next()).done; )
           C.push(S.value);
         return C;
       }
-      function di(_) {
-        var S = -1, C = Array(_.size);
-        return _.forEach(function(O, z) {
+      function di(v) {
+        var S = -1, C = Array(v.size);
+        return v.forEach(function(O, z) {
           C[++S] = [z, O];
         }), C;
       }
-      function ha(_, S) {
+      function ha(v, S) {
         return function(C) {
-          return _(S(C));
+          return v(S(C));
         };
       }
-      function Nn(_, S) {
-        for (var C = -1, O = _.length, z = 0, et = []; ++C < O; ) {
-          var bt = _[C];
-          (bt === S || bt === I) && (_[C] = I, et[z++] = C);
+      function Nn(v, S) {
+        for (var C = -1, O = v.length, z = 0, et = []; ++C < O; ) {
+          var bt = v[C];
+          (bt === S || bt === I) && (v[C] = I, et[z++] = C);
         }
         return et;
       }
-      function Qe(_) {
-        var S = -1, C = Array(_.size);
-        return _.forEach(function(O) {
+      function Qe(v) {
+        var S = -1, C = Array(v.size);
+        return v.forEach(function(O) {
           C[++S] = O;
         }), C;
       }
-      function tl(_) {
-        var S = -1, C = Array(_.size);
-        return _.forEach(function(O) {
+      function tl(v) {
+        var S = -1, C = Array(v.size);
+        return v.forEach(function(O) {
           C[++S] = [O, O];
         }), C;
       }
-      function nl(_, S, C) {
-        for (var O = C - 1, z = _.length; ++O < z; )
-          if (_[O] === S)
+      function nl(v, S, C) {
+        for (var O = C - 1, z = v.length; ++O < z; )
+          if (v[O] === S)
             return O;
         return -1;
       }
-      function el(_, S, C) {
+      function el(v, S, C) {
         for (var O = C + 1; O--; )
-          if (_[O] === S)
+          if (v[O] === S)
             return O;
         return O;
       }
-      function ae(_) {
-        return se(_) ? il(_) : $c(_);
+      function ae(v) {
+        return se(v) ? il(v) : $c(v);
       }
-      function hn(_) {
-        return se(_) ? sl(_) : qc(_);
+      function hn(v) {
+        return se(v) ? sl(v) : qc(v);
       }
-      function pa(_) {
-        for (var S = _.length; S-- && Zu.test(_.charAt(S)); )
+      function pa(v) {
+        for (var S = v.length; S-- && Zu.test(v.charAt(S)); )
           ;
         return S;
       }
       var rl = fi(Lc);
-      function il(_) {
-        for (var S = ii.lastIndex = 0; ii.test(_); )
+      function il(v) {
+        for (var S = ii.lastIndex = 0; ii.test(v); )
           ++S;
         return S;
       }
-      function sl(_) {
-        return _.match(ii) || [];
+      function sl(v) {
+        return v.match(ii) || [];
       }
-      function al(_) {
-        return _.match(Ac) || [];
+      function al(v) {
+        return v.match(Ac) || [];
       }
-      var ol = function _(S) {
+      var ol = function v(S) {
         S = S == null ? It : oe.defaults(It.Object(), S, oe.pick(It, Ec));
         var C = S.Array, O = S.Date, z = S.Error, et = S.Function, bt = S.Math, at = S.Object, _i = S.RegExp, ul = S.String, rn = S.TypeError, Ve = C.prototype, cl = et.prototype, ue = at.prototype, je = S["__core-js_shared__"], tr = cl.toString, st = ue.hasOwnProperty, ll = 0, ga = function() {
           var t = /[^.]+$/.exec(je && je.keys && je.keys.IE_PROTO || "");
@@ -3565,7 +3565,7 @@ __p += '`), tt && (P += `' +
 }
 `;
           else if (Vu.test(W))
-            throw new z(v);
+            throw new z(_);
           P = (w ? P.replace(Du, "") : P).replace(Nu, "$1").replace(Bu, "$1;"), P = "function(" + (W || "obj") + `) {
 ` + (W ? "" : `obj || (obj = {});
 `) + "var __t, __p = ''" + (g ? ", __e = _.escape" : "") + (w ? `, __j = Array.prototype.join;
@@ -3811,7 +3811,7 @@ function print() { __p += __j.call(arguments, '') }
         function d0(t, n) {
           return t && t.length ? hi(t, B(n, 2)) : 0;
         }
-        return u.after = Np, u.ary = Lo, u.assign = bg, u.assignIn = Zo, u.assignInWith = Lr, u.assignWith = xg, u.at = Ag, u.before = ko, u.bind = Qi, u.bindAll = Td, u.bindKey = Oo, u.castArray = Yp, u.chain = Ro, u.chunk = ih, u.compact = sh, u.concat = ah, u.cond = Fd, u.conforms = Ld, u.constant = is, u.countBy = gp, u.create = Ig, u.curry = Do, u.curryRight = No, u.debounce = Bo, u.defaults = Pg, u.defaultsDeep = Eg, u.defer = Bp, u.delay = Wp, u.difference = oh, u.differenceBy = uh, u.differenceWith = ch, u.drop = lh, u.dropRight = fh, u.dropRightWhile = hh, u.dropWhile = ph, u.fill = gh, u.filter = _p, u.flatMap = wp, u.flatMapDeep = yp, u.flatMapDepth = Mp, u.flatten = Ao, u.flattenDeep = dh, u.flattenDepth = _h, u.flip = Up, u.flow = Od, u.flowRight = Dd, u.fromPairs = vh, u.functions = Dg, u.functionsIn = Ng, u.groupBy = Cp, u.initial = wh, u.intersection = yh, u.intersectionBy = Mh, u.intersectionWith = Ch, u.invert = Wg, u.invertBy = Ug, u.invokeMap = bp, u.iteratee = ss, u.keyBy = xp, u.keys = At, u.keysIn = Gt, u.map = Ir, u.mapKeys = qg, u.mapValues = Gg, u.matches = Nd, u.matchesProperty = Bd, u.memoize = Er, u.merge = zg, u.mergeWith = Jo, u.method = Wd, u.methodOf = Ud, u.mixin = as, u.negate = Rr, u.nthArg = qd, u.omit = Hg, u.omitBy = Kg, u.once = $p, u.orderBy = Ap, u.over = Gd, u.overArgs = qp, u.overEvery = zd, u.overSome = Hd, u.partial = Vi, u.partialRight = Wo, u.partition = Ip, u.pick = Zg, u.pickBy = Yo, u.property = eu, u.propertyOf = Kd, u.pull = Ah, u.pullAll = Po, u.pullAllBy = Ih, u.pullAllWith = Ph, u.pullAt = Eh, u.range = Zd, u.rangeRight = Jd, u.rearg = Gp, u.reject = Rp, u.remove = Rh, u.rest = zp, u.reverse = Yi, u.sampleSize = Fp, u.set = Yg, u.setWith = Xg, u.shuffle = Lp, u.slice = Th, u.sortBy = Dp, u.sortedUniq = Bh, u.sortedUniqBy = Wh, u.split = wd, u.spread = Hp, u.tail = Uh, u.take = $h, u.takeRight = qh, u.takeRightWhile = Gh, u.takeWhile = zh, u.tap = sp, u.throttle = Kp, u.thru = Ar, u.toArray = zo, u.toPairs = Xo, u.toPairsIn = Qo, u.toPath = jd, u.toPlainObject = Ko, u.transform = Qg, u.unary = Zp, u.union = Hh, u.unionBy = Kh, u.unionWith = Zh, u.uniq = Jh, u.uniqBy = Yh, u.uniqWith = Xh, u.unset = Vg, u.unzip = Xi, u.unzipWith = Eo, u.update = jg, u.updateWith = td, u.values = _e, u.valuesIn = nd, u.without = Qh, u.words = tu, u.wrap = Jp, u.xor = Vh, u.xorBy = jh, u.xorWith = tp, u.zip = np, u.zipObject = ep, u.zipObjectDeep = rp, u.zipWith = ip, u.entries = Xo, u.entriesIn = Qo, u.extend = Zo, u.extendWith = Lr, as(u, u), u.add = n0, u.attempt = nu, u.camelCase = sd, u.capitalize = Vo, u.ceil = e0, u.clamp = ed, u.clone = Xp, u.cloneDeep = Vp, u.cloneDeepWith = jp, u.cloneWith = Qp, u.conformsTo = tg, u.deburr = jo, u.defaultTo = kd, u.divide = r0, u.endsWith = ad, u.eq = gn, u.escape = od, u.escapeRegExp = ud, u.every = dp, u.find = vp, u.findIndex = bo, u.findKey = Rg, u.findLast = mp, u.findLastIndex = xo, u.findLastKey = Tg, u.floor = i0, u.forEach = To, u.forEachRight = Fo, u.forIn = Fg, u.forInRight = Lg, u.forOwn = kg, u.forOwnRight = Og, u.get = ns, u.gt = ng, u.gte = eg, u.has = Bg, u.hasIn = es, u.head = Io, u.identity = zt, u.includes = Sp, u.indexOf = mh, u.inRange = rd, u.invoke = $g, u.isArguments = ne, u.isArray = H, u.isArrayBuffer = rg, u.isArrayLike = qt, u.isArrayLikeObject = wt, u.isBoolean = ig, u.isBuffer = Gn, u.isDate = sg, u.isElement = ag, u.isEmpty = og, u.isEqual = ug, u.isEqualWith = cg, u.isError = ji, u.isFinite = lg, u.isFunction = Tn, u.isInteger = Uo, u.isLength = Tr, u.isMap = $o, u.isMatch = fg, u.isMatchWith = hg, u.isNaN = pg, u.isNative = gg, u.isNil = _g, u.isNull = dg, u.isNumber = qo, u.isObject = dt, u.isObjectLike = mt, u.isPlainObject = Be, u.isRegExp = ts, u.isSafeInteger = vg, u.isSet = Go, u.isString = Fr, u.isSymbol = Xt, u.isTypedArray = de, u.isUndefined = mg, u.isWeakMap = wg, u.isWeakSet = yg, u.join = Sh, u.kebabCase = cd, u.last = un, u.lastIndexOf = bh, u.lowerCase = ld, u.lowerFirst = fd, u.lt = Mg, u.lte = Cg, u.max = s0, u.maxBy = a0, u.mean = o0, u.meanBy = u0, u.min = c0, u.minBy = l0, u.stubArray = us, u.stubFalse = cs, u.stubObject = Yd, u.stubString = Xd, u.stubTrue = Qd, u.multiply = f0, u.nth = xh, u.noConflict = $d, u.noop = os, u.now = Pr, u.pad = hd, u.padEnd = pd, u.padStart = gd, u.parseInt = dd, u.random = id, u.reduce = Pp, u.reduceRight = Ep, u.repeat = _d, u.replace = vd, u.result = Jg, u.round = h0, u.runInContext = _, u.sample = Tp, u.size = kp, u.snakeCase = md, u.some = Op, u.sortedIndex = Fh, u.sortedIndexBy = Lh, u.sortedIndexOf = kh, u.sortedLastIndex = Oh, u.sortedLastIndexBy = Dh, u.sortedLastIndexOf = Nh, u.startCase = yd, u.startsWith = Md, u.subtract = p0, u.sum = g0, u.sumBy = d0, u.template = Cd, u.times = Vd, u.toFinite = Fn, u.toInteger = Y, u.toLength = Ho, u.toLower = Sd, u.toNumber = cn, u.toSafeInteger = Sg, u.toString = rt, u.toUpper = bd, u.trim = xd, u.trimEnd = Ad, u.trimStart = Id, u.truncate = Pd, u.unescape = Ed, u.uniqueId = t0, u.upperCase = Rd, u.upperFirst = rs, u.each = To, u.eachRight = Fo, u.first = Io, as(u, function() {
+        return u.after = Np, u.ary = Lo, u.assign = bg, u.assignIn = Zo, u.assignInWith = Lr, u.assignWith = xg, u.at = Ag, u.before = ko, u.bind = Qi, u.bindAll = Td, u.bindKey = Oo, u.castArray = Yp, u.chain = Ro, u.chunk = ih, u.compact = sh, u.concat = ah, u.cond = Fd, u.conforms = Ld, u.constant = is, u.countBy = gp, u.create = Ig, u.curry = Do, u.curryRight = No, u.debounce = Bo, u.defaults = Pg, u.defaultsDeep = Eg, u.defer = Bp, u.delay = Wp, u.difference = oh, u.differenceBy = uh, u.differenceWith = ch, u.drop = lh, u.dropRight = fh, u.dropRightWhile = hh, u.dropWhile = ph, u.fill = gh, u.filter = _p, u.flatMap = wp, u.flatMapDeep = yp, u.flatMapDepth = Mp, u.flatten = Ao, u.flattenDeep = dh, u.flattenDepth = _h, u.flip = Up, u.flow = Od, u.flowRight = Dd, u.fromPairs = vh, u.functions = Dg, u.functionsIn = Ng, u.groupBy = Cp, u.initial = wh, u.intersection = yh, u.intersectionBy = Mh, u.intersectionWith = Ch, u.invert = Wg, u.invertBy = Ug, u.invokeMap = bp, u.iteratee = ss, u.keyBy = xp, u.keys = At, u.keysIn = Gt, u.map = Ir, u.mapKeys = qg, u.mapValues = Gg, u.matches = Nd, u.matchesProperty = Bd, u.memoize = Er, u.merge = zg, u.mergeWith = Jo, u.method = Wd, u.methodOf = Ud, u.mixin = as, u.negate = Rr, u.nthArg = qd, u.omit = Hg, u.omitBy = Kg, u.once = $p, u.orderBy = Ap, u.over = Gd, u.overArgs = qp, u.overEvery = zd, u.overSome = Hd, u.partial = Vi, u.partialRight = Wo, u.partition = Ip, u.pick = Zg, u.pickBy = Yo, u.property = eu, u.propertyOf = Kd, u.pull = Ah, u.pullAll = Po, u.pullAllBy = Ih, u.pullAllWith = Ph, u.pullAt = Eh, u.range = Zd, u.rangeRight = Jd, u.rearg = Gp, u.reject = Rp, u.remove = Rh, u.rest = zp, u.reverse = Yi, u.sampleSize = Fp, u.set = Yg, u.setWith = Xg, u.shuffle = Lp, u.slice = Th, u.sortBy = Dp, u.sortedUniq = Bh, u.sortedUniqBy = Wh, u.split = wd, u.spread = Hp, u.tail = Uh, u.take = $h, u.takeRight = qh, u.takeRightWhile = Gh, u.takeWhile = zh, u.tap = sp, u.throttle = Kp, u.thru = Ar, u.toArray = zo, u.toPairs = Xo, u.toPairsIn = Qo, u.toPath = jd, u.toPlainObject = Ko, u.transform = Qg, u.unary = Zp, u.union = Hh, u.unionBy = Kh, u.unionWith = Zh, u.uniq = Jh, u.uniqBy = Yh, u.uniqWith = Xh, u.unset = Vg, u.unzip = Xi, u.unzipWith = Eo, u.update = jg, u.updateWith = td, u.values = _e, u.valuesIn = nd, u.without = Qh, u.words = tu, u.wrap = Jp, u.xor = Vh, u.xorBy = jh, u.xorWith = tp, u.zip = np, u.zipObject = ep, u.zipObjectDeep = rp, u.zipWith = ip, u.entries = Xo, u.entriesIn = Qo, u.extend = Zo, u.extendWith = Lr, as(u, u), u.add = n0, u.attempt = nu, u.camelCase = sd, u.capitalize = Vo, u.ceil = e0, u.clamp = ed, u.clone = Xp, u.cloneDeep = Vp, u.cloneDeepWith = jp, u.cloneWith = Qp, u.conformsTo = tg, u.deburr = jo, u.defaultTo = kd, u.divide = r0, u.endsWith = ad, u.eq = gn, u.escape = od, u.escapeRegExp = ud, u.every = dp, u.find = vp, u.findIndex = bo, u.findKey = Rg, u.findLast = mp, u.findLastIndex = xo, u.findLastKey = Tg, u.floor = i0, u.forEach = To, u.forEachRight = Fo, u.forIn = Fg, u.forInRight = Lg, u.forOwn = kg, u.forOwnRight = Og, u.get = ns, u.gt = ng, u.gte = eg, u.has = Bg, u.hasIn = es, u.head = Io, u.identity = zt, u.includes = Sp, u.indexOf = mh, u.inRange = rd, u.invoke = $g, u.isArguments = ne, u.isArray = H, u.isArrayBuffer = rg, u.isArrayLike = qt, u.isArrayLikeObject = wt, u.isBoolean = ig, u.isBuffer = Gn, u.isDate = sg, u.isElement = ag, u.isEmpty = og, u.isEqual = ug, u.isEqualWith = cg, u.isError = ji, u.isFinite = lg, u.isFunction = Tn, u.isInteger = Uo, u.isLength = Tr, u.isMap = $o, u.isMatch = fg, u.isMatchWith = hg, u.isNaN = pg, u.isNative = gg, u.isNil = _g, u.isNull = dg, u.isNumber = qo, u.isObject = dt, u.isObjectLike = mt, u.isPlainObject = Be, u.isRegExp = ts, u.isSafeInteger = vg, u.isSet = Go, u.isString = Fr, u.isSymbol = Xt, u.isTypedArray = de, u.isUndefined = mg, u.isWeakMap = wg, u.isWeakSet = yg, u.join = Sh, u.kebabCase = cd, u.last = un, u.lastIndexOf = bh, u.lowerCase = ld, u.lowerFirst = fd, u.lt = Mg, u.lte = Cg, u.max = s0, u.maxBy = a0, u.mean = o0, u.meanBy = u0, u.min = c0, u.minBy = l0, u.stubArray = us, u.stubFalse = cs, u.stubObject = Yd, u.stubString = Xd, u.stubTrue = Qd, u.multiply = f0, u.nth = xh, u.noConflict = $d, u.noop = os, u.now = Pr, u.pad = hd, u.padEnd = pd, u.padStart = gd, u.parseInt = dd, u.random = id, u.reduce = Pp, u.reduceRight = Ep, u.repeat = _d, u.replace = vd, u.result = Jg, u.round = h0, u.runInContext = v, u.sample = Tp, u.size = kp, u.snakeCase = md, u.some = Op, u.sortedIndex = Fh, u.sortedIndexBy = Lh, u.sortedIndexOf = kh, u.sortedLastIndex = Oh, u.sortedLastIndexBy = Dh, u.sortedLastIndexOf = Nh, u.startCase = yd, u.startsWith = Md, u.subtract = p0, u.sum = g0, u.sumBy = d0, u.template = Cd, u.times = Vd, u.toFinite = Fn, u.toInteger = Y, u.toLength = Ho, u.toLower = Sd, u.toNumber = cn, u.toSafeInteger = Sg, u.toString = rt, u.toUpper = bd, u.trim = xd, u.trimEnd = Ad, u.trimStart = Id, u.truncate = Pd, u.unescape = Ed, u.uniqueId = t0, u.upperCase = Rd, u.upperFirst = rs, u.each = To, u.eachRight = Fo, u.first = Io, as(u, function() {
           var t = {};
           return wn(u, function(n, e) {
             st.call(u.prototype, e) || (t[e] = n);
@@ -3935,8 +3935,8 @@ function bs(f) {
 function x0(f, s) {
   let r = 0, a = 0;
   return f.forEach((l, p) => {
-    const d = p === f.length - 1 ? s : f[p + 1].onset, v = l.type === "linear" ? l.value / 2 : l.value;
-    a += (r + v) * (d - l.onset), r += l.value;
+    const d = p === f.length - 1 ? s : f[p + 1].onset, _ = l.type === "linear" ? l.value / 2 : l.value;
+    a += (r + _) * (d - l.onset), r += l.value;
   }), a / s;
 }
 function A0(f) {
@@ -4023,7 +4023,7 @@ function P0() {
     if (R === "string" && I.length > 0)
       return d(I);
     if (R === "number" && isFinite(I))
-      return m.long ? y(I) : v(I);
+      return m.long ? y(I) : _(I);
     throw new Error(
       "val is not a non-empty string or a valid number. val=" + JSON.stringify(I)
     );
@@ -4080,7 +4080,7 @@ function P0() {
       }
     }
   }
-  function v(I) {
+  function _(I) {
     var m = Math.abs(I);
     return m >= a ? Math.round(I / a) + "d" : m >= r ? Math.round(I / r) + "h" : m >= s ? Math.round(I / s) + "m" : m >= f ? Math.round(I / f) + "s" : I + "ms";
   }
@@ -4099,7 +4099,7 @@ function E0() {
   if (ou) return fs;
   ou = 1;
   function f(s) {
-    a.debug = a, a.default = a, a.coerce = M, a.disable = v, a.enable = p, a.enabled = y, a.humanize = P0(), a.destroy = I, Object.keys(s).forEach((m) => {
+    a.debug = a, a.default = a, a.coerce = M, a.disable = _, a.enable = p, a.enabled = y, a.humanize = P0(), a.destroy = I, Object.keys(s).forEach((m) => {
       a[m] = s[m];
     }), a.names = [], a.skips = [], a.formatters = {};
     function r(m) {
@@ -4161,7 +4161,7 @@ function E0() {
         T++;
       return T === R.length;
     }
-    function v() {
+    function _() {
       const m = [
         ...a.names,
         ...a.skips.map((R) => "-" + R)
@@ -4318,8 +4318,8 @@ function R0() {
       }
     }
     f.exports = E0()(s);
-    const { formatters: v } = f.exports;
-    v.j = function(y) {
+    const { formatters: _ } = f.exports;
+    _.j = function(y) {
       try {
         return JSON.stringify(y);
       } catch (M) {
@@ -4378,15 +4378,15 @@ function L0() {
         }
       switch (r = Math.abs(r), a) {
         case "d":
-          v = r.toFixed(l), v < 100 && (v = "0" + v), v < 10 && (v = "0" + v), dms = v + "°";
+          _ = r.toFixed(l), _ < 100 && (_ = "0" + _), _ < 10 && (_ = "0" + _), dms = _ + "°";
           break;
         case "dm":
-          var p = (r * 60).toFixed(l), v = Math.floor(p / 60), y = (p % 60).toFixed(l);
-          v < 100 && (v = "0" + v), v < 10 && (v = "0" + v), y < 10 && (y = "0" + y), dms = v + "°" + y + "′";
+          var p = (r * 60).toFixed(l), _ = Math.floor(p / 60), y = (p % 60).toFixed(l);
+          _ < 100 && (_ = "0" + _), _ < 10 && (_ = "0" + _), y < 10 && (y = "0" + y), dms = _ + "°" + y + "′";
           break;
         case "dms":
-          var d = (r * 3600).toFixed(l), v = Math.floor(d / 3600), y = Math.floor(d / 60) % 60, M = (d % 60).toFixed(l);
-          v < 100 && (v = "0" + v), v < 10 && (v = "0" + v), y < 10 && (y = "0" + y), M < 10 && (M = "0" + M), dms = v + "°" + y + "′" + M + "″";
+          var d = (r * 3600).toFixed(l), _ = Math.floor(d / 3600), y = Math.floor(d / 60) % 60, M = (d % 60).toFixed(l);
+          _ < 100 && (_ = "0" + _), _ < 10 && (_ = "0" + _), y < 10 && (y = "0" + y), M < 10 && (M = "0" + M), dms = _ + "°" + y + "′" + M + "″";
           break;
       }
       return dms;
@@ -4409,34 +4409,34 @@ function L0() {
       var l = this.distanceRadTo(r), p = s * l;
       return p.toPrecisionFixed(a);
     }, f.latlon.prototype.distanceRadTo = function(r) {
-      var a = this.lat.toRad(), l = this.lng.toRad(), p = r.lat.toRad(), d = r.lng.toRad(), v = p - a, y = d - l, M = Math.sin(v / 2) * Math.sin(v / 2) + Math.cos(a) * Math.cos(p) * Math.sin(y / 2) * Math.sin(y / 2), I = 2 * Math.atan2(Math.sqrt(M), Math.sqrt(1 - M));
+      var a = this.lat.toRad(), l = this.lng.toRad(), p = r.lat.toRad(), d = r.lng.toRad(), _ = p - a, y = d - l, M = Math.sin(_ / 2) * Math.sin(_ / 2) + Math.cos(a) * Math.cos(p) * Math.sin(y / 2) * Math.sin(y / 2), I = 2 * Math.atan2(Math.sqrt(M), Math.sqrt(1 - M));
       return I;
     }, f.latlon.prototype.bearingTo = function(r) {
       var a = this.bearingRadTo(r);
       return (a.toDeg() + 360) % 360;
     }, f.latlon.prototype.bearingRadTo = function(r) {
-      var a = this.lat.toRad(), l = r.lat.toRad(), p = (r.lng - this.lng).toRad(), d = Math.cos(a) * Math.sin(l) - Math.sin(a) * Math.cos(l) * Math.cos(p), v = Math.cos(l) * Math.sin(p), y = Math.atan2(v, d);
+      var a = this.lat.toRad(), l = r.lat.toRad(), p = (r.lng - this.lng).toRad(), d = Math.cos(a) * Math.sin(l) - Math.sin(a) * Math.cos(l) * Math.cos(p), _ = Math.cos(l) * Math.sin(p), y = Math.atan2(_, d);
       return y;
     }, f.latlon.prototype.finalBearingTo = function(r) {
-      var a = r.lat.toRad(), l = this.lat.toRad(), p = (this.lng - r.lng).toRad(), d = Math.sin(p) * Math.cos(l), v = Math.cos(a) * Math.sin(l) - Math.sin(a) * Math.cos(l) * Math.cos(p), y = Math.atan2(d, v);
+      var a = r.lat.toRad(), l = this.lat.toRad(), p = (this.lng - r.lng).toRad(), d = Math.sin(p) * Math.cos(l), _ = Math.cos(a) * Math.sin(l) - Math.sin(a) * Math.cos(l) * Math.cos(p), y = Math.atan2(d, _);
       return (y.toDeg() + 180) % 360;
     }, f.latlon.prototype.midpointTo = function(r) {
-      var a = this.lat.toRad(), l = r.lat.toRad(), p = (r.lng - this.lng).toRad(), d = Math.cos(l) * Math.cos(p), v = Math.cos(l) * Math.sin(p), y = this.lng.toRad(), M = Math.atan2(Math.sin(a) + Math.sin(l), Math.sqrt((Math.cos(a) + d) * (Math.cos(a) + d) + v * v)), I = y + Math.atan2(v, Math.cos(a) + d);
+      var a = this.lat.toRad(), l = r.lat.toRad(), p = (r.lng - this.lng).toRad(), d = Math.cos(l) * Math.cos(p), _ = Math.cos(l) * Math.sin(p), y = this.lng.toRad(), M = Math.atan2(Math.sin(a) + Math.sin(l), Math.sqrt((Math.cos(a) + d) * (Math.cos(a) + d) + _ * _)), I = y + Math.atan2(_, Math.cos(a) + d);
       return I = (I + 3 * Math.PI) % (2 * Math.PI) - Math.PI, new f.latlon(M.toDeg(), I.toDeg());
     }, f.midpoint = function(r) {
       var a = 0, l = 0, p = 0;
       for (var d in r) {
-        var v = r[d], y = v.lat * Math.PI / 180, M = v.lng * Math.PI / 180, I = Math.cos(y) * Math.cos(M), m = Math.cos(y) * Math.sin(M), R = Math.sin(y);
+        var _ = r[d], y = _.lat * Math.PI / 180, M = _.lng * Math.PI / 180, I = Math.cos(y) * Math.cos(M), m = Math.cos(y) * Math.sin(M), R = Math.sin(y);
         a += I, l += m, p += R;
       }
       a = a / r.length, l = l / r.length, p = p / r.length;
       var F = Math.atan2(l, a), T = Math.sqrt(a * a + l * l), E = Math.atan2(p, T);
       return new f.latlon(E * 180 / Math.PI, F * 180 / Math.PI);
     }, f.latlon.prototype.interpolate = function(r, a) {
-      var l = this.distanceRadTo(r), p = this.bearingRadTo(r), d = this.lat.toRad(), v = this.lng.toRad();
+      var l = this.distanceRadTo(r), p = this.bearingRadTo(r), d = this.lat.toRad(), _ = this.lng.toRad();
       r.lat.toRad(), r.lng.toRad();
       for (var y = Math.sin(d), M = Math.cos(d), I = [], m = 0; m < a; m++) {
-        var R = 1 / (a - 1) * m, F = l * R, T = Math.sin(F), E = Math.cos(F), N = Math.asin(y * E + M * T * Math.cos(p)), q = v + Math.atan2(Math.sin(p) * T * M, E - y * Math.sin(N)), Z = N.toDeg(), J = q.toDeg();
+        var R = 1 / (a - 1) * m, F = l * R, T = Math.sin(F), E = Math.cos(F), N = Math.asin(y * E + M * T * Math.cos(p)), q = _ + Math.atan2(Math.sin(p) * T * M, E - y * Math.sin(N)), Z = N.toDeg(), J = q.toDeg();
         for (Z > 90 && (Z = 90), Z < -90 && (Z = -90); J > 180; ) J -= 360;
         for (; J <= -180; ) J += 360;
         I.push(new f.latlon(Z, J));
@@ -4444,19 +4444,19 @@ function L0() {
       return I;
     }, f.latlon.prototype.destinationPoint = function(r, a) {
       a = typeof a == "number" ? a : typeof a == "string" && a.trim() != "" ? +a : NaN, a = a / s, r = r.toRad();
-      var l = this.lat.toRad(), p = this.lng.toRad(), d = Math.asin(Math.sin(l) * Math.cos(a) + Math.cos(l) * Math.sin(a) * Math.cos(r)), v = p + Math.atan2(
+      var l = this.lat.toRad(), p = this.lng.toRad(), d = Math.asin(Math.sin(l) * Math.cos(a) + Math.cos(l) * Math.sin(a) * Math.cos(r)), _ = p + Math.atan2(
         Math.sin(r) * Math.sin(a) * Math.cos(l),
         Math.cos(a) - Math.sin(l) * Math.sin(d)
       );
-      return v = (v + 3 * Math.PI) % (2 * Math.PI) - Math.PI, new f.latlon(d.toDeg(), v.toDeg());
+      return _ = (_ + 3 * Math.PI) % (2 * Math.PI) - Math.PI, new f.latlon(d.toDeg(), _.toDeg());
     }, f.latlon.intersection = function(r, a, l, p) {
       a = typeof a == "number" ? a : typeof a == "string" && trim(a) != "" ? +a : NaN, p = typeof p == "number" ? p : typeof p == "string" && trim(p) != "" ? +p : NaN;
-      var d = r.lat.toRad(), v = r.lng.toRad(), y = l.lat.toRad(), M = l.lng.toRad(), I = a.toRad(), m = p.toRad(), R = y - d, F = M - v, T = 2 * Math.asin(Math.sqrt(Math.sin(R / 2) * Math.sin(R / 2) + Math.cos(d) * Math.cos(y) * Math.sin(F / 2) * Math.sin(F / 2)));
+      var d = r.lat.toRad(), _ = r.lng.toRad(), y = l.lat.toRad(), M = l.lng.toRad(), I = a.toRad(), m = p.toRad(), R = y - d, F = M - _, T = 2 * Math.asin(Math.sqrt(Math.sin(R / 2) * Math.sin(R / 2) + Math.cos(d) * Math.cos(y) * Math.sin(F / 2) * Math.sin(F / 2)));
       if (T == 0) return null;
       var E = Math.acos((Math.sin(y) - Math.sin(d) * Math.cos(T)) / (Math.sin(T) * Math.cos(d)));
       isNaN(E) && (E = 0);
       var N = Math.acos((Math.sin(d) - Math.sin(y) * Math.cos(T)) / (Math.sin(T) * Math.cos(y)));
-      if (Math.sin(M - v) > 0)
+      if (Math.sin(M - _) > 0)
         var q = E, Z = 2 * Math.PI - N;
       else
         q = 2 * Math.PI - E, Z = N;
@@ -4468,32 +4468,32 @@ function L0() {
       ), St = Math.asin(Math.sin(d) * Math.cos(Bt) + Math.cos(d) * Math.sin(Bt) * Math.cos(I)), jt = Math.atan2(
         Math.sin(I) * Math.sin(Bt) * Math.cos(d),
         Math.cos(Bt) - Math.sin(d) * Math.sin(St)
-      ), Ht = v + jt;
+      ), Ht = _ + jt;
       return Ht = (Ht + 3 * Math.PI) % (2 * Math.PI) - Math.PI, new f.latlon(St.toDeg(), Ht.toDeg());
     }, f.latlon.prototype.rhumbDistanceTo = function(r) {
-      var a = s, l = this.lat.toRad(), p = r.lat.toRad(), d = (r.lat - this.lat).toRad(), v = Math.abs(r.lng - this.lng).toRad(), y = Math.log(Math.tan(p / 2 + Math.PI / 4) / Math.tan(l / 2 + Math.PI / 4)), M = isFinite(d / y) ? d / y : Math.cos(l);
-      Math.abs(v) > Math.PI && (v = v > 0 ? -(2 * Math.PI - v) : 2 * Math.PI + v);
-      var I = Math.sqrt(d * d + M * M * v * v) * a;
+      var a = s, l = this.lat.toRad(), p = r.lat.toRad(), d = (r.lat - this.lat).toRad(), _ = Math.abs(r.lng - this.lng).toRad(), y = Math.log(Math.tan(p / 2 + Math.PI / 4) / Math.tan(l / 2 + Math.PI / 4)), M = isFinite(d / y) ? d / y : Math.cos(l);
+      Math.abs(_) > Math.PI && (_ = _ > 0 ? -(2 * Math.PI - _) : 2 * Math.PI + _);
+      var I = Math.sqrt(d * d + M * M * _ * _) * a;
       return I.toPrecisionFixed(4);
     }, f.latlon.prototype.rhumbBearingTo = function(r) {
       var a = this.lat.toRad(), l = r.lat.toRad(), p = (r.lng - this.lng).toRad(), d = Math.log(Math.tan(l / 2 + Math.PI / 4) / Math.tan(a / 2 + Math.PI / 4));
       Math.abs(p) > Math.PI && (p = p > 0 ? -(2 * Math.PI - p) : 2 * Math.PI + p);
-      var v = Math.atan2(p, d);
-      return (v.toDeg() + 360) % 360;
+      var _ = Math.atan2(p, d);
+      return (_.toDeg() + 360) % 360;
     }, f.latlon.prototype.rhumbDestinationPoint = function(r, a) {
-      var l = s, p = parseFloat(a) / l, d = this.lat.toRad(), v = this.lng.toRad();
+      var l = s, p = parseFloat(a) / l, d = this.lat.toRad(), _ = this.lng.toRad();
       r = r.toRad();
       var y = p * Math.cos(r);
       Math.abs(y) < 1e-10 && (y = 0);
       var M = d + y, I = Math.log(Math.tan(M / 2 + Math.PI / 4) / Math.tan(d / 2 + Math.PI / 4)), m = isFinite(y / I) ? y / I : Math.cos(d), R = p * Math.sin(r) / m;
       Math.abs(M) > Math.PI / 2 && (M = M > 0 ? Math.PI - M : -Math.PI - M);
-      var F = (v + R + 3 * Math.PI) % (2 * Math.PI) - Math.PI;
+      var F = (_ + R + 3 * Math.PI) % (2 * Math.PI) - Math.PI;
       return new f.latlon(M.toDeg(), F.toDeg());
     }, f.latlon.prototype.rhumbMidpointTo = function(r) {
       var a = this.lat.toRad(), l = this.lng.toRad(), p = r.lat.toRad(), d = r.lng.toRad();
       Math.abs(d - l) > Math.PI && (l += 2 * Math.PI);
-      var v = (a + p) / 2, y = Math.tan(Math.PI / 4 + a / 2), M = Math.tan(Math.PI / 4 + p / 2), I = Math.tan(Math.PI / 4 + v / 2), m = ((d - l) * Math.log(I) + l * Math.log(M) - d * Math.log(y)) / Math.log(M / y);
-      return isFinite(m) || (m = (l + d) / 2), m = (m + 3 * Math.PI) % (2 * Math.PI) - Math.PI, new f.latlon(v.toDeg(), m.toDeg());
+      var _ = (a + p) / 2, y = Math.tan(Math.PI / 4 + a / 2), M = Math.tan(Math.PI / 4 + p / 2), I = Math.tan(Math.PI / 4 + _ / 2), m = ((d - l) * Math.log(I) + l * Math.log(M) - d * Math.log(y)) / Math.log(M / y);
+      return isFinite(m) || (m = (l + d) / 2), m = (m + 3 * Math.PI) % (2 * Math.PI) - Math.PI, new f.latlon(_.toDeg(), m.toDeg());
     }, f.latlon.prototype.lat = function(r, a) {
       return typeof r > "u" ? this.lat : f.toLat(this.lat, r, a);
     }, f.latlon.prototype.lon = function(r, a) {
@@ -4508,7 +4508,7 @@ function L0() {
       var a = this.toPrecision(r);
       return a = a.replace(/(.+)e\+(.+)/, function(l, p, d) {
         p = p.replace(/\./, "");
-        for (var v = p.length - 1; d-- > v; ) p = p + "0";
+        for (var _ = p.length - 1; d-- > _; ) p = p + "0";
         return p;
       }), a = a.replace(/(.+)e-(.+)/, function(l, p, d) {
         for (p = p.replace(/\./, ""); d-- > 1; ) p = "0" + p;
@@ -4590,6 +4590,10 @@ class ys extends As {
      */
     A(this, "factors", new Cn());
     /**
+     * flag for interpolated points (not part of original course)
+     */
+    A(this, "interpolated");
+    /**
      * loop number (zero-indexed)
      */
     A(this, "loop");
@@ -4629,7 +4633,7 @@ function Dr(f) {
 }
 function D0(f, s, r) {
   const a = f.filter(
-    (p, d) => d >= f.findIndex((v) => v === s) && d <= f.findIndex((v) => v === r)
+    (p, d) => d >= f.findIndex((_) => _ === s) && d <= f.findIndex((_) => _ === r)
   ), l = a.map((p, d) => ({
     factors: p.factors,
     dist: d === a.length - 1 ? 0 : a[d + 1].loc - a[d].loc
@@ -4805,10 +4809,10 @@ class W0 {
     var R;
     gs.extend("calcSegments")("exec");
     const a = this.course, l = a.points, p = [], d = [];
-    let v, y, M = a.points[0], I;
-    for (v = 0, y = s.length; v < y; v++) {
-      const F = s[v];
-      I && $e((R = s[v - 1]) == null ? void 0 : R.end, F.start, 4) ? M = I : M = a.getPoint(F.start), I = a.getPoint(F.end);
+    let _, y, M = a.points[0], I;
+    for (_ = 0, y = s.length; _ < y; _++) {
+      const F = s[_];
+      I && $e((R = s[_ - 1]) == null ? void 0 : R.end, F.start, 4) ? M = I : M = a.getPoint(F.start), I = a.getPoint(F.end);
       const T = F.end - F.start, E = new N0(this.course, {
         gain: 0,
         loss: 0,
@@ -4824,14 +4828,14 @@ class W0 {
       const Z = E.loc - T.loc;
       N.applyEach((J, it) => J + it * Z, T.factors);
     };
-    v = 1;
+    _ = 1;
     for (let F = 0; F < p.length; F++) {
       const T = p[F], E = d[F];
-      for (; we(l[v].loc, T.point1.loc, 4); ) v++;
+      for (; we(l[_].loc, T.point1.loc, 4); ) _++;
       let N = T.point1;
-      for (; v < l.length && we(l[v].loc, T.point2.loc, 4); ) {
-        const q = l[v];
-        m(T, N, q, E), N = q, v++;
+      for (; _ < l.length && we(l[_].loc, T.point2.loc, 4); ) {
+        const q = l[_];
+        m(T, N, q, E), N = q, _++;
       }
       m(T, N, T.point2, E);
     }
@@ -4842,7 +4846,7 @@ var ds = { exports: {} }, fu;
 function U0() {
   return fu || (fu = 1, function(f, s) {
     (function() {
-      var r = Math.PI, a = Math.sin, l = Math.cos, p = Math.tan, d = Math.asin, v = Math.atan2, y = Math.acos, M = r / 180, I = 1e3 * 60 * 60 * 24, m = 2440588, R = 2451545;
+      var r = Math.PI, a = Math.sin, l = Math.cos, p = Math.tan, d = Math.asin, _ = Math.atan2, y = Math.acos, M = r / 180, I = 1e3 * 60 * 60 * 24, m = 2440588, R = 2451545;
       function F(k) {
         return k.valueOf() / I - 0.5 + m;
       }
@@ -4854,13 +4858,13 @@ function U0() {
       }
       var N = M * 23.4397;
       function q(k, $) {
-        return v(a(k) * l(N) - p($) * a(N), l(k));
+        return _(a(k) * l(N) - p($) * a(N), l(k));
       }
       function Z(k, $) {
         return d(a($) * l(N) + l($) * a(N) * a(k));
       }
       function J(k, $, G) {
-        return v(a(k), l(k) * a($) - p(G) * l($));
+        return _(a(k), l(k) * a($) - p(G) * l($));
       }
       function it(k, $, G) {
         return d(a($) * a(G) + l($) * l(G) * l(k));
@@ -4943,7 +4947,7 @@ function U0() {
         };
       }
       Tt.getMoonPosition = function(k, $, G) {
-        var ft = M * -G, nt = M * $, ht = E(k), ot = ze(ht), ct = _t(ht, ft) - ot.ra, Mt = it(ct, nt, ot.dec), Kt = v(a(ct), p(nt) * l(ot.dec) - a(ot.dec) * l(ct));
+        var ft = M * -G, nt = M * $, ht = E(k), ot = ze(ht), ct = _t(ht, ft) - ot.ra, Mt = it(ct, nt, ot.dec), Kt = _(a(ct), p(nt) * l(ot.dec) - a(ot.dec) * l(ct));
         return Mt = Mt + Bt(Mt), {
           azimuth: J(ct, nt, ot.dec),
           altitude: Mt,
@@ -4951,7 +4955,7 @@ function U0() {
           parallacticAngle: Kt
         };
       }, Tt.getMoonIllumination = function(k) {
-        var $ = E(k || /* @__PURE__ */ new Date()), G = Ht($), ft = ze($), nt = 149598e3, ht = y(a(G.dec) * a(ft.dec) + l(G.dec) * l(ft.dec) * l(G.ra - ft.ra)), ot = v(nt * a(ht), ft.dist - nt * l(ht)), ct = v(l(G.dec) * a(G.ra - ft.ra), a(G.dec) * l(ft.dec) - l(G.dec) * a(ft.dec) * l(G.ra - ft.ra));
+        var $ = E(k || /* @__PURE__ */ new Date()), G = Ht($), ft = ze($), nt = 149598e3, ht = y(a(G.dec) * a(ft.dec) + l(G.dec) * l(ft.dec) * l(G.ra - ft.ra)), ot = _(nt * a(ht), ft.dist - nt * l(ht)), ct = _(l(G.dec) * a(G.ra - ft.ra), a(G.dec) * l(ft.dec) - l(G.dec) * a(ft.dec) * l(G.ra - ft.ra));
         return {
           fraction: (1 + l(ot)) / 2,
           phase: 0.5 + 0.5 * ot * (ct < 0 ? -1 : 1) / Math.PI,
@@ -5028,8 +5032,8 @@ class Tu {
 function Fu(f, s, r) {
   if (f.loc > s.loc && r > f.loc || s.loc > f.loc && r > s.loc)
     throw new Error("Input location must be between points");
-  const a = Math.abs(f.loc - r), l = f.latlon.bearingTo(s.latlon), { lat: p, lng: d } = f.latlon.destinationPoint(l, a), v = f.grade, y = me(f.loc, s.loc, f.alt, s.alt, r);
-  return new As({ lat: p, lon: d, alt: y }, r, v);
+  const a = Math.abs(f.loc - r), l = f.latlon.bearingTo(s.latlon), { lat: p, lng: d } = f.latlon.destinationPoint(l, a), _ = f.grade, y = me(f.loc, s.loc, f.alt, s.alt, r);
+  return new As({ lat: p, lon: d, alt: y }, r, _);
 }
 function q0(f, s) {
   return (typeof f == "object" ? String(f.id) : f) === (typeof s == "object" ? String(s.id) : s);
@@ -5315,9 +5319,9 @@ class r_ {
     const s = this.track.points.map((d) => d.alt), r = this.track.points.map((d) => d.grade), a = this.terrain.map((d) => d.value / 100 + 1), l = {
       altitude: {
         avg: K.sum(
-          this.track.points.map((d, v) => {
+          this.track.points.map((d, _) => {
             var y;
-            return d.alt * (d.loc - (((y = this.track.points[v - 1]) == null ? void 0 : y.loc) || 0));
+            return d.alt * (d.loc - (((y = this.track.points[_ - 1]) == null ? void 0 : y.loc) || 0));
           })
         ) / this.track.dist,
         max: K.max(s) || 0,
@@ -5336,7 +5340,7 @@ class r_ {
         minDist: 0
       }
     }, p = (d) => this.terrain.reduce(
-      (v, y) => y.value / 100 + 1 === d ? v + (y.percents[1] - y.percents[0]) * this.dist : v,
+      (_, y) => y.value / 100 + 1 === d ? _ + (y.percents[1] - y.percents[0]) * this.dist : _,
       0
     );
     return Object.assign(l.terrain, {
@@ -5352,8 +5356,8 @@ class r_ {
     if (this._data.terrain) {
       const s = [...this._data.terrain];
       s.sort((r, a) => r.percent - a.percent), this.cache.terrain = s.map((r, a) => {
-        var v, y;
-        const l = K.isNumber(r.value) ? r.value : K.isString(r.value) ? ((v = G0.find((M) => M.type === r.value)) == null ? void 0 : v.value) || 0 : r.value.value, p = typeof r == "string" ? r : K.isObject(r.value) ? r.value.type : void 0;
+        var _, y;
+        const l = K.isNumber(r.value) ? r.value : K.isString(r.value) ? ((_ = G0.find((M) => M.type === r.value)) == null ? void 0 : _.value) || 0 : r.value.value, p = typeof r == "string" ? r : K.isObject(r.value) ? r.value.type : void 0;
         return {
           value: l,
           type: p,
@@ -5382,22 +5386,21 @@ class r_ {
     });
   }
   /**
-   * Finds and optionally inserts a point at an input location.
+   * Finds or creates a point at an input location.
    *
    * @param loc - The location (in km) to determine value.
-   * @param insert - Whether to also insert a created point into the points array. Defaults to false.
    * @returns The CoursePoint at input location.
    */
-  getPoint(s, r = !1) {
-    const a = this.points.findIndex((M) => Ur(M.loc, s, 4)), l = this.points[a];
-    if ($e(l.loc, s, 4)) return l;
-    We(`getPoint: ${r ? "inserting" : "creating"} new CoursePoint at ${s}`);
-    const p = a - 1, d = this.points[p], v = Fu(
-      d.source,
-      l.source,
+  getPoint(s) {
+    const r = this.points.findIndex((y) => Ur(y.loc, s, 4)), a = this.points[r];
+    if ($e(a.loc, s, 4)) return a;
+    We(`getPoint: creating new CoursePoint at ${s}`);
+    const l = r - 1, p = this.points[l], d = Fu(
+      p.source,
+      a.source,
       s % this.loopDist / this.distScale
-    ), y = new ys(this, v, Math.floor(s / this.loopDist));
-    return r && this.points.splice(a, 0, y), y;
+    ), _ = new ys(this, d, Math.floor(s / this.loopDist));
+    return _.interpolated = !0, _;
   }
   locationsToBreaks(s) {
     const r = s.filter((l) => l > 0 && Ss(l, this.dist, 4));
@@ -5438,19 +5441,19 @@ function H0() {
         index_access: /^\[(\d+)\]/,
         sign: /^[+-]/
       };
-      function r(v) {
-        return l(d(v), arguments);
+      function r(_) {
+        return l(d(_), arguments);
       }
-      function a(v, y) {
-        return r.apply(null, [v].concat(y || []));
+      function a(_, y) {
+        return r.apply(null, [_].concat(y || []));
       }
-      function l(v, y) {
-        var M = 1, I = v.length, m, R = "", F, T, E, N, q, Z, J, it;
+      function l(_, y) {
+        var M = 1, I = _.length, m, R = "", F, T, E, N, q, Z, J, it;
         for (F = 0; F < I; F++)
-          if (typeof v[F] == "string")
-            R += v[F];
-          else if (typeof v[F] == "object") {
-            if (E = v[F], E.keys)
+          if (typeof _[F] == "string")
+            R += _[F];
+          else if (typeof _[F] == "object") {
+            if (E = _[F], E.keys)
               for (m = y[M], T = 0; T < E.keys.length; T++) {
                 if (m == null)
                   throw new Error(r('[sprintf] Cannot access property "%s" of undefined value "%s"', E.keys[T], E.keys[T - 1]));
@@ -5512,10 +5515,10 @@ function H0() {
         return R;
       }
       var p = /* @__PURE__ */ Object.create(null);
-      function d(v) {
-        if (p[v])
-          return p[v];
-        for (var y = v, M, I = [], m = 0; y; ) {
+      function d(_) {
+        if (p[_])
+          return p[_];
+        for (var y = _, M, I = [], m = 0; y; ) {
           if ((M = s.text.exec(y)) !== null)
             I.push(M[0]);
           else if ((M = s.modulo.exec(y)) !== null)
@@ -5556,7 +5559,7 @@ function H0() {
             throw new SyntaxError("[sprintf] unexpected placeholder");
           y = y.substring(M[0].length);
         }
-        return p[v] = I;
+        return p[_] = I;
       }
       f.sprintf = r, f.vsprintf = a, typeof window < "u" && (window.sprintf = r, window.vsprintf = a);
     })();
@@ -5616,11 +5619,11 @@ class du {
     const s = this.points;
     s[0].elapsed = K.isFunction(this.constraints[0]) ? this.constraints[0]() : this.constraints[0], s[0].time = s[0].elapsed - K.sum(this.plan.pacing.chunks.filter((M) => M.points[0].loc < s[0].loc).map((M) => M.delay)), this.plan.event.start && (s[0].tod = this.plan.event.elapsedToTimeOfDay(s[0].elapsed));
     let r = s[0].elapsed, a = s[0].delay || 0, l = 0, p = 0, d = 0;
-    const v = this.factor ? this.np : this.plan.pacing.pace, y = new Cn().init(0);
+    const _ = this.factor ? this.np : this.plan.pacing.pace, y = new Cn().init(0);
     for (let M = 1, I = s.length; M < I; M++) {
       l = s[M].loc - s[M - 1].loc, Wr(s[M - 1], this.plan), y.applyEach((R, F) => R + F * l, s[M - 1].factors);
       const m = s[M - 1].factors.combined;
-      d += m * l, p = v * m * l, s[M].time = s[M - 1].time + p, a = s[M - 1].delay || 0, r += p + a, s[M].elapsed = r, this.plan.event.start && (s[M].tod = this.plan.event.elapsedToTimeOfDay(r));
+      d += m * l, p = _ * m * l, s[M].time = s[M - 1].time + p, a = s[M - 1].delay || 0, r += p + a, s[M].elapsed = r, this.plan.event.start && (s[M].tod = this.plan.event.elapsedToTimeOfDay(r));
     }
     Wr(s[s.length - 1], this.plan), this.factors = y.scaleEach(1 / this.dist), this.factor = d / this.dist;
   }
@@ -5701,7 +5704,11 @@ class J0 {
   calculate() {
     var a, l;
     const s = ln.extend("calculate");
-    s("exec"), s("clearing cache"), this.clearCache(), s("adding points at each terrain factor break"), (a = this.plan.course.terrain) == null || a.forEach(
+    for (s("exec"), s("clearing cache"), this.clearCache(); this.plan.points.find((p) => p.interpolated); ) {
+      const p = this.plan.points.findIndex((d) => d.interpolated);
+      this.plan.points.splice(p, 1);
+    }
+    s("adding points at each terrain factor break"), (a = this.plan.course.terrain) == null || a.forEach(
       (p) => this.plan.getPoint(p.percents[0] * this.plan.course.dist, !0)
     ), s("adding points at each cutoff"), this.plan.cutoffMargin && this.plan.cutoffs.forEach((p) => {
       p.point = this.plan.getPoint(p.loc, !0);
@@ -5765,10 +5772,10 @@ class J0 {
    */
   splitChunk(s, r, a) {
     ln.extend("split")(`breaking chunks at ${r.loc} km`);
-    const p = s.points.findIndex((y) => y === r), d = K.round(r.elapsed - r.time), v = new du(this.plan, s.points.slice(0, p + 1), [0, a], d);
-    v.points.filter((y, M) => M < v.points.length - 1).forEach((y) => {
-      y._chunk = v;
-    }), this.chunks.unshift(v), s.constraints[0] = a, s.delay -= d, s.points = s.points.slice(p), delete s.status;
+    const p = s.points.findIndex((y) => y === r), d = K.round(r.elapsed - r.time), _ = new du(this.plan, s.points.slice(0, p + 1), [0, a], d);
+    _.points.filter((y, M) => M < _.points.length - 1).forEach((y) => {
+      y._chunk = _;
+    }), this.chunks.unshift(_), s.constraints[0] = a, s.delay -= d, s.points = s.points.slice(p), delete s.status;
   }
   /**
    * merge two sequential chunks together, mutates chunks array
@@ -5887,7 +5894,7 @@ class Y0 {
   calcSegments(s) {
     var F;
     ms.extend("calcSegments")("exec"), this.plan.checkPacing();
-    const a = this.plan, l = a.course, p = a.points, d = [], v = [];
+    const a = this.plan, l = a.course, p = a.points, d = [], _ = [];
     let y, M, I = a.points[0], m;
     for (y = 0, M = s.length; y < M; y++) {
       const T = s[y];
@@ -5899,7 +5906,7 @@ class Y0 {
         point1: I,
         point2: m
       }), q = new Cn().init(0);
-      d.push(N), v.push(q);
+      d.push(N), _.push(q);
     }
     const R = (T, E, N, q) => {
       const Z = N.alt - E.alt;
@@ -5909,7 +5916,7 @@ class Y0 {
     };
     y = 1;
     for (let T = 0; T < d.length; T++) {
-      const E = d[T], N = v[T];
+      const E = d[T], N = _[T];
       for (; we(p[y].loc, E.point1.loc, 4); ) y++;
       let q = E.point1;
       for (; y < p.length && we(p[y].loc, E.point2.loc, 4); ) {
@@ -5974,7 +5981,7 @@ class i_ {
     if ("delays" in this.cache) return this.cache.delays;
     const s = this.course.waypoints.map((a) => {
       var d;
-      const l = (d = this._data.delays) == null ? void 0 : d.find((v) => Ms(v.waypoint, a)), p = l ? l.delay : a.hasTypicalDelay ? this.typicalDelay : 0;
+      const l = (d = this._data.delays) == null ? void 0 : d.find((_) => Ms(_.waypoint, a)), p = l ? l.delay : a.hasTypicalDelay ? this.typicalDelay : 0;
       return new X0(a, p);
     }).filter((a) => a.delay > 0).sort((a, l) => a.loc - l.loc);
     let r = 0;
@@ -6012,12 +6019,12 @@ class i_ {
         const M = y.time - r + 86400 * d;
         M >= 0 && M <= this.points[this.points.length - 1].elapsed && s.push({ event: y.event, elapsed: M });
       });
-    s.sort((d, v) => d.elapsed - v.elapsed);
+    s.sort((d, _) => d.elapsed - _.elapsed);
     const l = mu(
       this.points.map((d) => d.elapsed),
       this.points.map((d) => d.loc),
       s.map((d) => d.elapsed)
-    ), p = s.map((d, v) => ({ ...d, loc: l[v] }));
+    ), p = s.map((d, _) => ({ ...d, loc: l[_] }));
     return this.cache.events = { sun: p }, this.cache.events;
   }
   get heatModel() {
@@ -6063,7 +6070,7 @@ class i_ {
     zn("calculating stats.factors");
     const s = K.fromPairs(
       ve.map((p) => {
-        const d = this.points.map((v) => v.factors[p]);
+        const d = this.points.map((_) => _.factors[p]);
         return [
           p,
           {
@@ -6081,8 +6088,8 @@ class i_ {
     };
     let a = 0, l = 0;
     return this.points.forEach((p, d) => {
-      var v, y;
-      a = p.loc - (((v = this.points[d - 1]) == null ? void 0 : v.loc) || 0), l = p.elapsed - (((y = this.points[d - 1]) == null ? void 0 : y.elapsed) || 0), !isNaN(this.event.sun.dawn) && !isNaN(this.event.sun.dusk) && (p.tod <= this.event.sun.dawn || p.tod >= this.event.sun.dusk) ? (r.dark.time += l, r.dark.dist += a) : p.tod < this.event.sun.sunrise || p.tod > this.event.sun.sunset ? (r.twilight.time += l, r.twilight.dist += a) : (r.day.time += l, r.day.dist += a);
+      var _, y;
+      a = p.loc - (((_ = this.points[d - 1]) == null ? void 0 : _.loc) || 0), l = p.elapsed - (((y = this.points[d - 1]) == null ? void 0 : y.elapsed) || 0), !isNaN(this.event.sun.dawn) && !isNaN(this.event.sun.dusk) && (p.tod <= this.event.sun.dawn || p.tod >= this.event.sun.dusk) ? (r.dark.time += l, r.dark.dist += a) : p.tod < this.event.sun.sunrise || p.tod > this.event.sun.sunset ? (r.twilight.time += l, r.twilight.dist += a) : (r.day.time += l, r.day.dist += a);
     }), this.cache.stats = { factors: s, sun: r }, this.cache.stats;
   }
   get strategy() {
@@ -6139,12 +6146,12 @@ class i_ {
     const a = this.points.findIndex((y) => Ur(y.loc, s, 4)), l = this.points[a];
     if ($e(l.loc, s, 4)) return l;
     zn(`getPoint: ${r ? "inserting" : "creating"} new PlanPoint at ${s}`);
-    const p = a - 1, d = this.points[p], v = new _u(this, this.course.getPoint(s, r));
+    const p = a - 1, d = this.points[p], _ = new _u(this, this.course.getPoint(s));
     if (!isNaN(d.time) && !isNaN(l.time)) {
       const y = l.elapsed - l.time - (d.elapsed - d.time);
-      v.time = me(d.loc, l.loc, d.time + y, l.time, l.loc), v.elapsed = l.elapsed - (l.time - v.time), this.event.start && (v.tod = this.event.elapsedToTimeOfDay(v.elapsed));
+      _.time = me(d.loc, l.loc, d.time + y, l.time, l.loc), _.elapsed = l.elapsed - (l.time - _.time), this.event.start && (_.tod = this.event.elapsedToTimeOfDay(_.elapsed));
     }
-    return r && this.points.splice(a, 0, v), v;
+    return r && this.points.splice(a, 0, _), _;
   }
   update(s) {
     const a = ["target", "method"].find((l) => l in s && K.isNil(s[l]));
@@ -6181,10 +6188,10 @@ class Q0 {
 }
 const Lu = (f, s, r, a) => {
   const l = yu(f, s, r, a), p = [];
-  return r.forEach((d, v) => {
-    let y = l[v][0] / 10;
+  return r.forEach((d, _) => {
+    let y = l[_][0] / 10;
     y > 50 ? y = 50 : y < -50 && (y = -50);
-    const M = d * l[v][0] + l[v][1];
+    const M = d * l[_][0] + l[_][1];
     p.push({
       grade: y,
       alt: M
@@ -6215,9 +6222,9 @@ class Is {
     Br("Creating new Track object");
     const r = s.map((M) => new Pu(M)), a = j0(r), l = V0(r, a);
     this.points = r.map((M, I) => new As(M, a[I], l[I])), Br(`set-points - ${r.length} points`), Br("Calculating"), this.dist = this.points[this.points.length - 1].loc;
-    let p = 0, d = 0, v = 0, y = this.points[0].alt;
+    let p = 0, d = 0, _ = 0, y = this.points[0].alt;
     this.points.forEach((M) => {
-      v = M.alt - y, v < 0 ? d += v : p += v, y = M.alt;
+      _ = M.alt - y, _ < 0 ? d += _ : p += _, y = M.alt;
     }), this.gain = p, this.loss = d;
   }
   get start() {
@@ -6245,7 +6252,7 @@ class Is {
    * @returns
    */
   getNearestPoint(s, r, a) {
-    let p = this.points.findIndex((y) => y === r), d = this.points[p], v = 0;
+    let p = this.points.findIndex((y) => y === r), d = this.points[p], _ = 0;
     for (; a > 0.025; ) {
       const y = a / 5, M = [d];
       for (let R = 1; R <= 5; R++) {
@@ -6257,13 +6264,13 @@ class Is {
         }
       }
       const I = M.map((R) => Number(s.distanceTo(R.latlon)));
-      v = Math.min(...I);
-      const m = I.findIndex((R) => R === v);
+      _ = Math.min(...I);
+      const m = I.findIndex((R) => R === _);
       d = M[m], a = a / 5;
     }
     return {
       point: d,
-      delta: v
+      delta: _
     };
   }
   // if criteria is met, returns new Track object w/ reduced points
@@ -6274,7 +6281,7 @@ class Is {
       return a("Does not meet criteria"), this;
     const l = this.dist, p = Math.floor(l / s) + 1, d = Array(p).fill(0).map((I, m) => Nt(m++ * s, 3));
     d[d.length - 1] < l && d.push(l);
-    const v = Lu(
+    const _ = Lu(
       this.points.map((I) => I.loc),
       this.points.map((I) => I.alt),
       d,
@@ -6282,7 +6289,7 @@ class Is {
     ), y = d.map((I) => this.getLLA(I)).map((I, m) => ({
       lat: Nt(I.lat, 6),
       lon: Nt(I.lon, 6),
-      alt: Nt(v[m].alt, 2)
+      alt: Nt(_[m].alt, 2)
     })), M = new Is(y);
     return a(`Reduced from ${this.points.length} to ${M.points.length} points.`), M;
   }
