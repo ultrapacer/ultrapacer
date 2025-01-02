@@ -20,7 +20,8 @@
     "build": "tsc && vite build",
     "build:watch": "tsc && vite build --watch",
     "dev": "vite",
-    "lint": "eslint ./src --fix",
+    "lint": "eslint ./src",
+    "lint-fix": "eslint ./src --fix",
     "format": "prettier --write ./src",
     "test": "vitest",
     "type-check": "tsc --noEmit"
