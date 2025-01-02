@@ -1,7 +1,8 @@
 import { expect, test } from 'vitest'
 
-import { getDarkFactor } from '../'
 import { Sun } from '~/models/Sun'
+
+import { getDarkFactor } from '../'
 
 const sunrise = 21600
 const sunset = 72000
