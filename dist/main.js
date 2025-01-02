@@ -4641,9 +4641,7 @@ function D0(f, s, r) {
   f = [...f], s.interpolated && f.splice(f.findIndex((h) => h.loc > s.loc) - 1, 0, s), r.interpolated && f.splice(f.findIndex((h) => h.loc > r.loc) - 1, 0, r);
   const a = f.filter(
     (h, g) => g >= f.findIndex((_) => _ === s) && g <= f.findIndex((_) => _ === r)
-  );
-  console.error("rollupPointFactors", s.interpolated, r.interpolated);
-  const l = a.map((h, g) => ({
+  ), l = a.map((h, g) => ({
     factors: h.factors,
     dist: g === a.length - 1 ? 0 : a[g + 1].loc - a[g].loc
   }));

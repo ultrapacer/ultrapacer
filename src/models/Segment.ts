@@ -26,7 +26,6 @@ function rollupPointFactors(points: PlanPoint[], point1: PlanPoint, point2: Plan
     (p, i) =>
       i >= points.findIndex((p) => p === point1) && i <= points.findIndex((p) => p === point2)
   )
-  console.error('rollupPointFactors', point1.interpolated, point2.interpolated)
 
   const segs = filteredPoints.map((p, i) => ({
     factors: p.factors,
