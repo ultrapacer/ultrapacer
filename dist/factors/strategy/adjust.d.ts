@@ -1,1 +1,2 @@
-export function adjust(strategy: any, length: any): number;
+import { StrategyElement } from './StrategyElement';
+export declare function adjust(values: StrategyElement[], length: number): number;

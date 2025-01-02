@@ -1,10 +1,18 @@
-export function applyScale(fact: any, scale: any): number;
-export function generate(point: any, { plan, course }: {
-    plan: any;
-    course: any;
-}): void;
-export { list } from "./list.js";
-export { Strategy } from "./strategy/index.js";
-export { Factors };
-export { getHeatFactor } from "./heat";
-import { Factors } from './Factors.js';
+import { Course } from '../models/Course';
+import { CoursePoint } from '../models/CoursePoint';
+import { Plan } from '../models/Plan';
+import { PlanPoint } from '../models/PlanPoint';
+import { getAltitudeFactor } from './altitude';
+import { getDarkFactor } from './dark';
+import { factorKeys, Factors, type FactorsKeys, type FactorsObject } from './Factors';
+import { getGradeFactor } from './grade';
+import { getHeatFactor } from './heat';
+import { getTerrainFactor } from './terrain';
+export declare function applyScale(fact: number, scale?: number): number;
+export declare function generateCourseFactors(point: CoursePoint | PlanPoint, course: Course): void;
+export declare function generatePlanFactors(point: PlanPoint, plan: Plan): void;
+export { typeList } from './list';
+export { rollup } from './rollup';
+export { Strategy } from './strategy';
+export { factorKeys, Factors, getAltitudeFactor, getDarkFactor, getGradeFactor, getHeatFactor, getTerrainFactor };
+export type { FactorsKeys, FactorsObject };

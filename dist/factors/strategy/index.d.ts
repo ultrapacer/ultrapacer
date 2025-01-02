@@ -1,13 +1,27 @@
-export class Strategy {
-    constructor(arg?: {});
-    length: any;
-    values: any;
+import { Course } from '~/models';
+import { StrategyElement } from './StrategyElement';
+export type StrategyValues = {
+    onset: number;
+    value: number;
+    type: string;
+}[];
+/**
+ * limited Plan type for Strategy
+ */
+type Plan = {
+    course: Pick<Course, 'dist'>;
+};
+export declare class Strategy {
+    plan: Plan;
+    values: StrategyValues;
+    constructor(plan: Plan, values?: StrategyValues);
     /**
      * Returns strategy factor at location.
      *
-     * @param {Number} loc - The location (in km) to determine value.
-     * @return {Number} The strategy factor at input location.
+     * @param loc - The location (in km) to determine value.
+     * @returns  The strategy factor at input location.
      */
     at(loc: number): number;
-    addValue(val: any): void;
+    addValue(val: StrategyElement): void;
 }
+export {};

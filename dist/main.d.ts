@@ -1,9 +1,8 @@
-export { Course, CoursePoint, Event, Plan, PlanPoint, Point, Segment, Site, SuperSegment, Track, Waypoint } from './models';
-export { Factors, Strategy, getHeatFactor, list as factorList } from './factors';
-export { adjust as adjustStrategy } from './factors/strategy/adjust';
+export * as factors from './factors';
+export { Factors, Strategy } from './factors';
 export { scale as scaleDark } from './factors/dark/scale';
-export * as math from './util/math';
-export { calcSegments } from './geo';
-export { addLocations } from './models/Points/addLocations';
+export { adjust as adjustStrategy } from './factors/strategy/adjust';
+export * from './models';
 export { interpolatePoint } from './models/Points/interpolate';
-export { dateToTODSeconds } from './util';
+export * as util from './util';
+export * as math from './util/math';
