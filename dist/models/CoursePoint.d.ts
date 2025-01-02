@@ -17,7 +17,9 @@ export declare class CoursePoint extends TrackPoint {
     /**
      * flag for interpolated points (not part of original course)
      */
-    interpolated?: boolean;
+    get interpolated(): boolean;
+    set interpolated(value: boolean);
+    private _interpolated?;
     /**
      * location, scaled, with loop, in kilometers
      */

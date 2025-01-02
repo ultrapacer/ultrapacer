@@ -14,6 +14,7 @@ export declare class PlanPoint extends CoursePoint {
     delay: number;
     /**
      * elapsed time in seconds
+     * does not include delay from this point
      */
     elapsed: number;
     /**

@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
 import { createDebug } from '../debug'
-import { factorKeys } from '../factors'
+import { factorKeys, generatePlanFactors } from '../factors'
 import { Strategy, StrategyValues } from '../factors/strategy'
 import { areSameWaypoint } from '../util/areSameWaypoint'
 import { interp, interpArray, req, rgte } from '../util/math'
@@ -458,13 +458,20 @@ export class Plan {
     // create a new point
     const point = new PlanPoint(this, this.course.getPoint(loc))
 
-    // add in interpolated time values if they exist
-    if (!isNaN(p1.time) && !isNaN(p2.time)) {
-      const delay = p2.elapsed - p2.time - (p1.elapsed - p1.time)
-      point.time = interp(p1.loc, p2.loc, p1.time + delay, p2.time, p2.loc)
-      point.elapsed = p2.elapsed - (p2.time - point.time)
-      if (this.event.start) point.tod = this.event.elapsedToTimeOfDay(point.elapsed)
-    }
+    // delay at this point is the increase in elapsed time from the previous point
+    point.delay = Math.round(p2.elapsed - p1.elapsed - (p2.time - p1.time))
+
+    // time is linearly interpolated between points
+    point.time = interp(p1.loc, p2.loc, p1.time, p2.time, point.loc)
+
+    // elapsed time by adding delay and delta time to previous point
+    point.elapsed = p1.elapsed + p1.delay + (point.time - p1.time)
+
+    // time of day is calculated from elapsed time
+    point.tod = this.event.elapsedToTimeOfDay(point.elapsed)
+
+    // update factors
+    generatePlanFactors(point, this)
 
     if (insert) this.points.splice(i2, 0, point)
 

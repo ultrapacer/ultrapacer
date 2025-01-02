@@ -17,10 +17,16 @@ import { Waypoint } from './Waypoint'
  * @returns Factors
  */
 function rollupPointFactors(points: PlanPoint[], point1: PlanPoint, point2: PlanPoint): Factors {
+  // points may not be in points array, so insert them if they are interpolated points:
+  points = [...points]
+  if (point1.interpolated) points.splice(points.findIndex((p) => p.loc > point1.loc) - 1, 0, point1)
+  if (point2.interpolated) points.splice(points.findIndex((p) => p.loc > point2.loc) - 1, 0, point2)
+
   const filteredPoints = points.filter(
     (p, i) =>
       i >= points.findIndex((p) => p === point1) && i <= points.findIndex((p) => p === point2)
   )
+  console.error('rollupPointFactors', point1.interpolated, point2.interpolated)
 
   const segs = filteredPoints.map((p, i) => ({
     factors: p.factors,

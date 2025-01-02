@@ -32,7 +32,13 @@ export class CoursePoint extends TrackPoint {
   /**
    * flag for interpolated points (not part of original course)
    */
-  interpolated?: boolean
+  get interpolated() {
+    return (isCoursePoint(this.source) ? this.source._interpolated : this._interpolated) || false
+  }
+  set interpolated(value: boolean) {
+    this._interpolated = value
+  }
+  private _interpolated?: boolean
 
   /**
    * location, scaled, with loop, in kilometers
