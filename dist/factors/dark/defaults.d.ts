@@ -1,4 +1,2 @@
-export namespace defaults {
-    let baseline: number;
-    let terrainScale: number;
-}
+import { DarkModel } from './DarkModel';
+export declare const defaults: DarkModel;

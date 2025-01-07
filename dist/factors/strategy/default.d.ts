@@ -1,1 +1,1 @@
-export function defaults(length: any): 2 | 10 | 5 | 15 | 20;
+export declare function defaults(length: number): number;

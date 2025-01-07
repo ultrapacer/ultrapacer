@@ -1,1 +1,9 @@
-export function areSameWaypoint(a: any, b: any): boolean;
+type S = {
+    id: string | symbol;
+} | string | symbol;
+type W = {
+    site: S;
+    loop: number;
+};
+export declare function areSameWaypoint(a: W, b: W): boolean;
+export {};
