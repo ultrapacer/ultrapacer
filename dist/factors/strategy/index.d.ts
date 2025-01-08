@@ -1,10 +1,5 @@
 import { Course } from '~/models';
-import { StrategyElement } from './StrategyElement';
-export type StrategyValues = {
-    onset: number;
-    value: number;
-    type: string;
-}[];
+import { StrategyElement, StrategyElementType } from './StrategyElement';
 /**
  * limited Plan type for Strategy
  */
@@ -13,8 +8,8 @@ type Plan = {
 };
 export declare class Strategy {
     plan: Plan;
-    values: StrategyValues;
-    constructor(plan: Plan, values?: StrategyValues);
+    values: StrategyElement[];
+    constructor(plan: Plan, values?: StrategyElement[]);
     /**
      * Returns strategy factor at location.
      *
@@ -24,4 +19,4 @@ export declare class Strategy {
     at(loc: number): number;
     addValue(val: StrategyElement): void;
 }
-export {};
+export type { StrategyElement, StrategyElementType };

@@ -1,5 +1,7 @@
+export type StrategyElementType = 'linear' | 'step'
+
 export type StrategyElement = {
   onset: number
-  type: string
+  type: StrategyElementType
   value: number
 }

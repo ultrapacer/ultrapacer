@@ -1,4 +1,4 @@
-import { Strategy, StrategyValues } from '../factors/strategy';
+import { Strategy, StrategyElement } from '../factors/strategy';
 import { Course, CourseCutoff } from './Course';
 import { Event } from './Event';
 import { Pacing } from './Pacing';
@@ -44,7 +44,7 @@ export type PlanData = {
      * Start date and timezone
      */
     start?: DateWithTimezone | undefined;
-    strategy?: StrategyValues | undefined;
+    strategy?: StrategyElement[] | undefined;
     target: number;
     typicalDelay?: number | undefined;
 };

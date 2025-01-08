@@ -4,7 +4,7 @@ import { Course } from '~/models'
 
 import { adjust } from './adjust'
 import { defaults as def } from './default'
-import { StrategyElement } from './StrategyElement'
+import { StrategyElement, StrategyElementType } from './StrategyElement'
 
 function getFact(loc: number, values: StrategyElement[], length: number) {
   let a = -adjust(values, length)
@@ -25,8 +25,6 @@ function getFact(loc: number, values: StrategyElement[], length: number) {
   return a
 }
 
-export type StrategyValues = { onset: number; value: number; type: string }[]
-
 /**
  * limited Plan type for Strategy
  */
@@ -34,9 +32,9 @@ type Plan = { course: Pick<Course, 'dist'> }
 
 export class Strategy {
   plan: Plan
-  values: StrategyValues
+  values: StrategyElement[]
 
-  constructor(plan: Plan, values?: StrategyValues) {
+  constructor(plan: Plan, values?: StrategyElement[]) {
     this.plan = plan
     this.values = values
       ? _.cloneDeep(values)
@@ -63,3 +61,5 @@ export class Strategy {
     }
   }
 }
+
+export type { StrategyElement, StrategyElementType }

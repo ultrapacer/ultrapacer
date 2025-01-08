@@ -2,7 +2,7 @@ import _ from 'lodash'
 
 import { createDebug } from '../debug'
 import { factorKeys, generatePlanFactors } from '../factors'
-import { Strategy, StrategyValues } from '../factors/strategy'
+import { Strategy, StrategyElement } from '../factors/strategy'
 import { areSameWaypoint } from '../util/areSameWaypoint'
 import { interp, interpArray, req, rgte } from '../util/math'
 import { Course, CourseCutoff } from './Course'
@@ -51,7 +51,7 @@ export type PlanData = {
    */
   start?: DateWithTimezone | undefined
 
-  strategy?: StrategyValues | undefined
+  strategy?: StrategyElement[] | undefined
 
   target: number
 

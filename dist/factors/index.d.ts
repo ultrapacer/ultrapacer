@@ -13,6 +13,6 @@ export declare function generateCourseFactors(point: CoursePoint | PlanPoint, co
 export declare function generatePlanFactors(point: PlanPoint, plan: Plan): void;
 export { typeList } from './list';
 export { rollup } from './rollup';
-export { Strategy } from './strategy';
+export { Strategy, type StrategyElement, type StrategyElementType } from './strategy';
 export { factorKeys, Factors, getAltitudeFactor, getDarkFactor, getGradeFactor, getHeatFactor, getTerrainFactor };
 export type { FactorsKeys, FactorsObject };
