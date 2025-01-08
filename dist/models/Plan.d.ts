@@ -48,7 +48,7 @@ export type PlanData = {
     target: number;
     typicalDelay?: number | undefined;
 };
-type PlanUpdateData = Partial<PlanData> & NonNullable<Partial<Pick<PlanData, 'method' | 'target'>>>;
+export type PlanUpdateData = Partial<PlanData> & NonNullable<Partial<Pick<PlanData, 'method' | 'target'>>>;
 type PlanStats = {
     factors: {
         [key: string]: {
