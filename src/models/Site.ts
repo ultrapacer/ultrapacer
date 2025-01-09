@@ -40,12 +40,6 @@ export type SiteData = {
   percent: number
 
   /**
-   * optional tier for the site
-   * @deprecated - this has been replaced with course terrain model
-   */
-  tier?: number
-
-  /**
    * type of site
    */
   type: WaypointType
@@ -149,14 +143,6 @@ export class Site {
   }
   set percent(v) {
     this._data.percent = v
-  }
-
-  /**
-   * optional tier for the site
-   * @deprecated - this has been replaced with course terrain model
-   */
-  get tier() {
-    return this._data.tier || 1
   }
 
   /**

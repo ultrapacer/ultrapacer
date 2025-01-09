@@ -51,8 +51,7 @@ export class CourseSplits {
   createSegments() {
     d('createSegments')
 
-    // break on non-hidden waypoints:
-    const wps = this.course.waypoints.filter((x) => x.tier < 3).sort((a, b) => a.loc - b.loc)
+    const wps = this.course.waypoints
 
     // determine all the stuff
     const segments = this.calcSegments(this.course.locationsToBreaks(wps.map((x) => x.loc)))

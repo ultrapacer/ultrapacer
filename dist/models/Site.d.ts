@@ -31,11 +31,6 @@ export type SiteData = {
      */
     percent: number;
     /**
-     * optional tier for the site
-     * @deprecated - this has been replaced with course terrain model
-     */
-    tier?: number;
-    /**
      * type of site
      */
     type: WaypointType;
@@ -94,11 +89,6 @@ export declare class Site {
      */
     get percent(): number;
     set percent(v: number);
-    /**
-     * optional tier for the site
-     * @deprecated - this has been replaced with course terrain model
-     */
-    get tier(): number;
     /**
      * type of site
      */
