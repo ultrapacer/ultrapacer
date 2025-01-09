@@ -6,20 +6,18 @@ import { PlanPoint } from './PlanPoint';
 import { PlanSplits } from './PlanSplits';
 import { DateWithTimezone } from './types';
 import { Waypoint } from './Waypoint';
-type DelaysInput = {
-    waypoint: {
-        site: string;
-        loop: number;
-    };
+export type PlanDataDelays = {
     delay: number;
+    loop: number;
+    siteId: string | symbol;
 }[];
-type PlanMethod = 'np' | 'pace' | 'time';
+export type PlanDataMethod = 'np' | 'pace' | 'time';
 /**
  * Represents the data structure for a plan.
  */
 export type PlanData = {
     cutoffMargin?: number | undefined;
-    delays?: DelaysInput | undefined;
+    delays?: PlanDataDelays | undefined;
     heatModel?: {
         baseline: number;
         max: number;
@@ -31,7 +29,10 @@ export type PlanData = {
     /**
      * Method for calculating target time
      */
-    method: PlanMethod;
+    method: PlanDataMethod;
+    /**
+     * Optional display name for the plan
+     */
     name?: string | undefined;
     /**
      * Scales for factors
@@ -48,6 +49,10 @@ export type PlanData = {
     target: number;
     typicalDelay?: number | undefined;
 };
+/**
+ * Represents the data structure for updating a plan.
+ * All fields are optional, but method and target cannot be set to null or undefined.
+ */
 export type PlanUpdateData = Partial<PlanData> & NonNullable<Partial<Pick<PlanData, 'method' | 'target'>>>;
 type PlanStats = {
     factors: {
@@ -137,7 +142,7 @@ export declare class Plan {
     /**
      * Method for calculating target time
      */
-    get method(): PlanMethod;
+    get method(): PlanDataMethod;
     /**
      * Display name for the plan
      */

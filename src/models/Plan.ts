@@ -3,7 +3,6 @@ import _ from 'lodash'
 import { createDebug } from '../debug'
 import { factorKeys, generatePlanFactors } from '../factors'
 import { Strategy, StrategyElement } from '../factors/strategy'
-import { areSameWaypoint } from '../util/areSameWaypoint'
 import { interp, interpArray, req, rgte } from '../util/math'
 import { Course, CourseCutoff } from './Course'
 import { Event } from './Event'
@@ -15,9 +14,9 @@ import { Waypoint } from './Waypoint'
 
 const d = createDebug('models:Plan')
 
-type DelaysInput = { waypoint: { site: string; loop: number }; delay: number }[]
+export type PlanDataDelays = { delay: number; loop: number; siteId: string | symbol }[]
 
-type PlanMethod = 'np' | 'pace' | 'time'
+export type PlanDataMethod = 'np' | 'pace' | 'time'
 
 /**
  * Represents the data structure for a plan.
@@ -25,7 +24,7 @@ type PlanMethod = 'np' | 'pace' | 'time'
 export type PlanData = {
   cutoffMargin?: number | undefined
 
-  delays?: DelaysInput | undefined
+  delays?: PlanDataDelays | undefined
 
   heatModel?: { baseline: number; max: number } | undefined
 
@@ -37,8 +36,11 @@ export type PlanData = {
   /**
    * Method for calculating target time
    */
-  method: PlanMethod
+  method: PlanDataMethod
 
+  /**
+   * Optional display name for the plan
+   */
   name?: string | undefined
 
   /**
@@ -58,6 +60,10 @@ export type PlanData = {
   typicalDelay?: number | undefined
 }
 
+/**
+ * Represents the data structure for updating a plan.
+ * All fields are optional, but method and target cannot be set to null or undefined.
+ */
 export type PlanUpdateData = Partial<PlanData> &
   NonNullable<Partial<Pick<PlanData, 'method' | 'target'>>>
 
@@ -172,7 +178,9 @@ export class Plan {
 
     const delays = this.course.waypoints
       .map((waypoint) => {
-        const wpd = this._data.delays?.find((d) => areSameWaypoint(d.waypoint, waypoint))
+        const wpd = this._data.delays?.find(
+          (d) => d.loop === waypoint.loop && d.siteId === waypoint.site.id
+        )
         const delay = wpd ? wpd.delay : waypoint.hasTypicalDelay ? this.typicalDelay : 0
         return new PlanDelay(waypoint, delay)
       })
@@ -399,6 +407,16 @@ export class Plan {
     this.course = course
     this._data = data
 
+    // if data.delays exists, make sure ids are valid site ids:
+    if (data.delays) {
+      const validIds = course.sites.map((site) => site.id)
+      const bad = data.delays.find((d) => !validIds.includes(d.siteId))
+      if (bad) {
+        console.error(`Site in plan delays is not in course sites (${String(bad.siteId)})`)
+        throw new Error('Site in plan delays is not in course sites.')
+      }
+    }
+
     this.points = this.course.points.map((point) => new PlanPoint(this, point))
 
     this._version = 1
@@ -422,7 +440,7 @@ export class Plan {
    * @returns delay (sec)
    */
   getDelayAtWaypoint(waypoint: Waypoint): number {
-    return this.delays.find((d) => areSameWaypoint(d.waypoint, waypoint))?.delay || 0
+    return this.delays.find((d) => d.waypoint === waypoint)?.delay || 0
   }
 
   /**

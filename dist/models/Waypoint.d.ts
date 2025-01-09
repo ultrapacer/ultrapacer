@@ -1,4 +1,3 @@
-import { CourseSegment, PlanSegment } from './Segment';
 import { Site } from './Site';
 export declare class Waypoint {
     constructor(site: Site, loop?: number);
@@ -20,5 +19,4 @@ export declare class Waypoint {
     get type(): import("./Site").WaypointType;
     get hasTypicalDelay(): boolean;
     get cutoff(): number | undefined;
-    matchingSegment(segments: CourseSegment[]): CourseSegment | PlanSegment | undefined;
 }

@@ -68,8 +68,8 @@ const tests: Test[] = [
       scales: { altitude: 1.2, dark: 0.7 },
       heatModel: { baseline: 0, max: 5 },
       delays: [
-        { waypoint: { site: '5d8e9a27e372020007cb2452', loop: 1 }, delay: 5 * 3600 },
-        { waypoint: { site: '5d8e9aaae372020007cb2459', loop: 1 }, delay: 5 * 3600 }
+        { siteId: '5d8e9a27e372020007cb2452', loop: 1, delay: 5 * 3600 },
+        { siteId: '5d8e9aaae372020007cb2459', loop: 1, delay: 5 * 3600 }
       ]
     },
     r: {

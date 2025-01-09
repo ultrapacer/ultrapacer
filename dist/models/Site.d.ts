@@ -18,9 +18,10 @@ export type SiteData = {
      */
     description?: string;
     /**
-     * id for the site
+     * optional id for the site
+     * required when inputting plan delays
      */
-    id: string | symbol;
+    id?: string | symbol;
     /**
      * optional name for the site
      */
@@ -39,10 +40,6 @@ export type SiteData = {
      */
     type: WaypointType;
 };
-/**
- * Site update data object
- */
-export type SiteUpdateData = Partial<SiteData> & NonNullable<Partial<Pick<SiteData, 'percent'>>>;
 export declare class Site {
     /**
      * internal cache object
@@ -79,7 +76,7 @@ export declare class Site {
     /**
      * optional id for the site
      */
-    get id(): string | symbol;
+    get id(): string | symbol | undefined;
     /**
      * latitude of the site
      */

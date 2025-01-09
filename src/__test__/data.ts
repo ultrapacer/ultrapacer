@@ -2216,20 +2216,8 @@ export const planData: PlanData = {
   typicalDelay: 210,
   target: 79200,
   delays: [
-    {
-      waypoint: {
-        site: '5d8e9973e372020007cb244b',
-        loop: 1
-      },
-      delay: 180
-    },
-    {
-      waypoint: {
-        site: '5d8e99bfe372020007cb244e',
-        loop: 1
-      },
-      delay: 480
-    }
+    { siteId: '5d8e9973e372020007cb244b', loop: 1, delay: 180 },
+    { siteId: '5d8e99bfe372020007cb244e', loop: 1, delay: 480 }
   ],
   strategy: [
     {

@@ -1,7 +1,5 @@
 import _ from 'lodash'
 
-import { areSameWaypoint } from '../util/areSameWaypoint'
-import { CourseSegment, PlanSegment } from './Segment'
 import { Site } from './Site'
 
 export class Waypoint {
@@ -77,9 +75,5 @@ export class Waypoint {
 
   get cutoff() {
     return this.site.cutoffs?.find((c) => c.loop === this.loop)?.time
-  }
-
-  matchingSegment(segments: CourseSegment[]): CourseSegment | PlanSegment | undefined {
-    return segments.find((s) => s.waypoint && areSameWaypoint(this, s.waypoint))
   }
 }
