@@ -125,10 +125,6 @@ export declare class Course {
      */
     get lossScale(): number;
     /**
-     * Course name
-     */
-    name?: string;
-    /**
      * Course points
      */
     get points(): CoursePoint[];

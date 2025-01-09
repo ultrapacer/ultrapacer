@@ -13,10 +13,12 @@ export declare class Waypoint {
     get lat(): number;
     get lon(): number;
     get alt(): number;
+    /**
+     * @deprecated - this has been replaced with course terrain model
+     */
     get tier(): number;
     get type(): import("./Site").WaypointType;
     get hasTypicalDelay(): boolean;
-    get cutoff(): number | null;
-    set cutoff(v: number | null);
+    get cutoff(): number | undefined;
     matchingSegment(segments: CourseSegment[]): CourseSegment | PlanSegment | undefined;
 }

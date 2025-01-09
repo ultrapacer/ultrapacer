@@ -204,11 +204,6 @@ export class Course {
   }
 
   /**
-   * Course name
-   */
-  name?: string
-
-  /**
    * Course points
    */
   get points(): CoursePoint[] {
@@ -401,10 +396,6 @@ export class Course {
     d('update')
     Object.assign(this._data, data)
     this.version++
-
-    this.sites.forEach((site) => {
-      site.clearCache()
-    })
   }
 
   /**

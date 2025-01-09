@@ -9,59 +9,138 @@ const d = createDebug('models:Waypoint')
 type WaypointCutoff = { loop: number; time: number }
 export type WaypointType = 'start' | 'finish' | 'aid' | 'water' | 'landmark' | 'junction' | 'other'
 
+/**
+ * Site data object
+ */
 export type SiteData = {
-  id: string | symbol
-  type: WaypointType
-  name?: string | undefined
-  description?: string
+  /**
+   * optional cutoffs for the site
+   */
   cutoffs?: WaypointCutoff[]
-  percent: number
-  tier?: number
-}
 
-export class Site {
-  private _waypoints?: Waypoint[]
-  private _lat: number = NaN
-  private _lon: number = NaN
-  private _alt: number = NaN
-
-  constructor(course: Course, data: SiteData) {
-    this._data = { percent: data.percent }
-
-    this.course = course
-
-    this.id = data.id
-    this.type = data.type
-    this.name = data.name
-    if (data.cutoffs) this.cutoffs = data.cutoffs
-    if (data.tier !== undefined) this.tier = data.tier
-    if (data.description) this.description = data.description
-
-    d(`constructor: ${this.name}`)
-  }
-
-  _data: {
-    percent: number
-  }
-  course: Course
-  cutoffs: WaypointCutoff[] = []
-  id: string | symbol
-  name?: string | undefined
-  tier: number = 1
-  type: WaypointType
+  /**
+   * optional description for the site
+   */
   description?: string
 
   /**
-   * @deprecated - use a version tracker like Plan and Course
+   * id for the site
    */
-  clearCache() {
-    d(`clearCache: ${this.name}`)
-    delete this._waypoints
-    this._lat = NaN
-    this._lon = NaN
-    this._alt = NaN
+  id: string | symbol
+
+  /**
+   * optional name for the site
+   */
+  name?: string | undefined
+
+  /**
+   * percent of total distance along the track where the site is located
+   */
+  percent: number
+
+  /**
+   * optional tier for the site
+   * @deprecated - this has been replaced with course terrain model
+   */
+  tier?: number
+
+  /**
+   * type of site
+   */
+  type: WaypointType
+}
+
+/**
+ * Site update data object
+ */
+export type SiteUpdateData = Partial<SiteData> & NonNullable<Partial<Pick<SiteData, 'percent'>>>
+
+export class Site {
+  /**
+   * internal cache object
+   * gets deleted and regenerated when version changes
+   */
+  private _cache: {
+    _version?: number
+    alt?: number
+    lat?: number
+    lon?: number
+    waypoints?: Waypoint[]
+  } = {}
+  get cache() {
+    if (this._cache?._version === this.version) return this._cache
+    this._cache = { _version: this.version }
+    return this._cache
   }
 
+  /**
+   * internal data object
+   */
+  private _data: SiteData
+
+  /**
+   * altitude of the site
+   */
+  get alt() {
+    if ('alt' in this._cache) return this._cache.alt
+    this.refreshLLA()
+    return Number(this._cache.alt)
+  }
+
+  /**
+   * course the site is associated with
+   */
+  readonly course: Course
+
+  /**
+   * optional cutoffs for the site
+   */
+  get cutoffs() {
+    return this._data.cutoffs || []
+  }
+
+  /**
+   * optional description for the site
+   */
+  get description() {
+    return this._data.description
+  }
+
+  /**
+   * optional id for the site
+   */
+  get id() {
+    return this._data.id
+  }
+
+  /**
+   * latitude of the site
+   */
+  get lat() {
+    if ('lat' in this._cache) return this._cache.lat
+    this.refreshLLA()
+    return Number(this._cache.lat)
+  }
+
+  /**
+   * longitude of the site
+   */
+  get lon() {
+    if ('lon' in this._cache) return this._cache.lon
+    this.refreshLLA()
+    return Number(this._cache.lon)
+  }
+
+  /**
+   * optional name for the site
+   */
+  get name() {
+    return this._data.name
+  }
+
+  /**
+   * percent of total distance along the track where the site is located
+   */
   get percent() {
     switch (this.type) {
       case 'start':
@@ -72,38 +151,55 @@ export class Site {
         return this._data.percent
     }
   }
-
   set percent(v) {
     this._data.percent = v
   }
 
+  /**
+   * optional tier for the site
+   * @deprecated - this has been replaced with course terrain model
+   */
+  get tier() {
+    return this._data.tier || 1
+  }
+
+  /**
+   * type of site
+   */
+  get type() {
+    return this._data.type
+  }
+
+  /**
+   * Version of course (not currently able to update site directly)
+   */
+  get version() {
+    return this.course.version
+  }
+
+  /**
+   * array of waypoints for the site
+   */
   get waypoints() {
-    if (this._waypoints) return this._waypoints
+    if ('waypoints' in this._cache) return this._cache.waypoints
+
     d(`generating waypoints array: ${this.name}`)
     if (this.type === 'finish') {
-      this._waypoints = [new Waypoint(this, this.course.loops)]
+      this._cache.waypoints = [new Waypoint(this, this.course.loops)]
     } else {
-      this._waypoints = _.range(this.course.loops).map((x) => new Waypoint(this, x + 1))
+      this._cache.waypoints = _.range(this.course.loops).map((x) => new Waypoint(this, x + 1))
     }
-    return this._waypoints
+    return this._cache.waypoints
   }
 
-  get lat() {
-    if (_.isNaN(this._lat)) this.refreshLLA()
-    return this._lat
+  constructor(course: Course, data: SiteData) {
+    this.course = course
+    this._data = data
   }
 
-  get lon() {
-    if (_.isNaN(this._lon)) this.refreshLLA()
-    return this._lon
-  }
-
-  get alt() {
-    if (_.isNaN(this._alt)) this.refreshLLA()
-    return this._alt
-  }
-
-  // function updates the lat/lon/alt of a waypoint
+  /**
+   * refresh the latitude, longitude, and altitude of the site
+   */
   refreshLLA() {
     d('refreshLLA')
 
@@ -122,11 +218,8 @@ export class Site {
       ;({ lat, lon, alt } = this.course.track.getLLA(this.percent * this.course.track.dist))
     }
     // update site values
-    this._lat = lat
-    this._lon = lon
-    this._alt = alt
-
-    // TODO. clearing splits; not sure if this is the best place to put this
-    this.course.version++
+    this._cache.lat = lat
+    this._cache.lon = lon
+    this._cache.alt = alt
   }
 }
