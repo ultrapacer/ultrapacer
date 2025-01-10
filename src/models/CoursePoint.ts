@@ -1,5 +1,5 @@
 import { Factors } from '../factors/Factors'
-import { Course } from './Course'
+import { Types } from '../main'
 import { TrackPoint } from './Point'
 
 function isCoursePoint(point: TrackPoint | CoursePoint): point is CoursePoint {
@@ -10,7 +10,7 @@ function isCoursePoint(point: TrackPoint | CoursePoint): point is CoursePoint {
  * CoursePoint object for use in a course, including scaling and loop data
  */
 export class CoursePoint extends TrackPoint {
-  private _course: Course
+  private _course: Types.Course
 
   /**
    * pacing factors at this point
@@ -62,7 +62,7 @@ export class CoursePoint extends TrackPoint {
    */
   readonly source: TrackPoint | CoursePoint
 
-  constructor(course: Course, point: TrackPoint, loop: number) {
+  constructor(course: Types.Course, point: TrackPoint, loop: number) {
     super(point, point.loc, point.grade)
 
     this._course = course

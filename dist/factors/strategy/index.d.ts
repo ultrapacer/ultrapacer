@@ -1,4 +1,4 @@
-import { Course } from '~/models';
+import { Course } from '../../models';
 import { StrategyElement, StrategyElementType } from './StrategyElement';
 /**
  * limited Plan type for Strategy

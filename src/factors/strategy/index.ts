@@ -1,7 +1,6 @@
 import _ from 'lodash'
 
-import { Course } from '~/models'
-
+import { Course } from '../../models'
 import { adjust } from './adjust'
 import { defaults as def } from './default'
 import { StrategyElement, StrategyElementType } from './StrategyElement'

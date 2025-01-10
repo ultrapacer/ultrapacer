@@ -2,123 +2,23 @@ import _ from 'lodash'
 
 import { createDebug } from '../debug'
 import { factorKeys, generatePlanFactors } from '../factors'
-import { Strategy, StrategyElement } from '../factors/strategy'
+import { Strategy } from '../factors/strategy'
+import { Models, Types } from '../main'
 import { interp, interpArray, req, rgte } from '../util/math'
-import { Course, CourseCutoff } from './Course'
-import { Event } from './Event'
 import { Pacing } from './Pacing'
-import { PlanPoint } from './PlanPoint'
 import { PlanSplits } from './PlanSplits'
-import { DateWithTimezone } from './types'
-import { Waypoint } from './Waypoint'
 
 const d = createDebug('models:Plan')
 
-export type PlanDataDelays = { delay: number; loop: number; siteId: string | symbol }[]
-
-export type PlanDataMethod = 'np' | 'pace' | 'time'
-
-/**
- * Represents the data structure for a plan.
- */
-export type PlanData = {
-  cutoffMargin?: number | undefined
-
-  delays?: PlanDataDelays | undefined
-
-  heatModel?: { baseline: number; max: number } | undefined
-
-  /**
-   * Unique identifier for the plan
-   */
-  id?: string | null | number | symbol | undefined
-
-  /**
-   * Method for calculating target time
-   */
-  method: PlanDataMethod
-
-  /**
-   * Optional display name for the plan
-   */
-  name?: string | undefined
-
-  /**
-   * Scales for factors
-   */
-  scales?: { altitude?: number; dark?: number } | undefined
-
-  /**
-   * Start date and timezone
-   */
-  start?: DateWithTimezone | undefined
-
-  strategy?: StrategyElement[] | undefined
-
-  target: number
-
-  typicalDelay?: number | undefined
-}
-
-/**
- * Represents the data structure for updating a plan.
- * All fields are optional, but method and target cannot be set to null or undefined.
- */
-export type PlanUpdateData = Partial<PlanData> &
-  NonNullable<Partial<Pick<PlanData, 'method' | 'target'>>>
-
-type PlanStats = {
-  factors: {
-    [key: string]: {
-      min: number
-      max: number
-    }
-  }
-  sun: {
-    day: {
-      time: number
-      dist: number
-    }
-    twilight: {
-      time: number
-      dist: number
-    }
-    dark: {
-      time: number
-      dist: number
-    }
-  }
-}
-
-type PlanEvents = {
-  sun: { event: string; elapsed: number; loc: number }[]
-}
-
-type PlanHeatModel =
-  | {
-      start: number
-      stop: number
-      baseline: number
-      max: number
-    }
-  | undefined
-
-type PlanScales =
-  | {
-      altitude: number
-      dark: number
-    }
-  | undefined
-
-export class Plan {
+export class Plan implements Types.Plan {
   private _cache: {
     cutoffs?: PlanCutoff[]
-    delays?: PlanDelay[]
-    event?: Event
-    events?: PlanEvents
-    heatModel?: PlanHeatModel
-    scales?: PlanScales
-    stats?: PlanStats
+    delays?: Types.Plan['delays']
+    event?: Types.Event
+    events?: Types.Plan['events']
+    heatModel?: Types.PlanHeatModel
+    scales?: Types.Plan['scales']
+    stats?: Types.Plan['stats']
     strategy?: Strategy
     version?: number
   } = {}
@@ -128,23 +28,19 @@ export class Plan {
     return this._cache
   }
 
-  private _data: PlanData
+  private _data: Types.PlanData
 
-  readonly course: Course
+  readonly course: Types.Course
 
   get cutoffMargin() {
     return this._data.cutoffMargin
   }
 
-  /**
-   * cutoffs array is calculated on get as a combination of the course cutoffs and the plan points
-   * gets re-calculated if the course or plan version changes
-   */
-  get cutoffs() {
+  get cutoffs(): PlanCutoff[] {
     if ('cutoffs' in this.cache) return this.cache.cutoffs
 
     this.cache.cutoffs = this.cutoffMargin
-      ? this.course.cutoffs.map((c) => new PlanCutoff(this, c, this.getPoint(c.loc, true)))
+      ? this.course.cutoffs?.map((c) => new PlanCutoff(this, c, this.getPoint(c.loc, true))) || []
       : []
 
     // if any cutoffs are extraneous, delete them
@@ -162,17 +58,10 @@ export class Plan {
     return this.cache.cutoffs
   }
 
-  /**
-   * delay is sum of Plan.delays
-   */
   get delay() {
     return _.sumBy(this.delays, 'delay')
   }
 
-  /**
-   * delays array is calculated on get as a combination of the specified delays and default delays based on waypoint types
-   * gets re-calculated if the course or plan version changes
-   */
   get delays(): PlanDelay[] {
     if ('delays' in this.cache) return this.cache.delays
 
@@ -202,15 +91,11 @@ export class Plan {
     return this.cache.delays
   }
 
-  /**
-   * Event object
-   * gets re-calculated if the course or plan version changes
-   */
-  get event(): Event {
+  get event(): Types.Event {
     if ('event' in this.cache) return this.cache.event
 
     if (this._data.start)
-      return (this.cache.event = new Event(
+      return (this.cache.event = new Models.Event(
         this._data.start.date,
         this._data.start.timezone,
         this.points[0].lat,
@@ -274,34 +159,22 @@ export class Plan {
     return (this.cache.heatModel = undefined)
   }
 
-  /**
-   * Unique identifier for the plan
-   */
   get id() {
     return this._data.id
   }
 
-  /**
-   * Method for calculating target time
-   */
   get method() {
     return this._data.method
   }
 
-  /**
-   * Display name for the plan
-   */
   get name() {
     return this._data.name
   }
 
   pacing: Pacing = new Pacing(this)
 
-  readonly points: PlanPoint[]
+  readonly points: Types.PlanPoint[]
 
-  /**
-   * Scales for factors
-   */
   get scales() {
     if ('scales' in this.cache) return this.cache.scales
     if (this._data.scales)
@@ -312,14 +185,8 @@ export class Plan {
     return (this.cache.scales = undefined)
   }
 
-  /**
-   * splits
-   */
   readonly splits = new PlanSplits(this)
 
-  /**
-   * Plan stats object
-   */
   get stats() {
     if ('stats' in this.cache) return this.cache.stats
 
@@ -377,16 +244,10 @@ export class Plan {
     return (this.cache.strategy = new Strategy(this, this._data.strategy))
   }
 
-  /**
-   * Target time in seconds
-   */
   get target() {
     return this._data.target
   }
 
-  /**
-   * Typical delay for the plan; amount of dwell time at 'aid' and 'water' waypoints
-   */
   get typicalDelay(): number {
     return this._data.typicalDelay ?? 180
   }
@@ -403,7 +264,7 @@ export class Plan {
     return this._version + this.course.version
   }
 
-  constructor(course: Course, data: PlanData) {
+  constructor(course: Types.Course, data: Types.PlanData) {
     this.course = course
     this._data = data
 
@@ -417,7 +278,7 @@ export class Plan {
       }
     }
 
-    this.points = this.course.points.map((point) => new PlanPoint(this, point))
+    this.points = this.course.points.map((point) => new Models.PlanPoint(this, point))
 
     this._version = 1
   }
@@ -439,28 +300,16 @@ export class Plan {
    * @param waypoint - waypoint of interest
    * @returns delay (sec)
    */
-  getDelayAtWaypoint(waypoint: Waypoint): number {
+  getDelayAtWaypoint(waypoint: Types.Waypoint): number {
     return this.delays.find((d) => d.waypoint === waypoint)?.delay || 0
   }
 
-  /**
-   * get typical delay at input Waypoint
-   * @param waypoint - waypoint of interest
-   * @returns delay (sec)
-   */
-  getTypicalDelayAtWaypoint(waypoint: Waypoint) {
+  getTypicalDelayAtWaypoint(waypoint: Types.Waypoint) {
     if (waypoint.hasTypicalDelay) return this.typicalDelay
     return 0
   }
 
-  /**
-   * Finds and optionally inserts a point at an input location.
-   *
-   * @param loc - The location (in km) to determine value.
-   * @param insert - Whether to also insert a created point into the points array. Defaults to false.
-   * @returns The PlanPoint at input location.
-   */
-  getPoint(loc: number, insert: boolean = false) {
+  getPoint(loc: number, insert: boolean = false): Types.PlanPoint {
     // get and return it if already exists
     const i2 = this.points.findIndex((p) => rgte(p.loc, loc, 4))
     const p2 = this.points[i2]
@@ -475,7 +324,7 @@ export class Plan {
     const p1 = this.points[i1]
 
     // create a new point
-    const point = new PlanPoint(this, this.course.getPoint(loc))
+    const point = new Models.PlanPoint(this, this.course.getPoint(loc))
 
     // delay at this point is the increase in elapsed time from the previous point
     point.delay = Math.round(p2.elapsed - p1.elapsed - (p2.time - p1.time))
@@ -497,9 +346,9 @@ export class Plan {
     return point
   }
 
-  update(data: PlanUpdateData) {
+  update(data: Types.PlanUpdateData) {
     // check for invalid null or undefined values
-    const keys = ['target', 'method'] as (keyof PlanUpdateData)[]
+    const keys = ['target', 'method'] as (keyof Types.PlanUpdateData)[]
     const k = keys.find((k) => k in data && _.isNil(data[k]))
     if (k) throw new Error(`Plan.${k} cannot be set to null or undefined`)
 
@@ -508,11 +357,11 @@ export class Plan {
   }
 }
 
-class PlanDelay {
+class PlanDelay implements Types.PlanDelay {
   delay: number
-  waypoint: Waypoint
+  waypoint: Types.Waypoint
 
-  constructor(waypoint: Waypoint, delay: number) {
+  constructor(waypoint: Types.Waypoint, delay: number) {
     this.waypoint = waypoint
     this.delay = delay
   }
@@ -522,12 +371,12 @@ class PlanDelay {
   }
 }
 
-class PlanCutoff {
-  plan: Plan
-  courseCutoff: CourseCutoff
-  point: PlanPoint
+class PlanCutoff implements Types.PlanCutoff {
+  plan: Types.Plan
+  courseCutoff: Types.CourseCutoff
+  point: Types.PlanPoint
 
-  constructor(plan: Plan, courseCutoff: CourseCutoff, point: PlanPoint) {
+  constructor(plan: Types.Plan, courseCutoff: Types.CourseCutoff, point: Types.PlanPoint) {
     this.plan = plan
     this.courseCutoff = courseCutoff
     this.point = point

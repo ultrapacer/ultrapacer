@@ -1,5 +1,5 @@
 import { Factors } from '../factors/Factors';
-import { Course } from './Course';
+import { Types } from '../main';
 import { TrackPoint } from './Point';
 /**
  * CoursePoint object for use in a course, including scaling and loop data
@@ -32,5 +32,5 @@ export declare class CoursePoint extends TrackPoint {
      * source (parent) point
      */
     readonly source: TrackPoint | CoursePoint;
-    constructor(course: Course, point: TrackPoint, loop: number);
+    constructor(course: Types.Course, point: TrackPoint, loop: number);
 }

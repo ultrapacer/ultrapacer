@@ -2,6 +2,7 @@ import _ from 'lodash'
 
 import { createDebug } from '../debug'
 import { Factors, generatePlanFactors } from '../factors'
+import { locationsToBreaks } from '../util/locationsToBreaks'
 import { req, rgte, rlt, rlte } from '../util/math'
 import { distScale } from '../util/units'
 import { Plan } from './Plan'
@@ -66,7 +67,12 @@ export class PlanSplits {
     const wps = this.plan.course.waypoints.filter((x) => x.tier < 3).sort((a, b) => a.loc - b.loc)
 
     // determine all the stuff
-    const segments = this.calcSegments(this.plan.course.locationsToBreaks(wps.map((x) => x.loc)))
+    const segments = this.calcSegments(
+      locationsToBreaks(
+        wps.map((x) => x.loc),
+        this.plan.course.dist
+      )
+    )
 
     if (!segments.length) throw new Error('createSegments result is empty')
 
@@ -90,7 +96,7 @@ export class PlanSplits {
       breakLocations.push(this.plan.course.dist)
 
     // get the stuff
-    const splits = this.calcSegments(this.plan.course.locationsToBreaks(breakLocations))
+    const splits = this.calcSegments(locationsToBreaks(breakLocations, this.plan.course.dist))
 
     if (!splits.length) throw new Error('createSplits result is empty')
 

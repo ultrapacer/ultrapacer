@@ -1,57 +1,14 @@
 import _ from 'lodash'
 
 import { createDebug } from '../debug'
+import { Types } from '../main'
+import { SiteData } from '../types'
 import { Course } from './Course'
 import { Waypoint } from './Waypoint'
 
 const d = createDebug('models:Waypoint')
 
-type WaypointCutoff = { loop: number; time: number }
-export type WaypointType = 'start' | 'finish' | 'aid' | 'water' | 'landmark' | 'junction' | 'other'
-
-/**
- * Site data object
- */
-export type SiteData = {
-  /**
-   * optional cutoffs for the site
-   */
-  cutoffs?: WaypointCutoff[]
-
-  /**
-   * optional description for the site
-   */
-  description?: string
-
-  /**
-   * optional id for the site
-   * required when inputting plan delays
-   */
-  id?: string | symbol
-
-  /**
-   * optional name for the site
-   */
-  name?: string | undefined
-
-  /**
-   * percent of total distance along the track where the site is located
-   */
-  percent: number
-
-  /**
-   * optional tier for the site
-   * @deprecated - this has been replaced with course terrain model
-   */
-  tier?: number
-
-  /**
-   * type of site
-   */
-  type: WaypointType
-}
-
-export class Site {
+export class Site implements Types.Site {
   /**
    * internal cache object
    * gets deleted and regenerated when version changes
@@ -74,69 +31,42 @@ export class Site {
    */
   private _data: SiteData
 
-  /**
-   * altitude of the site
-   */
   get alt() {
     if ('alt' in this._cache) return this._cache.alt
     this.refreshLLA()
     return Number(this._cache.alt)
   }
 
-  /**
-   * course the site is associated with
-   */
   readonly course: Course
 
-  /**
-   * optional cutoffs for the site
-   */
   get cutoffs() {
     return this._data.cutoffs || []
   }
 
-  /**
-   * optional description for the site
-   */
   get description() {
     return this._data.description
   }
 
-  /**
-   * optional id for the site
-   */
   get id() {
     return this._data.id
   }
 
-  /**
-   * latitude of the site
-   */
   get lat() {
     if ('lat' in this._cache) return this._cache.lat
     this.refreshLLA()
     return Number(this._cache.lat)
   }
 
-  /**
-   * longitude of the site
-   */
   get lon() {
     if ('lon' in this._cache) return this._cache.lon
     this.refreshLLA()
     return Number(this._cache.lon)
   }
 
-  /**
-   * optional name for the site
-   */
   get name() {
     return this._data.name
   }
 
-  /**
-   * percent of total distance along the track where the site is located
-   */
   get percent() {
     switch (this.type) {
       case 'start':
@@ -151,31 +81,18 @@ export class Site {
     this._data.percent = v
   }
 
-  /**
-   * optional tier for the site
-   * @deprecated - this has been replaced with course terrain model
-   */
   get tier() {
     return this._data.tier || 1
   }
 
-  /**
-   * type of site
-   */
   get type() {
     return this._data.type
   }
 
-  /**
-   * Version of course (not currently able to update site directly)
-   */
   get version() {
     return this.course.version
   }
 
-  /**
-   * array of waypoints for the site
-   */
   get waypoints() {
     if ('waypoints' in this._cache) return this._cache.waypoints
 
@@ -193,9 +110,6 @@ export class Site {
     this._data = data
   }
 
-  /**
-   * refresh the latitude, longitude, and altitude of the site
-   */
   refreshLLA() {
     d('refreshLLA')
 

@@ -1,8 +1,9 @@
 import _ from 'lodash'
 
+import { Types } from '../main'
 import { Site } from './Site'
 
-export class Waypoint {
+export class Waypoint implements Types.Waypoint {
   constructor(site: Site, loop: number = 1) {
     this._data = {}
     this.site = site

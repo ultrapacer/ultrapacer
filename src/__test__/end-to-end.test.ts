@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { describe, expect, test } from 'vitest'
 
-import { Plan, PlanData } from '../models'
+import { Models, Types } from '../main'
 import { course, planData, start } from './data'
 
 type Rules = {
@@ -13,10 +13,10 @@ type Rules = {
 }
 
 type Test = {
-  planData: PlanData
+  planData: Types.PlanData
   r: Rules & {
     segments?: { index: number; r: Rules }[]
-    custom?: { name: string; fun: (p: Plan) => number; result: number }[]
+    custom?: { name: string; fun: (p: Types.Plan) => number; result: number }[]
   }
 }
 
@@ -219,7 +219,7 @@ const tests: Test[] = [
       custom: [
         {
           name: 'starting pace',
-          fun: (p: Plan) =>
+          fun: (p: Types.Plan) =>
             ((p?.points[0]?.pace || 0) / p.points[0].factor) * p.points[0].factors.strategy,
           result: 9 * 60 * 0.621371
         }
@@ -280,13 +280,13 @@ test(`check segment 7 properties`, () => {
   expect(course.splits.segments[7].dist).toBeCloseTo(5.302885)
   expect(course.splits.segments[7].grade).toBeCloseTo(4.56348)
 
-  const plan = new Plan(course, tests[0].planData)
+  const plan = new Models.Plan(course, tests[0].planData)
   expect(plan.splits.segments[7].factors.terrain).toBeCloseTo(1.0087442)
 })
 
 const pacingTests = ['elapsed', 'factor', 'pace', 'np']
 
-function performTests(plan: Plan, r: Test['r'], update?: Partial<PlanData>) {
+function performTests(plan: Types.Plan, r: Test['r'], update?: Partial<Types.PlanData>) {
   describe.sequential(`${update?.method || plan.method}-${update?.name || plan.name}`, () => {
     const t = { r, plan }
 
@@ -370,14 +370,14 @@ function performTests(plan: Plan, r: Test['r'], update?: Partial<PlanData>) {
 
 describe('create new plans', () => {
   tests
-    .map((t) => ({ ...t, plan: new Plan(course, t.planData) }))
+    .map((t) => ({ ...t, plan: new Models.Plan(course, t.planData) }))
     .forEach((t) => {
       performTests(t.plan, t.r)
     })
 })
 
 describe.sequential('make sure plan updates correctly', () => {
-  const plan = new Plan(course, tests[0].planData)
+  const plan = new Models.Plan(course, tests[0].planData)
   describe.sequential('update plan 0', () => {
     performTests(plan, tests[0].r)
   })

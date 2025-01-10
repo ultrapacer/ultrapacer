@@ -1,9 +1,9 @@
 import { Factors } from '../factors';
+import { Types } from '../main';
 import { Plan } from '.';
 import { Course } from './Course';
 import { CoursePoint } from './CoursePoint';
 import { PlanPoint } from './PlanPoint';
-import { Waypoint } from './Waypoint';
 declare class Segment {
     constructor(obj: {
         point1: CoursePoint | PlanPoint;
@@ -30,7 +30,7 @@ declare class Segment {
     /**
      * waypoint at end of segment
      */
-    waypoint?: Waypoint;
+    waypoint?: Types.Waypoint;
     private _name?;
     /**
      * name of segment

@@ -1,13 +1,13 @@
 import { Factors } from '../factors'
+import { Types } from '../main'
 import { CoursePoint } from './CoursePoint'
 import { PaceChunk } from './PaceChunk'
-import { Plan } from './Plan'
 
 /**
  * PlanPoint object for use in a plan, including pacing and time data
  */
 export class PlanPoint extends CoursePoint {
-  private _plan: Plan
+  private _plan: Types.Plan
 
   _chunk?: PaceChunk
 
@@ -64,7 +64,7 @@ export class PlanPoint extends CoursePoint {
    */
   tod: number = 0
 
-  constructor(plan: Plan, point: CoursePoint) {
+  constructor(plan: Types.Plan, point: Types.CoursePoint) {
     super(plan.course, point, point.loop)
 
     this._plan = plan

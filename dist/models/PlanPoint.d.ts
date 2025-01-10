@@ -1,7 +1,7 @@
 import { Factors } from '../factors';
+import { Types } from '../main';
 import { CoursePoint } from './CoursePoint';
 import { PaceChunk } from './PaceChunk';
-import { Plan } from './Plan';
 /**
  * PlanPoint object for use in a plan, including pacing and time data
  */
@@ -45,5 +45,5 @@ export declare class PlanPoint extends CoursePoint {
      * time of day in seconds
      */
     tod: number;
-    constructor(plan: Plan, point: CoursePoint);
+    constructor(plan: Types.Plan, point: Types.CoursePoint);
 }
