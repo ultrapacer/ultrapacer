@@ -1,12 +1,12 @@
 import _ from 'lodash'
 
+import { locationsToBreaks } from '~/util/locationsToBreaks'
+
 import { createDebug } from '../debug'
 import { Factors, generateCourseFactors } from '../factors'
+import { Types } from '../main'
 import { req, rlte } from '../util/math'
 import { distScale } from '../util/units'
-import { Course } from './Course'
-import { CoursePoint } from './CoursePoint'
-import { PlanPoint } from './PlanPoint'
 import { CourseSegment } from './Segment'
 import { Waypoint } from './Waypoint'
 
@@ -17,9 +17,9 @@ export class CourseSplits {
   private _miles?: CourseSegment[]
   private _kilometers?: CourseSegment[]
 
-  course: Course
+  course: Types.Course
 
-  constructor(course: Course) {
+  constructor(course: Types.Course) {
     this.course = course
   }
 
@@ -55,7 +55,12 @@ export class CourseSplits {
     const wps = this.course.waypoints.filter((x) => x.tier < 3).sort((a, b) => a.loc - b.loc)
 
     // determine all the stuff
-    const segments = this.calcSegments(this.course.locationsToBreaks(wps.map((x) => x.loc)))
+    const segments = this.calcSegments(
+      locationsToBreaks(
+        wps.map((x) => x.loc),
+        this.course.dist
+      )
+    )
 
     if (!segments.length) throw new Error('createSegments result is empty')
 
@@ -77,7 +82,7 @@ export class CourseSplits {
       breakLocations.push(this.course.dist)
 
     // get the stuff
-    const splits = this.calcSegments(this.course.locationsToBreaks(breakLocations))
+    const splits = this.calcSegments(locationsToBreaks(breakLocations, this.course.dist))
 
     if (!splits.length) throw new Error('createSplits result is empty')
 
@@ -104,7 +109,7 @@ export class CourseSplits {
     const fSums: Factors[] = [] // factor sum array
     let i
     let il
-    let point1: CoursePoint = course.points[0]
+    let point1: Types.CoursePoint = course.points[0]
     let point2
     for (i = 0, il = breaks.length; i < il; i++) {
       const b = breaks[i]
@@ -134,8 +139,8 @@ export class CourseSplits {
     // move this to CourseSegment constructor
     const calcStuff = (
       seg: CourseSegment,
-      p1: CoursePoint | PlanPoint,
-      p2: CoursePoint | PlanPoint,
+      p1: Types.CoursePoint | Types.PlanPoint,
+      p2: Types.CoursePoint | Types.PlanPoint,
       fSum: Factors
     ) => {
       const delta = p2.alt - p1.alt

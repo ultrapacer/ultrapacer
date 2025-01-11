@@ -49,12 +49,12 @@ export class Track implements Types.Track {
     this.loss = loss
   }
 
-  get start(): { lat: number; lon: number } {
-    return _.pick(this.points[0], ['lat', 'lon'])
+  get start() {
+    return _.pick(this.points[0], ['alt', 'lat', 'lon'])
   }
 
-  get finish(): { lat: number; lon: number } {
-    return _.pick(this.points[this.points.length - 1], ['lat', 'lon'])
+  get finish() {
+    return _.pick(this.points[this.points.length - 1], ['alt', 'lat', 'lon'])
   }
 
   getLLA(location: number): { lat: number; lon: number; alt: number } {

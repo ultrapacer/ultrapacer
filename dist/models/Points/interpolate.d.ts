@@ -1,4 +1,4 @@
-import { TrackPoint } from '../Point';
+import { Models, Types } from '../../main';
 /**
  * interpolate between two track points
  * @param p1 - first point
@@ -6,4 +6,4 @@ import { TrackPoint } from '../Point';
  * @param loc - location
  * @returns new TrackPoint
  */
-export declare function interpolatePoint(p1: TrackPoint, p2: TrackPoint, loc: number): TrackPoint;
+export declare function interpolatePoint(p1: Types.TrackPoint, p2: Types.TrackPoint, loc: number): Models.TrackPoint;

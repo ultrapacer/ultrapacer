@@ -36,7 +36,7 @@ export declare class PlanPoint extends CoursePoint {
     /**
      * source (parent) course point
      */
-    source: CoursePoint;
+    source: Types.CoursePoint;
     /**
      * moving time in seconds
      */

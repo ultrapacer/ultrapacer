@@ -6,21 +6,15 @@ export declare class Track implements Types.Track {
     loss: number;
     points: Types.TrackPoint[];
     constructor(llas: Types.TrackData);
-    get start(): {
-        lat: number;
-        lon: number;
-    };
-    get finish(): {
-        lat: number;
-        lon: number;
-    };
+    get start(): Pick<Types.TrackPoint, "alt" | "lat" | "lon">;
+    get finish(): Pick<Types.TrackPoint, "alt" | "lat" | "lon">;
     getLLA(location: number): {
         lat: number;
         lon: number;
         alt: number;
     };
     getNearestPoint(latlon: LatLon, start: Types.Point, limit: number): {
-        point: Models.TrackPoint;
+        point: Types.TrackPoint;
         delta: number;
     };
     reduceDensity(spacing?: number, length?: number): Models.Track;

@@ -1,26 +1,25 @@
-import { Course } from './Course';
-import { CourseSegment } from './Segment';
+import { Types } from '../main';
 import { Waypoint } from './Waypoint';
 export declare class CourseSplits {
     private _segments?;
     private _miles?;
     private _kilometers?;
-    course: Course;
-    constructor(course: Course);
-    get segments(): (CourseSegment & {
+    course: Types.Course;
+    constructor(course: Types.Course);
+    get segments(): (Types.CourseSegment & {
         waypoint: Waypoint;
     })[];
-    set segments(v: (CourseSegment & {
+    set segments(v: (Types.CourseSegment & {
         waypoint: Waypoint;
     })[]);
-    get miles(): CourseSegment[];
-    set miles(v: CourseSegment[]);
-    get kilometers(): CourseSegment[];
-    set kilometers(v: CourseSegment[]);
-    createSegments(): CourseSegment[];
-    createSplits(unit: string): CourseSegment[];
+    get miles(): Types.CourseSegment[];
+    set miles(v: Types.CourseSegment[]);
+    get kilometers(): Types.CourseSegment[];
+    set kilometers(v: Types.CourseSegment[]);
+    createSegments(): Types.CourseSegment[];
+    createSplits(unit: string): Types.CourseSegment[];
     calcSegments(breaks: {
         start: number;
         end: number;
-    }[]): CourseSegment[];
+    }[]): Types.CourseSegment[];
 }

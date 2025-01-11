@@ -1,6 +1,5 @@
 import { Models, Types } from '../main';
 import { CourseSplits } from './CourseSplits';
-import { Track } from './Track';
 export declare const terrainTypes: {
     type: Types.TerrainTypeIndex;
     value: number;
@@ -57,13 +56,13 @@ export declare class Course implements Types.Course {
     /**
      * Track object
      */
-    readonly track: Track;
+    readonly track: Types.Track;
     /**
      * Version of course update (non-trivial changes that affect pacing)
      */
     version: number;
     get waypoints(): Types.Waypoint[];
-    constructor(track: Track, data: Types.CourseData);
+    constructor(track: Types.Track, data: Types.CourseData);
     update(data: Types.CourseUpdateData): void;
     /**
      * Finds or creates a point at an input location.

@@ -2,24 +2,18 @@ import { Factors } from '../factors/Factors'
 import { Types } from '../main'
 import { TrackPoint } from './Point'
 
-function isCoursePoint(point: TrackPoint | CoursePoint): point is CoursePoint {
+function isCoursePoint(point: Types.TrackPoint | Types.CoursePoint): point is CoursePoint {
   return '_course' in point
 }
 
 /**
  * CoursePoint object for use in a course, including scaling and loop data
  */
-export class CoursePoint extends TrackPoint {
+export class CoursePoint extends TrackPoint implements Types.CoursePoint {
   private _course: Types.Course
 
-  /**
-   * pacing factors at this point
-   */
   factors: Factors = new Factors()
 
-  /**
-   * grade, scaled, as a percentage
-   */
   get grade(): number {
     // if source is a course point, it is already scaled
     if (isCoursePoint(this.source)) return this.source.grade
@@ -29,9 +23,6 @@ export class CoursePoint extends TrackPoint {
     )
   }
 
-  /**
-   * flag for interpolated points (not part of original course)
-   */
   get interpolated() {
     return (isCoursePoint(this.source) ? this.source._interpolated : this._interpolated) || false
   }
@@ -40,9 +31,6 @@ export class CoursePoint extends TrackPoint {
   }
   private _interpolated?: boolean
 
-  /**
-   * location, scaled, with loop, in kilometers
-   */
   get loc(): number {
     // if source is a course point, it is already scaled/looped
     if (isCoursePoint(this.source)) return this.source.loc
@@ -52,17 +40,11 @@ export class CoursePoint extends TrackPoint {
     return l
   }
 
-  /**
-   * loop number (zero-indexed)
-   */
   loop: number
 
-  /**
-   * source (parent) point
-   */
-  readonly source: TrackPoint | CoursePoint
+  readonly source: Types.TrackPoint | Types.CoursePoint
 
-  constructor(course: Types.Course, point: TrackPoint, loop: number) {
+  constructor(course: Types.Course, point: Types.TrackPoint, loop: number) {
     super(point, point.loc, point.grade)
 
     this._course = course

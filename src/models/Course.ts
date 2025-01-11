@@ -5,7 +5,6 @@ import { Models, Types } from '../main'
 import { req, rgte, rlt } from '../util/math'
 import { CourseSplits } from './CourseSplits'
 import { interpolatePoint } from './Points/interpolate'
-import { Track } from './Track'
 
 const d = createDebug('models:Course')
 
@@ -167,7 +166,7 @@ export class Course implements Types.Course {
     return this.cache.sites
   }
 
-  get splits() {
+  get splits(): Types.CourseSplits {
     if ('splits' in this.cache) return this.cache.splits
 
     this.cache.splits = new CourseSplits(this)
@@ -261,7 +260,7 @@ export class Course implements Types.Course {
   /**
    * Track object
    */
-  readonly track: Track
+  readonly track: Types.Track
 
   /**
    * Version of course update (non-trivial changes that affect pacing)
@@ -284,7 +283,7 @@ export class Course implements Types.Course {
     return this.cache.waypoints
   }
 
-  constructor(track: Track, data: Types.CourseData) {
+  constructor(track: Types.Track, data: Types.CourseData) {
     d('constructor')
     this.track = track
     this._data = data

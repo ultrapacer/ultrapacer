@@ -4,8 +4,6 @@ import { Factors, rollup } from '../factors'
 import { Types } from '../main'
 import { isNumber } from '../util/isNumber'
 import { Plan } from '.'
-import { Course } from './Course'
-import { CoursePoint } from './CoursePoint'
 import { PlanPoint } from './PlanPoint'
 
 /**
@@ -37,8 +35,8 @@ function rollupPointFactors(points: PlanPoint[], point1: PlanPoint, point2: Plan
 
 class Segment {
   constructor(obj: {
-    point1: CoursePoint | PlanPoint
-    point2: CoursePoint | PlanPoint
+    point1: Types.CoursePoint | Types.PlanPoint
+    point2: Types.CoursePoint | Types.PlanPoint
     gain: number
     loss: number
     grade: number
@@ -52,8 +50,8 @@ class Segment {
     if (obj.name) this._name = obj.name
   }
 
-  point1: CoursePoint | PlanPoint
-  point2: CoursePoint | PlanPoint
+  point1: Types.CoursePoint | Types.PlanPoint
+  point2: Types.CoursePoint | Types.PlanPoint
 
   /**
    * elevation gain (m) over segment
@@ -113,16 +111,16 @@ class Segment {
 }
 
 export class CourseSegment extends Segment {
-  private _course: Course
+  private _course: Types.Course
 
-  point1: CoursePoint
-  point2: CoursePoint
+  point1: Types.CoursePoint
+  point2: Types.CoursePoint
 
   constructor(
-    course: Course,
+    course: Types.Course,
     obj: {
-      point1: CoursePoint
-      point2: CoursePoint
+      point1: Types.CoursePoint
+      point2: Types.CoursePoint
       gain: number
       loss: number
       grade: number

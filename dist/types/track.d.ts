@@ -1,6 +1,5 @@
 import { latlon } from 'sgeo';
 import { Types } from '../main';
-export type { TrackPoint } from '../models';
 /**
  * Data used to create a track.
  */
@@ -18,19 +17,6 @@ export type TrackData = {
      */
     alt: number;
 }[];
-/**
- * A latitude and longitude object.
- */
-type LL = {
-    lat: number;
-    lon: number;
-};
-/**
- * A latitude, longitude, and altitude object.
- */
-type LLA = LL & {
-    alt: number;
-};
 /**
  * Represents a track with various properties and methods to interact with it.
  */
@@ -54,17 +40,17 @@ export interface Track {
     /**
      * The starting location of the track.
      */
-    readonly start: LL;
+    readonly start: Types.LLA;
     /**
      * The finishing location of the track.
      */
-    readonly finish: LL;
+    readonly finish: Types.LLA;
     /**
      * Gets the latitude, longitude, altitude, and index for a given distance location along the track.
      * @param location - The distance location along the track.
      * @returns The latitude, longitude, and altitude at the specified location.
      */
-    getLLA(location: number): LLA;
+    getLLA(location: number): Types.LLA;
     /**
      * Finds the nearest point on the track to a given latitude and longitude.
      * @param latlon - The new point location.
