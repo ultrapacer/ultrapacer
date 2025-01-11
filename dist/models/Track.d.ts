@@ -1,16 +1,11 @@
 import { latlon as LatLon } from 'sgeo';
-import { Point, TrackPoint } from './Point';
-export type TrackData = {
-    lat: number;
-    lon: number;
-    alt: number;
-}[];
-export declare class Track {
+import { Models, Types } from '../main';
+export declare class Track implements Types.Track {
     dist: number;
     gain: number;
     loss: number;
-    points: TrackPoint[];
-    constructor(llas: TrackData);
+    points: Types.TrackPoint[];
+    constructor(llas: Types.TrackData);
     get start(): {
         lat: number;
         lon: number;
@@ -24,24 +19,10 @@ export declare class Track {
         lon: number;
         alt: number;
     };
-    /**
-     * iterate to new location based on waypoint lat/lon
-     * @param latlon - new point location
-     * @param start - starting point in track
-     * @param limit - max distance along track from starting point
-     * @returns
-     */
-    getNearestPoint(latlon: LatLon, start: Point, limit: number): {
-        point: TrackPoint;
+    getNearestPoint(latlon: LatLon, start: Types.Point, limit: number): {
+        point: Models.TrackPoint;
         delta: number;
     };
-    reduceDensity(spacing?: number, length?: number): Track;
+    reduceDensity(spacing?: number, length?: number): Models.Track;
 }
-/**
- * utilty function to create a new track from lat[],lon[],alt[] input
- * @param lat - latitudes
- * @param lon - longitudes
- * @param alt - altitudes
- * @returns new Track
- */
-export declare function createTrackFromArrays(lat: number[], lon: number[], alt: number[]): Track;
+export declare function createTrackFromArrays(lat: number[], lon: number[], alt: number[]): Models.Track;

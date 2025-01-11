@@ -6156,7 +6156,6 @@ class Gr {
   get finish() {
     return X.pick(this.points[this.points.length - 1], ["lat", "lon"]);
   }
-  // get lat, lon, alt, index for distance location(s) along track
   getLLA(s) {
     s > this.dist && (s = s % this.dist);
     let r;
@@ -6167,13 +6166,6 @@ class Gr {
     }
     return X.pick(r, ["lat", "lon", "alt"]);
   }
-  /**
-   * iterate to new location based on waypoint lat/lon
-   * @param latlon - new point location
-   * @param start - starting point in track
-   * @param limit - max distance along track from starting point
-   * @returns
-   */
   getNearestPoint(s, r, a) {
     let h = this.points.findIndex((y) => y === r), g = this.points[h], _ = 0;
     for (; a > 0.025; ) {
@@ -6196,8 +6188,6 @@ class Gr {
       delta: _
     };
   }
-  // if criteria is met, returns new Track object w/ reduced points
-  // otherwise, returns this
   reduceDensity(s = 0.025, r = this.points.length / 2) {
     const a = Wr.extend("reduceDensity");
     if (this.dist / s > r / 2)
