@@ -2,8 +2,9 @@ import _ from 'lodash'
 import { latlon as LatLon } from 'sgeo'
 
 import { createDebug } from '../debug'
-import { Models, Types } from '../main'
+import { Types } from '../main'
 import { round } from '../util/math'
+import { Point, TrackPoint } from './Point'
 import { getGrades } from './Points/getGrades'
 import { getLocations } from './Points/getLocations'
 import { getSmoothedProfile } from './Points/getSmoothedProfile'
@@ -20,13 +21,13 @@ export class Track implements Types.Track {
   constructor(llas: Types.TrackData) {
     d('Creating new Track object')
 
-    const points = llas.map((p) => new Models.Point(p))
+    const points = llas.map((p) => new Point(p))
 
     const locations = getLocations(points)
 
     const grades = getGrades(points, locations)
 
-    this.points = points.map((p, i) => new Models.TrackPoint(p, locations[i], grades[i]))
+    this.points = points.map((p, i) => new TrackPoint(p, locations[i], grades[i]))
 
     d(`set-points - ${points.length} points`)
 

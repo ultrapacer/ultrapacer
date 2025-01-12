@@ -64,3 +64,38 @@ export interface CoursePoint extends TrackPoint {
      */
     source: TrackPoint | CoursePoint;
 }
+/**
+ * PlanPoint object for use in a plan, including pacing and time data
+ */
+export interface PlanPoint extends CoursePoint {
+    _chunk?: Types.PaceChunk;
+    /**
+     * delay in seconds at this point (not cumulative)
+     */
+    delay: number;
+    /**
+     * elapsed time in seconds
+     * does not include delay from this point
+     */
+    elapsed: number;
+    /**
+     * combined pacing factor at this point
+     */
+    factor: number;
+    /**
+     * normalized pace at this point (from last point) in seconds per kilometer
+     */
+    np: number;
+    /**
+     * pace at this point (from last point) in seconds per kilometer
+     */
+    pace: number;
+    /**
+     * moving time in seconds
+     */
+    time: number;
+    /**
+     * time of day in seconds
+     */
+    tod: number;
+}

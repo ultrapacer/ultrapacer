@@ -1,5 +1,5 @@
-import { Models, Types } from '../main';
-import { CourseSplits } from './CourseSplits';
+import { Types } from '../main';
+import { Event } from './Event';
 export declare const terrainTypes: {
     type: Types.TerrainTypeIndex;
     value: number;
@@ -17,7 +17,7 @@ export declare class Course implements Types.Course {
         loss?: number;
         points?: Types.CoursePoint[];
         sites?: Types.Site[];
-        splits?: CourseSplits;
+        splits?: Types.CourseSplits;
         stats?: Types.CourseStats;
         terrain?: Types.TerrainElement[];
         waypoints?: Types.Waypoint[];
@@ -39,7 +39,7 @@ export declare class Course implements Types.Course {
      * Distance scale of course (in km), relative to calculated track distance
      */
     get distScale(): number;
-    get event(): Models.Event | undefined;
+    get event(): Event | undefined;
     get gain(): number;
     get gainScale(): number;
     get loopDist(): number;

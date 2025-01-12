@@ -5,7 +5,7 @@ export declare class Waypoint implements Types.Waypoint {
     _data: object;
     loop: number;
     site: Site;
-    get course(): import("./Course").Course;
+    get course(): Types.Course;
     get name(): string | undefined;
     get description(): string | undefined;
     get loc(): number;

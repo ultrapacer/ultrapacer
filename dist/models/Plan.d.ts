@@ -1,6 +1,4 @@
-import { Strategy } from '../factors/strategy';
 import { Types } from '../main';
-import { Pacing } from './Pacing';
 export declare class Plan implements Types.Plan {
     private _cache;
     get cache(): {
@@ -11,7 +9,7 @@ export declare class Plan implements Types.Plan {
         heatModel?: Types.PlanHeatModel;
         scales?: Types.Plan["scales"];
         stats?: Types.Plan["stats"];
-        strategy?: Strategy;
+        strategy?: Types.Strategy;
         version?: number;
     };
     private _data;
@@ -31,7 +29,7 @@ export declare class Plan implements Types.Plan {
     get id(): string | number | symbol | null | undefined;
     get method(): Types.PlanDataMethod;
     get name(): string | undefined;
-    pacing: Pacing;
+    pacing: Types.Pacing;
     readonly points: Types.PlanPoint[];
     get scales(): {
         altitude: number;
@@ -60,7 +58,7 @@ export declare class Plan implements Types.Plan {
             };
         };
     };
-    get strategy(): Strategy;
+    get strategy(): Types.Strategy;
     get target(): number;
     get typicalDelay(): number;
     /**

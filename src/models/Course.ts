@@ -1,10 +1,13 @@
 import _ from 'lodash'
 
 import { createDebug } from '../debug'
-import { Models, Types } from '../main'
+import { Types } from '../main'
 import { req, rgte, rlt } from '../util/math'
+import { CoursePoint } from './CoursePoint'
 import { CourseSplits } from './CourseSplits'
+import { Event } from './Event'
 import { interpolatePoint } from './Points/interpolate'
+import { Site } from './Site'
 
 const d = createDebug('models:Course')
 
@@ -28,7 +31,7 @@ export class Course implements Types.Course {
     loss?: number
     points?: Types.CoursePoint[]
     sites?: Types.Site[]
-    splits?: CourseSplits
+    splits?: Types.CourseSplits
     stats?: Types.CourseStats
     terrain?: Types.TerrainElement[]
     waypoints?: Types.Waypoint[]
@@ -76,7 +79,7 @@ export class Course implements Types.Course {
     if ('event' in this.cache) return this.cache.event
 
     if (this._data.start)
-      return (this.cache.event = new Models.Event(
+      return (this.cache.event = new Event(
         this._data.start.date,
         this._data.start.timezone,
         this.points[0].lat,
@@ -128,7 +131,7 @@ export class Course implements Types.Course {
     this.cache.points = new Array(this.track.points.length * this.loops)
     for (let l = 0; l < this.loops; l++) {
       for (let i = 0; i < this.track.points.length; i++) {
-        this.points[i + l * this.track.points.length] = new Models.CoursePoint(
+        this.points[i + l * this.track.points.length] = new CoursePoint(
           this,
           this.track.points[i],
           l
@@ -142,14 +145,14 @@ export class Course implements Types.Course {
   get sites(): Types.Site[] {
     if ('sites' in this.cache) return this.cache.sites
 
-    this.cache.sites = this._data.sites?.map((site) => new Models.Site(this, site)) || [
-      new Models.Site(this, {
+    this.cache.sites = this._data.sites?.map((site) => new Site(this, site)) || [
+      new Site(this, {
         id: String(_.random(10000, 20000)),
         name: 'Start',
         type: 'start',
         percent: 0
       }),
-      new Models.Site(this, {
+      new Site(this, {
         id: String(_.random(30000, 40000)),
         name: 'Finish',
         type: 'finish',
@@ -322,7 +325,7 @@ export class Course implements Types.Course {
       p2.source,
       (loc % this.loopDist) / this.distScale
     )
-    const point = new Models.CoursePoint(this, trackPoint, Math.floor(loc / this.loopDist))
+    const point = new CoursePoint(this, trackPoint, Math.floor(loc / this.loopDist))
     point.interpolated = true
 
     return point

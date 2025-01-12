@@ -1,5 +1,5 @@
 import { latlon as LatLon } from 'sgeo';
-import { Models, Types } from '../main';
+import { Types } from '../main';
 export declare class Track implements Types.Track {
     dist: number;
     gain: number;
@@ -17,6 +17,6 @@ export declare class Track implements Types.Track {
         point: Types.TrackPoint;
         delta: number;
     };
-    reduceDensity(spacing?: number, length?: number): Models.Track;
+    reduceDensity(spacing?: number, length?: number): Track;
 }
-export declare function createTrackFromArrays(lat: number[], lon: number[], alt: number[]): Models.Track;
+export declare function createTrackFromArrays(lat: number[], lon: number[], alt: number[]): Track;

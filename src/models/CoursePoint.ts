@@ -2,7 +2,7 @@ import { Factors } from '../factors/Factors'
 import { Types } from '../main'
 import { TrackPoint } from './Point'
 
-function isCoursePoint(point: Types.TrackPoint | Types.CoursePoint): point is CoursePoint {
+function isCoursePoint(point: Types.TrackPoint | Types.CoursePoint): point is Types.CoursePoint {
   return '_course' in point
 }
 
@@ -24,7 +24,7 @@ export class CoursePoint extends TrackPoint implements Types.CoursePoint {
   }
 
   get interpolated() {
-    return (isCoursePoint(this.source) ? this.source._interpolated : this._interpolated) || false
+    return (isCoursePoint(this.source) ? this.source.interpolated : this._interpolated) || false
   }
   set interpolated(value: boolean) {
     this._interpolated = value

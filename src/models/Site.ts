@@ -2,8 +2,6 @@ import _ from 'lodash'
 
 import { createDebug } from '../debug'
 import { Types } from '../main'
-import { SiteData } from '../types'
-import { Course } from './Course'
 import { Waypoint } from './Waypoint'
 
 const d = createDebug('models:Waypoint')
@@ -18,7 +16,7 @@ export class Site implements Types.Site {
     alt?: number
     lat?: number
     lon?: number
-    waypoints?: Waypoint[]
+    waypoints?: Types.Waypoint[]
   } = {}
   get cache() {
     if (this._cache?._version === this.version) return this._cache
@@ -29,7 +27,7 @@ export class Site implements Types.Site {
   /**
    * internal data object
    */
-  private _data: SiteData
+  private _data: Types.SiteData
 
   get alt() {
     if ('alt' in this._cache) return this._cache.alt
@@ -37,7 +35,7 @@ export class Site implements Types.Site {
     return Number(this._cache.alt)
   }
 
-  readonly course: Course
+  readonly course: Types.Course
 
   get cutoffs() {
     return this._data.cutoffs || []
@@ -93,7 +91,7 @@ export class Site implements Types.Site {
     return this.course.version
   }
 
-  get waypoints() {
+  get waypoints(): Types.Waypoint[] {
     if ('waypoints' in this._cache) return this._cache.waypoints
 
     d(`generating waypoints array: ${this.name}`)
@@ -105,7 +103,7 @@ export class Site implements Types.Site {
     return this._cache.waypoints
   }
 
-  constructor(course: Course, data: SiteData) {
+  constructor(course: Types.Course, data: Types.SiteData) {
     this.course = course
     this._data = data
   }

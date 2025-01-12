@@ -1,16 +1,15 @@
 import { Types } from '../main';
-import { Waypoint } from './Waypoint';
-export declare class CourseSplits {
+export declare class CourseSplits implements Types.CourseSplits {
     private _segments?;
     private _miles?;
     private _kilometers?;
     course: Types.Course;
     constructor(course: Types.Course);
     get segments(): (Types.CourseSegment & {
-        waypoint: Waypoint;
+        waypoint: Types.Waypoint;
     })[];
     set segments(v: (Types.CourseSegment & {
-        waypoint: Waypoint;
+        waypoint: Types.Waypoint;
     })[]);
     get miles(): Types.CourseSegment[];
     set miles(v: Types.CourseSegment[]);

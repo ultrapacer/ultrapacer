@@ -1,5 +1,4 @@
 import { Types } from '../main'
-import { Plan } from '../models/Plan'
 import { getAltitudeFactor } from './altitude'
 import { getDarkFactor } from './dark'
 import { factorKeys, Factors, type FactorsKeys, type FactorsObject } from './Factors'
@@ -26,7 +25,7 @@ export function generateCourseFactors(
 }
 
 // function to generate pacing factors for a point
-export function generatePlanFactors(point: Types.PlanPoint, plan: Plan) {
+export function generatePlanFactors(point: Types.PlanPoint, plan: Types.Plan) {
   if (!point.factors) point.factors = new Factors()
   generateCourseFactors(point, plan.course)
 

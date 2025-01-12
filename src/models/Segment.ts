@@ -1,10 +1,6 @@
-import _ from 'lodash'
-
-import { Factors, rollup } from '../factors'
+import { rollup } from '../factors'
 import { Types } from '../main'
 import { isNumber } from '../util/isNumber'
-import { Plan } from '.'
-import { PlanPoint } from './PlanPoint'
 
 /**
  * create Factors for segment for points between point1 and point2
@@ -13,7 +9,11 @@ import { PlanPoint } from './PlanPoint'
  * @param point2 - finish point
  * @returns Factors
  */
-function rollupPointFactors(points: PlanPoint[], point1: PlanPoint, point2: PlanPoint): Factors {
+function rollupPointFactors(
+  points: Types.PlanPoint[],
+  point1: Types.PlanPoint,
+  point2: Types.PlanPoint
+): Types.Factors {
   // points may not be in points array, so insert them if they are interpolated points:
   points = [...points]
   if (point1.interpolated) points.splice(points.findIndex((p) => p.loc > point1.loc) - 1, 0, point1)
@@ -33,7 +33,7 @@ function rollupPointFactors(points: PlanPoint[], point1: PlanPoint, point2: Plan
   return rollup(segs)
 }
 
-class Segment {
+class Segment implements Types.Segment {
   constructor(obj: {
     point1: Types.CoursePoint | Types.PlanPoint
     point2: Types.CoursePoint | Types.PlanPoint
@@ -53,64 +53,37 @@ class Segment {
   point1: Types.CoursePoint | Types.PlanPoint
   point2: Types.CoursePoint | Types.PlanPoint
 
-  /**
-   * elevation gain (m) over segment
-   */
   gain: number
 
-  /**
-   * elevation loss (m) over segment
-   */
   loss: number
 
-  /**
-   * average grade (%) over segment
-   */
   grade: number
 
-  /**
-   * waypoint at end of segment
-   */
   waypoint?: Types.Waypoint
 
   private _name?: string
-  /**
-   * name of segment
-   */
   get name() {
     return this._name || this.waypoint?.name || undefined
   }
 
-  /**
-   * location along course (km) at start of segment
-   */
   get start() {
     return this.point1.loc
   }
 
-  /**
-   * distance (km) of segment
-   */
   get dist() {
     return this.point2.loc - this.point1.loc
   }
 
-  /**
-   * location along course (km) at end of segment
-   */
   get end() {
     return this.point2.loc
   }
 
-  /**
-   * altitude (m) at end of segment
-   */
   get alt() {
     return this.point2.alt
   }
 }
 
-export class CourseSegment extends Segment {
+export class CourseSegment extends Segment implements Types.CourseSegment {
   private _course: Types.Course
 
   point1: Types.CoursePoint
@@ -133,17 +106,17 @@ export class CourseSegment extends Segment {
   }
 }
 
-export class PlanSegment extends Segment {
-  private _plan: Plan
+export class PlanSegment extends Segment implements Types.PlanSegment {
+  private _plan: Types.Plan
 
-  point1: PlanPoint
-  point2: PlanPoint
+  point1: Types.PlanPoint
+  point2: Types.PlanPoint
 
   constructor(
-    plan: Plan,
+    plan: Types.Plan,
     obj: {
-      point1: PlanPoint
-      point2: PlanPoint
+      point1: Types.PlanPoint
+      point2: Types.PlanPoint
       gain: number
       loss: number
       grade: number
@@ -155,17 +128,11 @@ export class PlanSegment extends Segment {
     this.point2 = obj.point2
   }
 
-  /**
-   * moving pace (s/km) over segment
-   */
   get pace() {
     if (!this.time) return 0
     return this.time / this.dist
   }
 
-  /**
-   * delay (s) over segment
-   */
   get delay() {
     if (
       !isNumber(this.point1.elapsed) ||
@@ -173,28 +140,18 @@ export class PlanSegment extends Segment {
       !isNumber(this.point1.time) ||
       !isNumber(this.point2.time)
     )
-      return undefined
+      return 0
     return this.point2.elapsed - this.point1.elapsed - (this.point2.time - this.point1.time)
   }
 
-  /**
-   * elapsed time (s) over segment
-   */
   get elapsed() {
     return this.point2.elapsed
   }
 
-  /**
-   * moving time (s) over segment
-   */
   get time() {
-    if (!_.isNumber(this.point1.time) || !_.isNumber(this.point2.time)) return undefined
     return this.point2.time - this.point1.time
   }
 
-  /**
-   * time of day (s) at end of segment
-   */
   get tod() {
     return this.point2.tod
   }
@@ -206,7 +163,7 @@ export class PlanSegment extends Segment {
   set time(v) {}
   set tod(v) {}
 
-  private _factors?: Factors
+  private _factors?: Types.Factors
   get factors() {
     return (
       this._factors ||

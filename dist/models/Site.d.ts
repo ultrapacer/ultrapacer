@@ -1,7 +1,4 @@
 import { Types } from '../main';
-import { SiteData } from '../types';
-import { Course } from './Course';
-import { Waypoint } from './Waypoint';
 export declare class Site implements Types.Site {
     /**
      * internal cache object
@@ -13,14 +10,14 @@ export declare class Site implements Types.Site {
         alt?: number;
         lat?: number;
         lon?: number;
-        waypoints?: Waypoint[];
+        waypoints?: Types.Waypoint[];
     };
     /**
      * internal data object
      */
     private _data;
     get alt(): number;
-    readonly course: Course;
+    readonly course: Types.Course;
     get cutoffs(): {
         loop: number;
         time: number;
@@ -35,7 +32,7 @@ export declare class Site implements Types.Site {
     get tier(): number;
     get type(): Types.SiteType;
     get version(): number;
-    get waypoints(): Waypoint[];
-    constructor(course: Course, data: SiteData);
+    get waypoints(): Types.Waypoint[];
+    constructor(course: Types.Course, data: Types.SiteData);
     refreshLLA(): void;
 }

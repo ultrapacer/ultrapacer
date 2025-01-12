@@ -1,11 +1,8 @@
-import { Factors } from '../factors';
-import { PaceChunk } from './PaceChunk';
-import { Plan } from './Plan';
-import { PlanPoint } from './PlanPoint';
-export declare class Pacing {
-    chunks: PaceChunk[];
-    plan: Plan;
-    constructor(plan: Plan);
+import { Types } from '../main';
+export declare class Pacing implements Types.Pacing {
+    chunks: Types.PaceChunk[];
+    plan: Types.Plan;
+    constructor(plan: Types.Plan);
     clearCache(): void;
     get elapsed(): number;
     get pace(): number;
@@ -13,7 +10,7 @@ export declare class Pacing {
     get factor(): number;
     clearFactor(): void;
     private _factors?;
-    get factors(): Factors;
+    get factors(): Types.Factors;
     /**
      * check if this pacing is current
      */
@@ -48,11 +45,11 @@ export declare class Pacing {
      * @param point - point to split at
      * @param elapsed - elapsed time at split
      */
-    splitChunk(chunk: PaceChunk, point: PlanPoint, elapsed: number): void;
+    splitChunk(chunk: Types.PaceChunk, point: Types.PlanPoint, elapsed: number): void;
     /**
      * merge two sequential chunks together, mutates chunks array
      * @param a - first chunk
      * @param b - second chunk
      */
-    mergeChunks(a: PaceChunk, b: PaceChunk): void;
+    mergeChunks(a: Types.PaceChunk, b: Types.PaceChunk): void;
 }

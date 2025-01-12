@@ -1,5 +1,4 @@
 import { Types } from '../main';
-import { Plan } from '../models/Plan';
 import { getAltitudeFactor } from './altitude';
 import { getDarkFactor } from './dark';
 import { factorKeys, Factors, type FactorsKeys, type FactorsObject } from './Factors';
@@ -8,7 +7,7 @@ import { getHeatFactor } from './heat';
 import { getTerrainFactor } from './terrain';
 export declare function applyScale(fact: number, scale?: number): number;
 export declare function generateCourseFactors(point: Types.CoursePoint | Types.PlanPoint, course: Types.Course): void;
-export declare function generatePlanFactors(point: Types.PlanPoint, plan: Plan): void;
+export declare function generatePlanFactors(point: Types.PlanPoint, plan: Types.Plan): void;
 export { typeList } from './list';
 export { rollup } from './rollup';
 export { Strategy, type StrategyElement, type StrategyElementType } from './strategy';

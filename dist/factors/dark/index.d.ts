@@ -1,4 +1,4 @@
-import { Sun } from '../../models/Sun';
+import { Types } from '../../main';
 import { DarkModel } from './DarkModel';
 /**
  * Return time-of-day based dark factor
@@ -10,4 +10,4 @@ import { DarkModel } from './DarkModel';
  *
  * @returns  The heat factor at the provided point
  */
-export declare function getDarkFactor(timeOfDaySeconds: number, terrainFactor: number, sun: Sun, model?: DarkModel): number;
+export declare function getDarkFactor(timeOfDaySeconds: number, terrainFactor: number, sun: Types.SunEvent, model?: DarkModel): number;

@@ -1,29 +1,27 @@
-import { Plan } from './Plan';
-import { PlanSegment } from './Segment';
-import { Waypoint } from './Waypoint';
-export declare class PlanSplits {
-    plan: Plan;
-    constructor(plan: Plan);
-    get segments(): (PlanSegment & {
-        waypoint: Waypoint;
+import { Types } from '../main';
+export declare class PlanSplits implements Types.PlanSplits {
+    plan: Types.Plan;
+    constructor(plan: Types.Plan);
+    get segments(): (Types.PlanSegment & {
+        waypoint: Types.Waypoint;
     })[];
-    set segments(v: (PlanSegment & {
-        waypoint: Waypoint;
+    set segments(v: (Types.PlanSegment & {
+        waypoint: Types.Waypoint;
     })[]);
     private _segments?;
     private _segmentsVersion?;
-    get miles(): PlanSegment[];
-    set miles(v: PlanSegment[]);
+    get miles(): Types.PlanSegment[];
+    set miles(v: Types.PlanSegment[]);
     private _miles?;
     private _milesVersion?;
-    get kilometers(): PlanSegment[];
-    set kilometers(v: PlanSegment[]);
+    get kilometers(): Types.PlanSegment[];
+    set kilometers(v: Types.PlanSegment[]);
     private _kilometers?;
     private _kilometersVersion?;
-    createSegments(): PlanSegment[];
-    createSplits(unit: string): PlanSegment[];
+    createSegments(): Types.PlanSegment[];
+    createSplits(unit: string): Types.PlanSegment[];
     calcSegments(breaks: {
         start: number;
         end: number;
-    }[]): PlanSegment[];
+    }[]): Types.PlanSegment[];
 }

@@ -1,5 +1,4 @@
-import { StrategyElement } from '../factors';
-import { factors, Types } from '../main';
+import { Types } from '../main';
 import { DateWithTimezone } from '.';
 export type PlanDataDelays = {
     delay: number;
@@ -40,7 +39,7 @@ export type PlanData = {
      * Start date and timezone
      */
     start?: DateWithTimezone | undefined;
-    strategy?: StrategyElement[] | undefined;
+    strategy?: Types.StrategyElement[] | undefined;
     target: number;
     typicalDelay?: number | undefined;
 };
@@ -153,7 +152,7 @@ export interface Plan {
      * Plan stats object
      */
     readonly stats: PlanStats;
-    readonly strategy: factors.Strategy;
+    readonly strategy: Types.Strategy;
     /**
      * Target time in seconds
      */
@@ -162,6 +161,11 @@ export interface Plan {
      * Typical delay for the plan; amount of dwell time at 'aid' and 'water' waypoints
      */
     readonly typicalDelay: number;
+    /**
+     * version of plan update (non-trivial changes that affect pacing)
+     */
+    readonly version: number;
+    checkPacing(): void;
     /**
      * get delay at input Waypoint
      * @param waypoint - waypoint of interest
@@ -175,7 +179,7 @@ export interface Plan {
      * @param insert - Whether to also insert a created point into the points array. Defaults to false.
      * @returns The PlanPoint at input location.
      */
-    getPoint(loc: number): Types.PlanPoint;
+    getPoint(loc: number, insert?: boolean): Types.PlanPoint;
     /**
      * Update the plan with new data.
      * @param data - Plan update data

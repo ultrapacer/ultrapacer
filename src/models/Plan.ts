@@ -3,9 +3,11 @@ import _ from 'lodash'
 import { createDebug } from '../debug'
 import { factorKeys, generatePlanFactors } from '../factors'
 import { Strategy } from '../factors/strategy'
-import { Models, Types } from '../main'
+import { Types } from '../main'
 import { interp, interpArray, req, rgte } from '../util/math'
+import { Event } from './Event'
 import { Pacing } from './Pacing'
+import { PlanPoint } from './PlanPoint'
 import { PlanSplits } from './PlanSplits'
 
 const d = createDebug('models:Plan')
@@ -19,7 +21,7 @@ export class Plan implements Types.Plan {
     heatModel?: Types.PlanHeatModel
     scales?: Types.Plan['scales']
     stats?: Types.Plan['stats']
-    strategy?: Strategy
+    strategy?: Types.Strategy
     version?: number
   } = {}
   get cache() {
@@ -95,7 +97,7 @@ export class Plan implements Types.Plan {
     if ('event' in this.cache) return this.cache.event
 
     if (this._data.start)
-      return (this.cache.event = new Models.Event(
+      return (this.cache.event = new Event(
         this._data.start.date,
         this._data.start.timezone,
         this.points[0].lat,
@@ -171,7 +173,7 @@ export class Plan implements Types.Plan {
     return this._data.name
   }
 
-  pacing: Pacing = new Pacing(this)
+  pacing: Types.Pacing = new Pacing(this)
 
   readonly points: Types.PlanPoint[]
 
@@ -185,7 +187,7 @@ export class Plan implements Types.Plan {
     return (this.cache.scales = undefined)
   }
 
-  readonly splits = new PlanSplits(this)
+  readonly splits: Types.PlanSplits = new PlanSplits(this)
 
   get stats() {
     if ('stats' in this.cache) return this.cache.stats
@@ -239,7 +241,7 @@ export class Plan implements Types.Plan {
     return this.cache.stats
   }
 
-  get strategy(): Strategy {
+  get strategy(): Types.Strategy {
     if ('strategy' in this.cache) return this.cache.strategy
     return (this.cache.strategy = new Strategy(this, this._data.strategy))
   }
@@ -278,7 +280,7 @@ export class Plan implements Types.Plan {
       }
     }
 
-    this.points = this.course.points.map((point) => new Models.PlanPoint(this, point))
+    this.points = this.course.points.map((point) => new PlanPoint(this, point))
 
     this._version = 1
   }
@@ -324,7 +326,7 @@ export class Plan implements Types.Plan {
     const p1 = this.points[i1]
 
     // create a new point
-    const point = new Models.PlanPoint(this, this.course.getPoint(loc))
+    const point = new PlanPoint(this, this.course.getPoint(loc))
 
     // delay at this point is the increase in elapsed time from the previous point
     point.delay = Math.round(p2.elapsed - p1.elapsed - (p2.time - p1.time))
