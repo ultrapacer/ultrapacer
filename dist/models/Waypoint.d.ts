@@ -1,10 +1,11 @@
+import { Types } from '../main';
 import { Site } from './Site';
-export declare class Waypoint {
+export declare class Waypoint implements Types.Waypoint {
     constructor(site: Site, loop?: number);
     _data: object;
     loop: number;
     site: Site;
-    get course(): import("./Course").Course;
+    get course(): Types.Course;
     get name(): string | undefined;
     get description(): string | undefined;
     get loc(): number;
@@ -16,7 +17,7 @@ export declare class Waypoint {
      * @deprecated - this has been replaced with course terrain model
      */
     get tier(): number;
-    get type(): import("./Site").WaypointType;
+    get type(): Types.SiteType;
     get hasTypicalDelay(): boolean;
     get cutoff(): number | undefined;
 }

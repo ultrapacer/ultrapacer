@@ -3,12 +3,11 @@ import { vsprintf } from 'sprintf-js'
 
 import { createDebug } from '../debug'
 import { Factors, generatePlanFactors } from '../factors'
-import { Plan } from './Plan'
-import { PlanPoint } from './PlanPoint'
+import { Types } from '../main'
 
 const d = createDebug('PaceChunk')
 
-class Tests {
+class PacingTests implements Types.PacingTests {
   iterations: boolean = false
   factor: boolean = false
   target: boolean = false
@@ -16,22 +15,14 @@ class Tests {
   get passing() {
     return this.iterations && this.factor && this.target
   }
-
-  get statusString() {
-    return [
-      `iterations=${this.iterations ? 'P' : 'F'}`,
-      `factor=${this.factor ? 'P' : 'F'}`,
-      `target=${this.target ? 'P' : 'F'}`
-    ].join('|')
-  }
 }
 
-export class PaceChunk {
+export class PaceChunk implements Types.PaceChunk {
   constraints: (number | (() => number))[]
 
   constructor(
-    plan: Plan,
-    points: PlanPoint[],
+    plan: Types.Plan,
+    points: Types.PlanPoint[],
     constraints: (number | (() => number))[],
     delay: number
   ) {
@@ -43,14 +34,14 @@ export class PaceChunk {
     this.factor = 1 // initial value
   }
 
-  points: PlanPoint[]
-  plan: Plan
+  points: Types.PlanPoint[]
+  plan: Types.Plan
   delay: number
 
   factor: number
 
   factors: Factors = new Factors()
-  status?: { success?: boolean; tests?: Tests; iterations?: number }
+  status?: { success?: boolean; tests?: Types.PacingTests; iterations?: number }
 
   get elapsed() {
     const a = _.isFunction(this.constraints[0]) ? this.constraints[0]() : this.constraints[0]
@@ -140,7 +131,7 @@ export class PaceChunk {
     )
     let lastFactor = this.factor || 0
     let i
-    const tests = new Tests()
+    const tests = new PacingTests()
 
     for (i = 0; i < maxIterations; i++) {
       this.applyPacing()
@@ -156,8 +147,6 @@ export class PaceChunk {
           (_.isFunction(this.constraints[1]) ? this.constraints[1]() : this.constraints[1]) -
             this.points[this.points.length - 1].elapsed
         ) < 0.1
-
-      d2(vsprintf('%i|%s', [i, tests.statusString]))
 
       if (tests.passing) break
     }

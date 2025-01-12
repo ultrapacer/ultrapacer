@@ -1,8 +1,6 @@
 import _ from 'lodash'
 
-import { Course } from '../../models/Course'
-import { CoursePoint } from '../../models/CoursePoint'
-import { PlanPoint } from '../../models/PlanPoint'
+import type { Types } from '../../main'
 import { rlte } from '../../util/math'
 
 // TODO: instead of having tFs values as added % (eg 5, 10), change to percent eg (1.05, 1.10))
@@ -15,7 +13,7 @@ import { rlte } from '../../util/math'
  *
  * @returns The terrain factor at the provided point
  */
-export function getTerrainFactor(point: CoursePoint | PlanPoint, course: Course) {
+export function getTerrainFactor(point: Types.CoursePoint | Types.PlanPoint, course: Types.Course) {
   const tF = _.findLast(course.terrain, (x) => rlte(x.percents[0] * course.dist, point.loc, 4))
 
   if (!tF) return 1

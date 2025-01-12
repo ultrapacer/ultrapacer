@@ -2,18 +2,17 @@ import _ from 'lodash'
 import { sprintf } from 'sprintf-js'
 
 import { createDebug } from '../debug'
-import { Factors, rollup } from '../factors'
+import { rollup } from '../factors'
+import { Types } from '../main'
 import { PaceChunk } from './PaceChunk'
-import { Plan } from './Plan'
-import { PlanPoint } from './PlanPoint'
 
 const d = createDebug('Pacing')
 
-export class Pacing {
-  chunks: PaceChunk[] = []
-  plan: Plan
+export class Pacing implements Types.Pacing {
+  chunks: Types.PaceChunk[] = []
+  plan: Types.Plan
 
-  constructor(plan: Plan) {
+  constructor(plan: Types.Plan) {
     this.plan = plan
   }
 
@@ -48,7 +47,7 @@ export class Pacing {
     delete this._factor
   }
 
-  private _factors?: Factors
+  private _factors?: Types.Factors
   get factors() {
     d('factors:get')
     if (!this._factors) {
@@ -110,8 +109,8 @@ export class Pacing {
 
     d2('adding points at each cutoff')
     if (this.plan.cutoffMargin) {
-      this.plan.cutoffs.forEach((c) => {
-        c.point = this.plan.getPoint(c.loc, true)
+      this.plan.cutoffs?.forEach((c) => {
+        this.plan.getPoint(c.loc, true)
       })
     }
 
@@ -129,7 +128,7 @@ export class Pacing {
     d2('creating pace chunks')
     this.initChunks()
 
-    const cutoffs = [null, ..._.reverse([...this.plan.cutoffs]), null]
+    const cutoffs = [null, ..._.reverse([...(this.plan.cutoffs || [])]), null]
 
     cutoffs.forEach((cutoff) => {
       while (this.chunks.find((c) => !c.status)) {
@@ -139,15 +138,16 @@ export class Pacing {
 
       // now test cutoff
       if (!cutoff) return true
-      if (cutoff.point.elapsed - cutoff.time > 0.5) {
+      const point = this.plan.getPoint(cutoff.loc)
+      if (point.elapsed - cutoff.time > 0.5) {
         d2(`cutoff at ${cutoff.loc} missed`)
         const chunk = this.chunks[0]
-        if (_.last(chunk.points) === cutoff.point) {
+        if (_.last(chunk.points) === point) {
           d2(`setting cutoff at ${cutoff.loc}`)
           chunk.constraints = [0, cutoff.time]
           delete chunk.status
         } else {
-          this.splitChunk(chunk, cutoff.point, cutoff.time)
+          this.splitChunk(chunk, point, cutoff.time)
         }
       }
     })
@@ -228,7 +228,7 @@ export class Pacing {
    * @param point - point to split at
    * @param elapsed - elapsed time at split
    */
-  splitChunk(chunk: PaceChunk, point: PlanPoint, elapsed: number) {
+  splitChunk(chunk: Types.PaceChunk, point: Types.PlanPoint, elapsed: number) {
     const d2 = d.extend('split')
 
     // need to split chunks
@@ -268,7 +268,7 @@ export class Pacing {
    * @param a - first chunk
    * @param b - second chunk
    */
-  mergeChunks(a: PaceChunk, b: PaceChunk) {
+  mergeChunks(a: Types.PaceChunk, b: Types.PaceChunk) {
     const i = this.chunks.findIndex((c) => c === a)
     const j = this.chunks.findIndex((c) => c === b)
 

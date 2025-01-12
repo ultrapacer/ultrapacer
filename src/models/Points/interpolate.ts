@@ -1,5 +1,5 @@
+import { Models, Types } from '../../main'
 import { interp } from '../../util/math'
-import { TrackPoint } from '../Point'
 
 /**
  * interpolate between two track points
@@ -8,7 +8,7 @@ import { TrackPoint } from '../Point'
  * @param loc - location
  * @returns new TrackPoint
  */
-export function interpolatePoint(p1: TrackPoint, p2: TrackPoint, loc: number) {
+export function interpolatePoint(p1: Types.TrackPoint, p2: Types.TrackPoint, loc: number) {
   if ((p1.loc > p2.loc && loc > p1.loc) || (p2.loc > p1.loc && loc > p2.loc))
     throw new Error('Input location must be between points')
   const dist = Math.abs(p1.loc - loc)
@@ -21,5 +21,5 @@ export function interpolatePoint(p1: TrackPoint, p2: TrackPoint, loc: number) {
   // linear interpolation of other fields
   const alt = interp(p1.loc, p2.loc, p1.alt, p2.alt, loc)
 
-  return new TrackPoint({ lat, lon, alt }, loc, grade)
+  return new Models.TrackPoint({ lat, lon, alt }, loc, grade)
 }

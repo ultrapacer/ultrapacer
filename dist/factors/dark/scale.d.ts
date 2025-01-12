@@ -1,8 +1,8 @@
-import { Sun } from '../../models/Sun';
+import { Types } from '../../main';
 /**
  * get scale factor for time of day
  * @param sun - sun model
  * @param ssm - seconds since midnight
  * @returns scale factor
  */
-export declare function scale(sun: Sun, ssm: number): number;
+export declare function scale(sun: Types.SunEvent, ssm: number): number;

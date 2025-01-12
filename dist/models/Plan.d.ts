@@ -1,174 +1,65 @@
-import { Strategy, StrategyElement } from '../factors/strategy';
-import { Course, CourseCutoff } from './Course';
-import { Event } from './Event';
-import { Pacing } from './Pacing';
-import { PlanPoint } from './PlanPoint';
-import { PlanSplits } from './PlanSplits';
-import { DateWithTimezone } from './types';
-import { Waypoint } from './Waypoint';
-export type PlanDataDelays = {
-    delay: number;
-    loop: number;
-    siteId: string | symbol;
-}[];
-export type PlanDataMethod = 'np' | 'pace' | 'time';
-/**
- * Represents the data structure for a plan.
- */
-export type PlanData = {
-    cutoffMargin?: number | undefined;
-    delays?: PlanDataDelays | undefined;
-    heatModel?: {
-        baseline: number;
-        max: number;
-    } | undefined;
-    /**
-     * Unique identifier for the plan
-     */
-    id?: string | null | number | symbol | undefined;
-    /**
-     * Method for calculating target time
-     */
-    method: PlanDataMethod;
-    /**
-     * Optional display name for the plan
-     */
-    name?: string | undefined;
-    /**
-     * Scales for factors
-     */
-    scales?: {
-        altitude?: number;
-        dark?: number;
-    } | undefined;
-    /**
-     * Start date and timezone
-     */
-    start?: DateWithTimezone | undefined;
-    strategy?: StrategyElement[] | undefined;
-    target: number;
-    typicalDelay?: number | undefined;
-};
-/**
- * Represents the data structure for updating a plan.
- * All fields are optional, but method and target cannot be set to null or undefined.
- */
-export type PlanUpdateData = Partial<PlanData> & NonNullable<Partial<Pick<PlanData, 'method' | 'target'>>>;
-type PlanStats = {
-    factors: {
-        [key: string]: {
-            min: number;
-            max: number;
-        };
-    };
-    sun: {
-        day: {
-            time: number;
-            dist: number;
-        };
-        twilight: {
-            time: number;
-            dist: number;
-        };
-        dark: {
-            time: number;
-            dist: number;
-        };
-    };
-};
-type PlanEvents = {
-    sun: {
-        event: string;
-        elapsed: number;
-        loc: number;
-    }[];
-};
-type PlanHeatModel = {
-    start: number;
-    stop: number;
-    baseline: number;
-    max: number;
-} | undefined;
-type PlanScales = {
-    altitude: number;
-    dark: number;
-} | undefined;
-export declare class Plan {
+import { Types } from '../main';
+export declare class Plan implements Types.Plan {
     private _cache;
     get cache(): {
         cutoffs?: PlanCutoff[];
-        delays?: PlanDelay[];
-        event?: Event;
-        events?: PlanEvents;
-        heatModel?: PlanHeatModel;
-        scales?: PlanScales;
-        stats?: PlanStats;
-        strategy?: Strategy;
+        delays?: Types.Plan["delays"];
+        event?: Types.Event;
+        events?: Types.Plan["events"];
+        heatModel?: Types.PlanHeatModel;
+        scales?: Types.Plan["scales"];
+        stats?: Types.Plan["stats"];
+        strategy?: Types.Strategy;
         version?: number;
     };
     private _data;
-    readonly course: Course;
+    readonly course: Types.Course;
     get cutoffMargin(): number | undefined;
-    /**
-     * cutoffs array is calculated on get as a combination of the course cutoffs and the plan points
-     * gets re-calculated if the course or plan version changes
-     */
     get cutoffs(): PlanCutoff[];
-    /**
-     * delay is sum of Plan.delays
-     */
     get delay(): number;
-    /**
-     * delays array is calculated on get as a combination of the specified delays and default delays based on waypoint types
-     * gets re-calculated if the course or plan version changes
-     */
     get delays(): PlanDelay[];
-    /**
-     * Event object
-     * gets re-calculated if the course or plan version changes
-     */
-    get event(): Event;
-    get events(): PlanEvents;
+    get event(): Types.Event;
+    get events(): Types.PlanEvents;
     get heatModel(): {
         start: number;
         stop: number;
         baseline: number;
         max: number;
     } | undefined;
-    /**
-     * Unique identifier for the plan
-     */
     get id(): string | number | symbol | null | undefined;
-    /**
-     * Method for calculating target time
-     */
-    get method(): PlanDataMethod;
-    /**
-     * Display name for the plan
-     */
+    get method(): Types.PlanDataMethod;
     get name(): string | undefined;
-    pacing: Pacing;
-    readonly points: PlanPoint[];
-    /**
-     * Scales for factors
-     */
-    get scales(): PlanScales;
-    /**
-     * splits
-     */
-    readonly splits: PlanSplits;
-    /**
-     * Plan stats object
-     */
-    get stats(): PlanStats;
-    get strategy(): Strategy;
-    /**
-     * Target time in seconds
-     */
+    pacing: Types.Pacing;
+    readonly points: Types.PlanPoint[];
+    get scales(): {
+        altitude: number;
+        dark: number;
+    } | undefined;
+    readonly splits: Types.PlanSplits;
+    get stats(): {
+        readonly factors: {
+            [key: string]: {
+                min: number;
+                max: number;
+            };
+        };
+        readonly sun: {
+            day: {
+                time: number;
+                dist: number;
+            };
+            twilight: {
+                time: number;
+                dist: number;
+            };
+            dark: {
+                time: number;
+                dist: number;
+            };
+        };
+    };
+    get strategy(): Types.Strategy;
     get target(): number;
-    /**
-     * Typical delay for the plan; amount of dwell time at 'aid' and 'water' waypoints
-     */
     get typicalDelay(): number;
     /**
      * Version of plan update (non trivial changes that affect pacing)
@@ -178,42 +69,30 @@ export declare class Plan {
      * Version of course & plan update (non trivial changes that affect pacing)
      */
     get version(): number;
-    constructor(course: Course, data: PlanData);
+    constructor(course: Types.Course, data: Types.PlanData);
     checkPacing(): boolean;
     /**
      * get delay at input Waypoint
      * @param waypoint - waypoint of interest
      * @returns delay (sec)
      */
-    getDelayAtWaypoint(waypoint: Waypoint): number;
-    /**
-     * get typical delay at input Waypoint
-     * @param waypoint - waypoint of interest
-     * @returns delay (sec)
-     */
-    getTypicalDelayAtWaypoint(waypoint: Waypoint): number;
-    /**
-     * Finds and optionally inserts a point at an input location.
-     *
-     * @param loc - The location (in km) to determine value.
-     * @param insert - Whether to also insert a created point into the points array. Defaults to false.
-     * @returns The PlanPoint at input location.
-     */
-    getPoint(loc: number, insert?: boolean): PlanPoint;
-    update(data: PlanUpdateData): void;
+    getDelayAtWaypoint(waypoint: Types.Waypoint): number;
+    getTypicalDelayAtWaypoint(waypoint: Types.Waypoint): number;
+    getPoint(loc: number, insert?: boolean): Types.PlanPoint;
+    update(data: Types.PlanUpdateData): void;
 }
-declare class PlanDelay {
+declare class PlanDelay implements Types.PlanDelay {
     delay: number;
-    waypoint: Waypoint;
-    constructor(waypoint: Waypoint, delay: number);
+    waypoint: Types.Waypoint;
+    constructor(waypoint: Types.Waypoint, delay: number);
     get loc(): number;
 }
-declare class PlanCutoff {
-    plan: Plan;
-    courseCutoff: CourseCutoff;
-    point: PlanPoint;
-    constructor(plan: Plan, courseCutoff: CourseCutoff, point: PlanPoint);
-    get waypoint(): Waypoint;
+declare class PlanCutoff implements Types.PlanCutoff {
+    plan: Types.Plan;
+    courseCutoff: Types.CourseCutoff;
+    point: Types.PlanPoint;
+    constructor(plan: Types.Plan, courseCutoff: Types.CourseCutoff, point: Types.PlanPoint);
+    get waypoint(): Types.Waypoint;
     get loc(): number;
     get time(): number;
 }

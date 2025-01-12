@@ -1,13 +1,12 @@
 import { expect, test } from 'vitest'
 
-import { Sun } from '~/models/Sun'
-
+import { Types } from '../../../main'
 import { getDarkFactor } from '../'
 
 const sunrise = 21600
 const sunset = 72000
 
-const sun: Sun = {
+const sun: Types.SunEvent = {
   nadir: 0,
   nadirAltitude: -20,
   noon: sunrise + (sunset - sunrise) / 2,

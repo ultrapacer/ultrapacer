@@ -1,6 +1,4 @@
-import { Course } from '../../models/Course';
-import { CoursePoint } from '../../models/CoursePoint';
-import { PlanPoint } from '../../models/PlanPoint';
+import type { Types } from '../../main';
 /**
  * Return a scaling factor for terrain
  *
@@ -9,4 +7,4 @@ import { PlanPoint } from '../../models/PlanPoint';
  *
  * @returns The terrain factor at the provided point
  */
-export declare function getTerrainFactor(point: CoursePoint | PlanPoint, course: Course): number;
+export declare function getTerrainFactor(point: Types.CoursePoint | Types.PlanPoint, course: Types.Course): number;
