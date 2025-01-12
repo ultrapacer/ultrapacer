@@ -111,7 +111,7 @@ export interface Course {
   readonly dist: number
 
   /**
-   * Distance scale of course (in km), relative to calculated track distance
+   * Distance scale of course, relative to calculated track distance, as a factor (eg, 1.05)
    */
   readonly distScale: number
 
@@ -126,7 +126,7 @@ export interface Course {
   readonly gain: number
 
   /**
-   * Gain scale of course (in meters), relative to calculated track gain
+   * Gain scale of course, relative to calculated track gain, as a factor (eg, 1.05)
    */
   readonly gainScale: number
 
@@ -156,7 +156,7 @@ export interface Course {
   readonly loss: number
 
   /**
-   * Loss scale of course (in meters), relative to calculated track loss
+   * Loss scale of course, relative to calculated track loss, as a factor (eg, 1.05)
    */
   readonly lossScale: number
 
