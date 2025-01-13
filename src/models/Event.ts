@@ -23,7 +23,7 @@ export class Event implements Types.Event {
   readonly lon: number
   readonly timezone: string
   readonly sun: Types.SunEvent
-  readonly startTime: number
+  private readonly startTime: number
 
   constructor(start: Date, timezone: string, lat: number, lon: number) {
     this.start = start

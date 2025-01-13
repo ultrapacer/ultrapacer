@@ -1,5 +1,4 @@
 import { Types } from '../main';
-import { Event } from './Event';
 export declare const terrainTypes: {
     type: Types.TerrainTypeIndex;
     value: number;
@@ -39,7 +38,7 @@ export declare class Course implements Types.Course {
      * Distance scale of course (in km), relative to calculated track distance
      */
     get distScale(): number;
-    get event(): Event | undefined;
+    get event(): Types.Event | undefined;
     get gain(): number;
     get gainScale(): number;
     get loopDist(): number;

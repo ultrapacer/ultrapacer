@@ -75,7 +75,7 @@ export class Course implements Types.Course {
     return this._data.dist ? this._data.dist / (this.track.dist * this.loops) : 1
   }
 
-  get event() {
+  get event(): Types.Event | undefined {
     if ('event' in this.cache) return this.cache.event
 
     if (this._data.start)

@@ -14,7 +14,6 @@ export interface Event {
   lon: number
   timezone: string
   sun: SunEvent
-  startTime: number
 
   /**
    * get a date object at [seconds] from start
