@@ -297,18 +297,8 @@ export class Plan implements Types.Plan {
     return true
   }
 
-  /**
-   * get delay at input Waypoint
-   * @param waypoint - waypoint of interest
-   * @returns delay (sec)
-   */
   getDelayAtWaypoint(waypoint: Types.Waypoint): number {
     return this.delays.find((d) => d.waypoint === waypoint)?.delay || 0
-  }
-
-  getTypicalDelayAtWaypoint(waypoint: Types.Waypoint) {
-    if (waypoint.hasTypicalDelay) return this.typicalDelay
-    return 0
   }
 
   getPoint(loc: number, insert: boolean = false): Types.PlanPoint {

@@ -71,13 +71,7 @@ export declare class Plan implements Types.Plan {
     get version(): number;
     constructor(course: Types.Course, data: Types.PlanData);
     checkPacing(): boolean;
-    /**
-     * get delay at input Waypoint
-     * @param waypoint - waypoint of interest
-     * @returns delay (sec)
-     */
     getDelayAtWaypoint(waypoint: Types.Waypoint): number;
-    getTypicalDelayAtWaypoint(waypoint: Types.Waypoint): number;
     getPoint(loc: number, insert?: boolean): Types.PlanPoint;
     update(data: Types.PlanUpdateData): void;
 }
