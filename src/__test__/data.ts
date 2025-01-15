@@ -1,5 +1,4 @@
-import { Course, CourseData, Plan, PlanData } from '../models'
-import { createTrackFromArrays } from '../models/Track'
+import { Models, Types } from '../main'
 
 const trackdata = {
   lat: [
@@ -1806,9 +1805,9 @@ const trackdata = {
   ]
 }
 
-const track = createTrackFromArrays(trackdata.lat, trackdata.lon, trackdata.alt)
+const track = Models.createTrackFromArrays(trackdata.lat, trackdata.lon, trackdata.alt)
 
-const coursedata: CourseData = {
+const coursedata: Types.CourseData = {
   gain: 3352.7998927104036,
   loss: -3352.7998927104036,
   dist: 160.93444978925635,
@@ -2115,7 +2114,7 @@ const coursedata: CourseData = {
 
 export const start = { date: new Date('2021-11-06T12:15:00.000Z'), timezone: 'America/Los_Angeles' }
 
-export const planData: PlanData = {
+export const planData: Types.PlanData = {
   name: '22-hour',
   method: 'time',
   heatModel: {
@@ -2139,8 +2138,8 @@ export const planData: PlanData = {
   start
 }
 
-const course = new Course(track, coursedata)
+const course = new Models.Course(track, coursedata)
 
-const plan = new Plan(course, planData)
+const plan = new Models.Plan(course, planData)
 
 export { course, plan }

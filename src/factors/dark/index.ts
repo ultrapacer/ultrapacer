@@ -1,4 +1,4 @@
-import { Sun } from '../../models/Sun'
+import { Types } from '../../main'
 import { DarkModel } from './DarkModel'
 import { defaults } from './defaults'
 import { scale } from './scale'
@@ -16,7 +16,7 @@ import { scale } from './scale'
 export function getDarkFactor(
   timeOfDaySeconds: number,
   terrainFactor: number,
-  sun: Sun,
+  sun: Types.SunEvent,
   model: DarkModel = defaults
 ): number {
   if (terrainFactor === 1) return 1

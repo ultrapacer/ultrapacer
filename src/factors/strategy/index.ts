@@ -1,7 +1,6 @@
 import _ from 'lodash'
 
-import { Course } from '~/models'
-
+import { Types } from '../../main'
 import { adjust } from './adjust'
 import { defaults as def } from './default'
 import { StrategyElement, StrategyElementType } from './StrategyElement'
@@ -25,16 +24,11 @@ function getFact(loc: number, values: StrategyElement[], length: number) {
   return a
 }
 
-/**
- * limited Plan type for Strategy
- */
-type Plan = { course: Pick<Course, 'dist'> }
-
 export class Strategy {
-  plan: Plan
+  plan: Types.Plan
   values: StrategyElement[]
 
-  constructor(plan: Plan, values?: StrategyElement[]) {
+  constructor(plan: Types.Plan, values?: StrategyElement[]) {
     this.plan = plan
     this.values = values
       ? _.cloneDeep(values)

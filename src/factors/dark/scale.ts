@@ -1,4 +1,4 @@
-import { Sun } from '../../models/Sun'
+import { Types } from '../../main'
 import { interp } from '../../util/math'
 
 /**
@@ -7,7 +7,7 @@ import { interp } from '../../util/math'
  * @param ssm - seconds since midnight
  * @returns scale factor
  */
-export function scale(sun: Sun, ssm: number) {
+export function scale(sun: Types.SunEvent, ssm: number) {
   // routine to address tod rollover at midnight
   function offset(ssm: number) {
     return ssm < sun.noon ? ssm + 86400 : ssm

@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { latlon as LatLon } from 'sgeo'
 
 import { createDebug } from '../debug'
+import { Types } from '../main'
 import { round } from '../util/math'
 import { Point, TrackPoint } from './Point'
 import { getGrades } from './Points/getGrades'
@@ -11,15 +12,13 @@ import { interpolatePoint } from './Points/interpolate'
 
 const d = createDebug('models:Track')
 
-export type TrackData = { lat: number; lon: number; alt: number }[]
-
-export class Track {
+export class Track implements Types.Track {
   dist: number
   gain: number
   loss: number
-  points: TrackPoint[]
+  points: Types.TrackPoint[]
 
-  constructor(llas: TrackData) {
+  constructor(llas: Types.TrackData) {
     d('Creating new Track object')
 
     const points = llas.map((p) => new Point(p))
@@ -51,15 +50,14 @@ export class Track {
     this.loss = loss
   }
 
-  get start(): { lat: number; lon: number } {
-    return _.pick(this.points[0], ['lat', 'lon'])
+  get start() {
+    return _.pick(this.points[0], ['alt', 'lat', 'lon'])
   }
 
-  get finish(): { lat: number; lon: number } {
-    return _.pick(this.points[this.points.length - 1], ['lat', 'lon'])
+  get finish() {
+    return _.pick(this.points[this.points.length - 1], ['alt', 'lat', 'lon'])
   }
 
-  // get lat, lon, alt, index for distance location(s) along track
   getLLA(location: number): { lat: number; lon: number; alt: number } {
     // if track has loops, just look at location within first loop (eg track)
     if (location > this.dist) location = location % this.dist
@@ -73,14 +71,7 @@ export class Track {
     return _.pick(point, ['lat', 'lon', 'alt'])
   }
 
-  /**
-   * iterate to new location based on waypoint lat/lon
-   * @param latlon - new point location
-   * @param start - starting point in track
-   * @param limit - max distance along track from starting point
-   * @returns
-   */
-  getNearestPoint(latlon: LatLon, start: Point, limit: number) {
+  getNearestPoint(latlon: LatLon, start: Types.Point, limit: number) {
     const steps = 5
     let jj = this.points.findIndex((p) => p === start)
     let p = this.points[jj]
@@ -122,8 +113,6 @@ export class Track {
     }
   }
 
-  // if criteria is met, returns new Track object w/ reduced points
-  // otherwise, returns this
   reduceDensity(spacing: number = 0.025, length: number = this.points.length / 2) {
     const d2 = d.extend('reduceDensity')
     // reduce density of points for processing
@@ -162,13 +151,6 @@ export class Track {
   }
 }
 
-/**
- * utilty function to create a new track from lat[],lon[],alt[] input
- * @param lat - latitudes
- * @param lon - longitudes
- * @param alt - altitudes
- * @returns new Track
- */
 export function createTrackFromArrays(lat: number[], lon: number[], alt: number[]) {
   const llas = lat.map((x, i) => ({ lat: lat[i], lon: lon[i], alt: alt[i] }))
   return new Track(llas)

@@ -1,24 +1,16 @@
 import { Factors } from '../factors';
-import { Plan } from './Plan';
-import { PlanPoint } from './PlanPoint';
-declare class Tests {
-    iterations: boolean;
-    factor: boolean;
-    target: boolean;
-    get passing(): boolean;
-    get statusString(): string;
-}
-export declare class PaceChunk {
+import { Types } from '../main';
+export declare class PaceChunk implements Types.PaceChunk {
     constraints: (number | (() => number))[];
-    constructor(plan: Plan, points: PlanPoint[], constraints: (number | (() => number))[], delay: number);
-    points: PlanPoint[];
-    plan: Plan;
+    constructor(plan: Types.Plan, points: Types.PlanPoint[], constraints: (number | (() => number))[], delay: number);
+    points: Types.PlanPoint[];
+    plan: Types.Plan;
     delay: number;
     factor: number;
     factors: Factors;
     status?: {
         success?: boolean;
-        tests?: Tests;
+        tests?: Types.PacingTests;
         iterations?: number;
     };
     get elapsed(): number;
@@ -35,4 +27,3 @@ export declare class PaceChunk {
      */
     calculate(): void;
 }
-export {};

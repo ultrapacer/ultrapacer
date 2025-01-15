@@ -1,31 +1,32 @@
 import _ from 'lodash'
 
+import { locationsToBreaks } from '~/util/locationsToBreaks'
+
 import { createDebug } from '../debug'
 import { Factors, generateCourseFactors } from '../factors'
+import { Types } from '../main'
 import { req, rlte } from '../util/math'
 import { distScale } from '../util/units'
-import { Course } from './Course'
-import { CoursePoint } from './CoursePoint'
-import { PlanPoint } from './PlanPoint'
 import { CourseSegment } from './Segment'
-import { Waypoint } from './Waypoint'
 
 const d = createDebug('CourseSplits')
 
-export class CourseSplits {
-  private _segments?: (CourseSegment & { waypoint: Waypoint })[]
-  private _miles?: CourseSegment[]
-  private _kilometers?: CourseSegment[]
+export class CourseSplits implements Types.CourseSplits {
+  private _segments?: (Types.CourseSegment & { waypoint: Types.Waypoint })[]
+  private _miles?: Types.CourseSegment[]
+  private _kilometers?: Types.CourseSegment[]
 
-  course: Course
+  course: Types.Course
 
-  constructor(course: Course) {
+  constructor(course: Types.Course) {
     this.course = course
   }
 
   get segments() {
     if (!this._segments)
-      this._segments = this.createSegments() as (CourseSegment & { waypoint: Waypoint })[]
+      this._segments = this.createSegments() as (Types.CourseSegment & {
+        waypoint: Types.Waypoint
+      })[]
     return this._segments
   }
   set segments(v) {
@@ -54,7 +55,12 @@ export class CourseSplits {
     const wps = this.course.waypoints
 
     // determine all the stuff
-    const segments = this.calcSegments(this.course.locationsToBreaks(wps.map((x) => x.loc)))
+    const segments = this.calcSegments(
+      locationsToBreaks(
+        wps.map((x) => x.loc),
+        this.course.dist
+      )
+    )
 
     if (!segments.length) throw new Error('createSegments result is empty')
 
@@ -76,7 +82,7 @@ export class CourseSplits {
       breakLocations.push(this.course.dist)
 
     // get the stuff
-    const splits = this.calcSegments(this.course.locationsToBreaks(breakLocations))
+    const splits = this.calcSegments(locationsToBreaks(breakLocations, this.course.dist))
 
     if (!splits.length) throw new Error('createSplits result is empty')
 
@@ -84,14 +90,6 @@ export class CourseSplits {
   }
 
   calcSegments(breaks: { start: number; end: number }[]) {
-    /*
-    data {
-       breaks: array of [{ start, end }, {start, end}] locations
-           must be consecutive and not overlap
-       course: Course object
-       [plan]: Plan Object
-     }
-    */
     const d2 = d.extend('calcSegments')
     d2('exec')
 
@@ -99,11 +97,11 @@ export class CourseSplits {
 
     const p = course.points
 
-    const s: CourseSegment[] = [] // segments array
-    const fSums: Factors[] = [] // factor sum array
+    const s: Types.CourseSegment[] = [] // segments array
+    const fSums: Types.Factors[] = [] // factor sum array
     let i
     let il
-    let point1: CoursePoint = course.points[0]
+    let point1: Types.CoursePoint = course.points[0]
     let point2
     for (i = 0, il = breaks.length; i < il; i++) {
       const b = breaks[i]
@@ -132,10 +130,10 @@ export class CourseSplits {
 
     // move this to CourseSegment constructor
     const calcStuff = (
-      seg: CourseSegment,
-      p1: CoursePoint | PlanPoint,
-      p2: CoursePoint | PlanPoint,
-      fSum: Factors
+      seg: Types.CourseSegment,
+      p1: Types.CoursePoint | Types.PlanPoint,
+      p2: Types.CoursePoint | Types.PlanPoint,
+      fSum: Types.Factors
     ) => {
       const delta = p2.alt - p1.alt
       seg[delta > 0 ? 'gain' : 'loss'] += delta * (delta > 0 ? course.gainScale : course.lossScale)

@@ -1,41 +1,5 @@
-import { Course } from './Course';
-import { Waypoint } from './Waypoint';
-type WaypointCutoff = {
-    loop: number;
-    time: number;
-};
-export type WaypointType = 'start' | 'finish' | 'aid' | 'water' | 'landmark' | 'junction' | 'other';
-/**
- * Site data object
- */
-export type SiteData = {
-    /**
-     * optional cutoffs for the site
-     */
-    cutoffs?: WaypointCutoff[];
-    /**
-     * optional description for the site
-     */
-    description?: string;
-    /**
-     * optional id for the site
-     * required when inputting plan delays
-     */
-    id?: string | symbol;
-    /**
-     * optional name for the site
-     */
-    name?: string | undefined;
-    /**
-     * percent of total distance along the track where the site is located
-     */
-    percent: number;
-    /**
-     * type of site
-     */
-    type: WaypointType;
-};
-export declare class Site {
+import { Types } from '../main';
+export declare class Site implements Types.Site {
     /**
      * internal cache object
      * gets deleted and regenerated when version changes
@@ -46,65 +10,29 @@ export declare class Site {
         alt?: number;
         lat?: number;
         lon?: number;
-        waypoints?: Waypoint[];
+        waypoints?: Types.Waypoint[];
     };
     /**
      * internal data object
      */
     private _data;
-    /**
-     * altitude of the site
-     */
     get alt(): number;
-    /**
-     * course the site is associated with
-     */
-    readonly course: Course;
-    /**
-     * optional cutoffs for the site
-     */
-    get cutoffs(): WaypointCutoff[];
-    /**
-     * optional description for the site
-     */
+    readonly course: Types.Course;
+    get cutoffs(): {
+        loop: number;
+        time: number;
+    }[];
     get description(): string | undefined;
-    /**
-     * optional id for the site
-     */
     get id(): string | symbol | undefined;
-    /**
-     * latitude of the site
-     */
     get lat(): number;
-    /**
-     * longitude of the site
-     */
     get lon(): number;
-    /**
-     * optional name for the site
-     */
     get name(): string | undefined;
-    /**
-     * percent of total distance along the track where the site is located
-     */
     get percent(): number;
     set percent(v: number);
-    /**
-     * type of site
-     */
-    get type(): WaypointType;
-    /**
-     * Version of course (not currently able to update site directly)
-     */
+    get tier(): number;
+    get type(): Types.SiteType;
     get version(): number;
-    /**
-     * array of waypoints for the site
-     */
-    get waypoints(): Waypoint[];
-    constructor(course: Course, data: SiteData);
-    /**
-     * refresh the latitude, longitude, and altitude of the site
-     */
+    get waypoints(): Types.Waypoint[];
+    constructor(course: Types.Course, data: Types.SiteData);
     refreshLLA(): void;
 }
-export {};

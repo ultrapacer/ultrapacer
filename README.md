@@ -9,25 +9,25 @@ Go to [https://ultrapacer.com](https://ultrapacer.com)
 0. Import modules:
 
 ```
-import {Course, Plan, Track} from '@ultrapacer/core'
+import { Models } from '@ultrapacer/core'
 ```
 
 1. Create a new track:
 
 ```
-const track = new Track(trackData)
+const track = new Models.Track(trackData)
 ```
 
 2. Create a new course:
 
 ```
-const course = new Course(track, courseData)
+const course = new Models.Course(track, courseData)
 ```
 
 3. Create a new plan:
 
 ```
-const plan = new Plan(course, planData)
+const plan = new Models.Plan(course, planData)
 ```
 
 4. See computed pacing:

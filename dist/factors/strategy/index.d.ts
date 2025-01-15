@@ -1,15 +1,9 @@
-import { Course } from '~/models';
+import { Types } from '../../main';
 import { StrategyElement, StrategyElementType } from './StrategyElement';
-/**
- * limited Plan type for Strategy
- */
-type Plan = {
-    course: Pick<Course, 'dist'>;
-};
 export declare class Strategy {
-    plan: Plan;
+    plan: Types.Plan;
     values: StrategyElement[];
-    constructor(plan: Plan, values?: StrategyElement[]);
+    constructor(plan: Types.Plan, values?: StrategyElement[]);
     /**
      * Returns strategy factor at location.
      *

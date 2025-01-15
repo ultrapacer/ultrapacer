@@ -1,9 +1,9 @@
 import { getPosition, getTimes } from 'suncalc'
 
+import { Types } from '../main'
 import { dateToTODSeconds } from '../util/dateToTODSeconds'
-import { Sun } from './Sun'
 
-class SunEvent {
+class SunEvent implements Types.SunEvent {
   nadir: number = 0
   dawn: number = 0
   sunrise: number = 0
@@ -17,13 +17,13 @@ class SunEvent {
   }
 }
 
-export class Event {
+export class Event implements Types.Event {
   readonly start: Date
   readonly lat: number
   readonly lon: number
   readonly timezone: string
-  readonly sun: Sun
-  readonly startTime: number
+  readonly sun: Types.SunEvent
+  private readonly startTime: number
 
   constructor(start: Date, timezone: string, lat: number, lon: number) {
     this.start = start
@@ -47,14 +47,12 @@ export class Event {
     this.startTime = dateToTODSeconds(this.start, this.timezone)
   }
 
-  // return a date object at [seconds] from start
   dateAtElapsed(seconds: number): Date {
     const d = new Date(this.start)
     d.setTime(d.getTime() + seconds * 1000)
     return d
   }
 
-  // return seconds since midnight for an input elapsed amount of time since start
   elapsedToTimeOfDay(elapsed: number): number {
     return (this.startTime + elapsed) % 86400
   }

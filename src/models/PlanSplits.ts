@@ -2,26 +2,25 @@ import _ from 'lodash'
 
 import { createDebug } from '../debug'
 import { Factors, generatePlanFactors } from '../factors'
+import { Types } from '../main'
+import { locationsToBreaks } from '../util/locationsToBreaks'
 import { req, rgte, rlt, rlte } from '../util/math'
 import { distScale } from '../util/units'
-import { Plan } from './Plan'
-import { PlanPoint } from './PlanPoint'
 import { PlanSegment } from './Segment'
-import { Waypoint } from './Waypoint'
 
 const d = createDebug('PlanSplits')
 
-export class PlanSplits {
-  plan: Plan
+export class PlanSplits implements Types.PlanSplits {
+  plan: Types.Plan
 
-  constructor(plan: Plan) {
+  constructor(plan: Types.Plan) {
     this.plan = plan
   }
 
   get segments() {
     if (this._segments && this._segmentsVersion === this.plan.version) return this._segments
 
-    this._segments = this.createSegments() as (PlanSegment & { waypoint: Waypoint })[]
+    this._segments = this.createSegments() as (Types.PlanSegment & { waypoint: Types.Waypoint })[]
     this._segmentsVersion = this.plan.version
 
     return this._segments
@@ -29,7 +28,7 @@ export class PlanSplits {
   set segments(v) {
     this._segments = v
   }
-  private _segments?: (PlanSegment & { waypoint: Waypoint })[]
+  private _segments?: (Types.PlanSegment & { waypoint: Types.Waypoint })[]
   private _segmentsVersion?: number
 
   get miles() {
@@ -43,7 +42,7 @@ export class PlanSplits {
   set miles(v) {
     this._miles = v
   }
-  private _miles?: PlanSegment[]
+  private _miles?: Types.PlanSegment[]
   private _milesVersion?: number
 
   get kilometers() {
@@ -56,7 +55,7 @@ export class PlanSplits {
   set kilometers(v) {
     this._kilometers = v
   }
-  private _kilometers?: PlanSegment[]
+  private _kilometers?: Types.PlanSegment[]
   private _kilometersVersion?: number
 
   createSegments() {
@@ -65,7 +64,12 @@ export class PlanSplits {
     const wps = this.plan.course.waypoints
 
     // determine all the stuff
-    const segments = this.calcSegments(this.plan.course.locationsToBreaks(wps.map((x) => x.loc)))
+    const segments = this.calcSegments(
+      locationsToBreaks(
+        wps.map((x) => x.loc),
+        this.plan.course.dist
+      )
+    )
 
     if (!segments.length) throw new Error('createSegments result is empty')
 
@@ -89,7 +93,7 @@ export class PlanSplits {
       breakLocations.push(this.plan.course.dist)
 
     // get the stuff
-    const splits = this.calcSegments(this.plan.course.locationsToBreaks(breakLocations))
+    const splits = this.calcSegments(locationsToBreaks(breakLocations, this.plan.course.dist))
 
     if (!splits.length) throw new Error('createSplits result is empty')
 
@@ -97,14 +101,6 @@ export class PlanSplits {
   }
 
   calcSegments(breaks: { start: number; end: number }[]) {
-    /*
-    data {
-       breaks: array of [{ start, end }, {start, end}] locations
-           must be consecutive and not overlap
-       course: Course object
-       [plan]: Plan Object
-     }
-    */
     const d2 = d.extend('calcSegments')
     d2('exec')
 
@@ -115,11 +111,11 @@ export class PlanSplits {
 
     const p = plan.points
 
-    const s: PlanSegment[] = [] // segments array
-    const fSums: Factors[] = [] // factor sum array
+    const s: Types.PlanSegment[] = [] // segments array
+    const fSums: Types.Factors[] = [] // factor sum array
     let i
     let il
-    let point1: PlanPoint = plan.points[0]
+    let point1: Types.PlanPoint = plan.points[0]
     let point2
     for (i = 0, il = breaks.length; i < il; i++) {
       const b = breaks[i]
@@ -147,7 +143,12 @@ export class PlanSplits {
     }
 
     // move this to PlanSegment constructor
-    const calcStuff = (seg: PlanSegment, p1: PlanPoint, p2: PlanPoint, fSum: Factors) => {
+    const calcStuff = (
+      seg: Types.PlanSegment,
+      p1: Types.PlanPoint,
+      p2: Types.PlanPoint,
+      fSum: Types.Factors
+    ) => {
       const delta = p2.alt - p1.alt
       seg[delta > 0 ? 'gain' : 'loss'] += delta * (delta > 0 ? course.gainScale : course.lossScale)
       generatePlanFactors(p1, plan)

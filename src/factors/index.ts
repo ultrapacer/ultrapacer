@@ -1,7 +1,4 @@
-import { Course } from '../models/Course'
-import { CoursePoint } from '../models/CoursePoint'
-import { Plan } from '../models/Plan'
-import { PlanPoint } from '../models/PlanPoint'
+import { Types } from '../main'
 import { getAltitudeFactor } from './altitude'
 import { getDarkFactor } from './dark'
 import { factorKeys, Factors, type FactorsKeys, type FactorsObject } from './Factors'
@@ -15,7 +12,10 @@ export function applyScale(fact: number, scale?: number) {
   return (fact - 1) * scale + 1
 }
 
-export function generateCourseFactors(point: CoursePoint | PlanPoint, course: Course) {
+export function generateCourseFactors(
+  point: Types.CoursePoint | Types.PlanPoint,
+  course: Types.Course
+) {
   if (!point.factors) point.factors = new Factors()
   Object.assign(point.factors, {
     grade: getGradeFactor(point.grade),
@@ -25,7 +25,7 @@ export function generateCourseFactors(point: CoursePoint | PlanPoint, course: Co
 }
 
 // function to generate pacing factors for a point
-export function generatePlanFactors(point: PlanPoint, plan: Plan) {
+export function generatePlanFactors(point: Types.PlanPoint, plan: Types.Plan) {
   if (!point.factors) point.factors = new Factors()
   generateCourseFactors(point, plan.course)
 
