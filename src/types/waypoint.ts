@@ -4,7 +4,7 @@ import { Site } from './site'
  * Waypoint type
  */
 export interface Waypoint
-  extends Pick<Site, 'alt' | 'description' | 'lat' | 'lon' | 'name' | 'tier' | 'type'> {
+  extends Pick<Site, 'alt' | 'description' | 'lat' | 'lon' | 'name' | 'type'> {
   /**
    * cutoff time for the waypoint
    */

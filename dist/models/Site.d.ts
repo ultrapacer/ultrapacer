@@ -29,7 +29,6 @@ export declare class Site implements Types.Site {
     get name(): string | undefined;
     get percent(): number;
     set percent(v: number);
-    get tier(): number;
     get type(): Types.SiteType;
     get version(): number;
     get waypoints(): Types.Waypoint[];

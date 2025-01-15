@@ -4725,7 +4725,7 @@ class q0 {
   }
   createSegments() {
     ys("createSegments");
-    const s = this.course.waypoints.filter((a) => a.tier < 3).sort((a, l) => a.loc - l.loc), r = this.calcSegments(
+    const s = this.course.waypoints, r = this.calcSegments(
       $r(
         s.map((a) => a.loc),
         this.course.dist
@@ -5004,12 +5004,6 @@ class xs {
   get alt() {
     return this.site.alt;
   }
-  /**
-   * @deprecated - this has been replaced with course terrain model
-   */
-  get tier() {
-    return this.site.tier || 1;
-  }
   get type() {
     return this.site.type;
   }
@@ -5073,9 +5067,6 @@ class Br {
   }
   set percent(s) {
     this._data.percent = s;
-  }
-  get tier() {
-    return this._data.tier || 1;
   }
   get type() {
     return this._data.type;
@@ -5732,7 +5723,7 @@ class Y0 {
   }
   createSegments() {
     bs("createSegments");
-    const s = this.plan.course.waypoints.filter((a) => a.tier < 3).sort((a, l) => a.loc - l.loc), r = this.calcSegments(
+    const s = this.plan.course.waypoints, r = this.calcSegments(
       $r(
         s.map((a) => a.loc),
         this.plan.course.dist

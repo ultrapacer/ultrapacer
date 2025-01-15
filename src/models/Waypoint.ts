@@ -57,13 +57,6 @@ export class Waypoint implements Types.Waypoint {
     return this.site.alt
   }
 
-  /**
-   * @deprecated - this has been replaced with course terrain model
-   */
-  get tier() {
-    return this.site.tier || 1
-  }
-
   get type() {
     return this.site.type
   }

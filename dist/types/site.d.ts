@@ -37,11 +37,6 @@ export interface SiteData {
      */
     percent: number;
     /**
-     * optional tier for the site
-     * @deprecated - this has been replaced with course terrain model
-     */
-    tier?: number;
-    /**
      * type of site
      */
     type: SiteType;
@@ -86,11 +81,6 @@ export interface Site {
      * percent of total distance along the track where the site is located
      */
     readonly percent: number;
-    /**
-     * optional tier for the site
-     * @deprecated - this has been replaced with course terrain model
-     */
-    readonly tier: number;
     /**
      * type of site
      */
