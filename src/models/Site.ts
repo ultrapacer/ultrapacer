@@ -79,10 +79,6 @@ export class Site implements Types.Site {
     this._data.percent = v
   }
 
-  get tier() {
-    return this._data.tier || 1
-  }
-
   get type() {
     return this._data.type
   }

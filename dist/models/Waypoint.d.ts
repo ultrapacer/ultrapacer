@@ -13,10 +13,6 @@ export declare class Waypoint implements Types.Waypoint {
     get lat(): number;
     get lon(): number;
     get alt(): number;
-    /**
-     * @deprecated - this has been replaced with course terrain model
-     */
-    get tier(): number;
     get type(): Types.SiteType;
     get hasTypicalDelay(): boolean;
     get cutoff(): number | undefined;
