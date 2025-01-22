@@ -39,10 +39,6 @@ export type CourseData = {
      */
     sites?: Types.SiteData[] | undefined;
     /**
-     * Start date and timezone
-     */
-    start?: Types.DateWithTimezone | undefined;
-    /**
      * Terrain data
      */
     terrain?: {
@@ -100,10 +96,6 @@ export interface Course {
      * Distance scale of course, relative to calculated track distance, as a factor (eg, 1.05)
      */
     readonly distScale: number;
-    /**
-     * Event object
-     */
-    readonly event?: Types.Event | undefined;
     /**
      * Total gain of course (in meters)
      */

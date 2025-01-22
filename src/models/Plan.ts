@@ -103,7 +103,6 @@ export class Plan implements Types.Plan {
         this.points[0].lat,
         this.points[0].lon
       ))
-    if (this.course.event) return (this.cache.event = this.course.event)
     throw new Error('Start date/timezone is required for either the plan or the course')
   }
 

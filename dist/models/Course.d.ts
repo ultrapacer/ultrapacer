@@ -38,7 +38,6 @@ export declare class Course implements Types.Course {
      * Distance scale of course (in km), relative to calculated track distance
      */
     get distScale(): number;
-    get event(): Types.Event | undefined;
     get gain(): number;
     get gainScale(): number;
     get loopDist(): number;

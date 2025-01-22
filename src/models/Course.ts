@@ -5,7 +5,6 @@ import { Types } from '../main'
 import { req, rgte, rlt } from '../util/math'
 import { CoursePoint } from './CoursePoint'
 import { CourseSplits } from './CourseSplits'
-import { Event } from './Event'
 import { interpolatePoint } from './Points/interpolate'
 import { Site } from './Site'
 
@@ -73,18 +72,6 @@ export class Course implements Types.Course {
    */
   get distScale() {
     return this._data.dist ? this._data.dist / (this.track.dist * this.loops) : 1
-  }
-
-  get event(): Types.Event | undefined {
-    if ('event' in this.cache) return this.cache.event
-
-    if (this._data.start)
-      return (this.cache.event = new Event(
-        this._data.start.date,
-        this._data.start.timezone,
-        this.points[0].lat,
-        this.points[0].lon
-      ))
   }
 
   get gain(): number {
