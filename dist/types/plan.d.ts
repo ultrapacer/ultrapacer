@@ -38,7 +38,7 @@ export type PlanData = {
     /**
      * Start date and timezone
      */
-    start?: DateWithTimezone | undefined;
+    start: DateWithTimezone;
     strategy?: Types.StrategyElement[] | undefined;
     target: number;
     typicalDelay?: number | undefined;
