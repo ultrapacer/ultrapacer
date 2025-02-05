@@ -138,7 +138,10 @@ export class PaceChunk implements Types.PaceChunk {
 
       tests.iterations = i >= minIterations
 
-      tests.factor = !_.round(lastFactor - this.factor, 10)
+      // factor test
+      // probably tighter than needed, what is a meaningful threshold for factor change?
+      // allow a little more error in the last iteration
+      tests.factor = !_.round(lastFactor - this.factor, i === maxIterations - 1 ? 6 : 8)
       lastFactor = this.factor
 
       // tests.target makes sure the final point is within a half second of target time (or cutoff max)
