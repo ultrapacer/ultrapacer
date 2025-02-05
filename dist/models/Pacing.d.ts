@@ -21,6 +21,7 @@ export declare class Pacing implements Types.Pacing {
         complete: boolean;
         success: boolean;
         chunks: number;
+        iterations: number[];
     };
     /**
      * last time this pacing was updated

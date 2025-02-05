@@ -79,7 +79,8 @@ export class Pacing implements Types.Pacing {
     return {
       complete: this.chunks?.length > 0,
       success: this.chunks?.filter((c) => !c.status?.success).length === 0,
-      chunks: this.chunks?.length || 0
+      chunks: this.chunks.length,
+      iterations: this.chunks.map((c) => c.status?.iterations || 0)
     }
   }
 
