@@ -5551,14 +5551,18 @@ class Nu {
     return this.elapsed - this.plan.delay;
   }
   get status() {
-    var s, r, a;
+    var s, r;
     return {
       complete: ((s = this.chunks) == null ? void 0 : s.length) > 0,
-      success: ((r = this.chunks) == null ? void 0 : r.filter((l) => {
-        var p;
-        return !((p = l.status) != null && p.success);
+      success: ((r = this.chunks) == null ? void 0 : r.filter((a) => {
+        var l;
+        return !((l = a.status) != null && l.success);
       }).length) === 0,
-      chunks: ((a = this.chunks) == null ? void 0 : a.length) || 0
+      chunks: this.chunks.length,
+      iterations: this.chunks.map((a) => {
+        var l;
+        return ((l = a.status) == null ? void 0 : l.iterations) || 0;
+      })
     };
   }
   calculate() {

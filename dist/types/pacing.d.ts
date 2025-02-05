@@ -102,9 +102,22 @@ export interface Pacing {
      * The status of the pacing, including completion, success, and number of chunks.
      */
     status: {
-        complete: boolean;
-        success: boolean;
+        /**
+         * Number of chunks pacing was split into.
+         */
         chunks: number;
+        /**
+         * Indicates if the pacing is complete.
+         */
+        complete: boolean;
+        /**
+         * An array of iteration totals for each chunk.
+         */
+        iterations: number[];
+        /**
+         * Indicates if the pacing was successful.
+         */
+        success: boolean;
     };
     /**
      * Calculates the pacing data.
