@@ -5,3 +5,4 @@ import debug from 'debug';
  * @returns debug object
  */
 export declare function createDebug(name: string): debug.Debugger;
+export declare function enableDebug(): void;
