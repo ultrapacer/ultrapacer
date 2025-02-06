@@ -29,11 +29,11 @@ export interface PaceChunk {
      */
     constraints: (number | (() => number))[];
     /**
-     * The delay associated with the chunk.
+     * The delay associated with the chunk (seconds).
      */
     delay: number;
     /**
-     * The distance associated with the chunk.
+     * The distance associated with the chunk (kilometer).
      */
     dist: number;
     /**
@@ -45,7 +45,7 @@ export interface PaceChunk {
      */
     factors: factors.Factors;
     /**
-     * The number of points associated with the chunk.
+     * The normalized pace for the chunk (seconds/kilometer).
      */
     np: number;
     /**
@@ -74,7 +74,7 @@ export interface Pacing {
      */
     chunks: Types.PaceChunk[];
     /**
-     * The elapsed time.
+     * The elapsed time (seconds).
      */
     elapsed: number;
     isCurrent: boolean;
@@ -87,15 +87,15 @@ export interface Pacing {
      */
     factors: factors.Factors;
     /**
-     * The moving time.
+     * The moving time (seconds).
      */
     moving: number;
     /**
-     * The number of points.
+     * The normalized pace (seconds/kilometer).
      */
     np: number;
     /**
-     * The pace value.
+     * The pace value (seconds/kilometer).
      */
     pace: number;
     /**

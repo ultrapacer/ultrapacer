@@ -285,5 +285,8 @@ export class Pacing implements Types.Pacing {
     })
     a.constraints = [a.constraints[0], b.constraints[1]]
     this.chunks.splice(j, 1)
+
+    // recalculate the chunk
+    a.calculate()
   }
 }
