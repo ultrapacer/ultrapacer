@@ -1,3 +1,4 @@
+export { enableDebug } from './debug'
 export * as factors from './factors'
 export { Factors, Strategy } from './factors'
 export { scale as scaleDark } from './factors/dark/scale'
