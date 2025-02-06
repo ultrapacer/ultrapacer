@@ -16,3 +16,8 @@ export function createDebug(name: string) {
   }
   return obj[name]
 }
+
+export function enableDebug() {
+  debug.enable('ultraPacer:core*')
+  debug('ultraPacer:core')('debug enabled')
+}
