@@ -111,13 +111,14 @@ export class Plan implements Types.Plan {
 
     // create array of sun events during the course:
     d('calculating events.sun')
-    const eventTimes: { event: string; elapsed: number }[] = []
+    const eventTimes: { event: Types.SunEventType; elapsed: number }[] = []
     const startTimeOfDay = this.event.elapsedToTimeOfDay(0)
     const days = Math.ceil((startTimeOfDay + this.points[this.points.length - 1].elapsed) / 86400)
     for (let d = 0; d < days; d++) {
-      const arr = [
+      const arr: { event: Types.SunEventType; time: number }[] = [
         { event: 'dawn', time: this.event.sun.dawn },
         { event: 'sunrise', time: this.event.sun.sunrise },
+        { event: 'nadir', time: this.event.sun.nadir },
         { event: 'sunset', time: this.event.sun.sunset },
         { event: 'dusk', time: this.event.sun.dusk }
       ]

@@ -28,5 +28,6 @@ export default tseslint.config(
       }
     }
   },
-  eslintPluginPrettierRecommended
+  eslintPluginPrettierRecommended,
+  { rules: { 'prettier/prettier': 'warn' } }
 )

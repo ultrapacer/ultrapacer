@@ -3,7 +3,7 @@ import { getPosition, getTimes } from 'suncalc'
 import { Types } from '../main'
 import { dateToTODSeconds } from '../util/dateToTODSeconds'
 
-class SunEvent implements Types.SunEvent {
+class SunEventTimes implements Types.SunEventTimes {
   nadir: number = 0
   dawn: number = 0
   sunrise: number = 0
@@ -12,7 +12,7 @@ class SunEvent implements Types.SunEvent {
   noon: number = 0
   nadirAltitude: number = 0
 
-  constructor(obj: SunEvent) {
+  constructor(obj: SunEventTimes) {
     Object.assign(this, obj)
   }
 }
@@ -22,7 +22,7 @@ export class Event implements Types.Event {
   readonly lat: number
   readonly lon: number
   readonly timezone: string
-  readonly sun: Types.SunEvent
+  readonly sun: Types.SunEventTimes
   private readonly startTime: number
 
   constructor(start: Date, timezone: string, lat: number, lon: number) {
@@ -34,7 +34,7 @@ export class Event implements Types.Event {
     const times = getTimes(this.start, this.lat, this.lon)
     const nadirPosition = getPosition(times.nadir, this.lat, this.lon)
 
-    this.sun = new SunEvent({
+    this.sun = new SunEventTimes({
       nadir: dateToTODSeconds(times.nadir, this.timezone),
       dawn: dateToTODSeconds(times.dawn, this.timezone),
       sunrise: dateToTODSeconds(times.sunrise, this.timezone),

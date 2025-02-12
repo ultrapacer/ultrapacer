@@ -424,26 +424,33 @@ function R0(f, s) {
   function r(a) {
     return a < f.noon ? a + 86400 : a;
   }
-  return s >= f.sunrise && s <= f.sunset ? 0 : !isNaN(f.dawn) && !isNaN(f.dusk) && (s <= f.dawn || s >= f.dusk) ? 1 : r(s) >= r(f.nadir) ? me(
-    r(isNaN(f.dawn) ? f.nadir : f.dawn),
-    r(f.sunrise),
-    1,
-    0,
-    r(s)
-  ) : me(
-    r(f.sunset),
-    r(isNaN(f.dusk) ? f.nadir : f.dusk),
-    0,
-    1,
-    r(s)
-  );
+  if (s >= f.sunrise && s <= f.sunset)
+    return 0;
+  if (!isNaN(f.dawn) && !isNaN(f.dusk) && (s <= f.dawn || s >= f.dusk) || f.nadirAltitude > 0)
+    return 1;
+  {
+    const a = f.nadirAltitude < -6 ? 1 : -(f.nadirAltitude / 6);
+    return r(s) >= r(f.nadir) ? me(
+      r(isNaN(f.dawn) ? f.nadir : f.dawn),
+      r(f.sunrise),
+      a,
+      0,
+      r(s)
+    ) : me(
+      r(f.sunset),
+      r(isNaN(f.dusk) ? f.nadir : f.dusk),
+      0,
+      a,
+      r(s)
+    );
+  }
 }
 function bo(f, s, r, a = co) {
   if (s === 1 || f >= r.sunrise && f <= r.sunset)
     return 1;
   (a === null || typeof a > "u") && (a = co);
-  const l = r.nadirAltitude < -6 ? 1 : -(r.nadirAltitude / 6), p = (a.terrainScale * (s - 1) + a.baseline) * l, d = R0(r, f);
-  return 1 + p * d;
+  const l = a.terrainScale * (s - 1) + a.baseline, p = R0(r, f);
+  return 1 + l * p;
 }
 const ve = [
   "altitude",
@@ -5852,6 +5859,7 @@ class X0 {
       [
         { event: "dawn", time: this.event.sun.dawn },
         { event: "sunrise", time: this.event.sun.sunrise },
+        { event: "nadir", time: this.event.sun.nadir },
         { event: "sunset", time: this.event.sun.sunset },
         { event: "dusk", time: this.event.sun.dusk }
       ].forEach((y) => {
