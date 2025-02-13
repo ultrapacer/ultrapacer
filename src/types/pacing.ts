@@ -15,6 +15,11 @@ export interface PacingTests {
   factor: boolean
 
   /**
+   * Indicates if the points test passed.
+   */
+  points: boolean
+
+  /**
    * Indicates if the target test passed.
    */
   target: boolean
