@@ -43,7 +43,7 @@ export class PaceChunk implements Types.PaceChunk {
   factor: number
 
   factors: Factors = new Factors()
-  status?: { success?: boolean; tests?: Types.PacingTests; iterations?: number }
+  status?: Types.PaceChunk['status'] | undefined
 
   get elapsed() {
     const a = _.isFunction(this.constraints[0]) ? this.constraints[0]() : this.constraints[0]
@@ -171,7 +171,15 @@ export class PaceChunk implements Types.PaceChunk {
     }
     d2('chunk complete')
 
+    const errorMessage = tests.passing
+      ? undefined
+      : `failed tests ${Object.keys(tests)
+          .filter((k) => !tests[k as keyof PacingTests])
+          .map((k) => `"${k}"`)
+          .join(',')} after ${i} iterations`
+
     this.status = {
+      errorMessage,
       tests,
       success: tests.passing,
       iterations: i

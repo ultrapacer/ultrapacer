@@ -31,6 +31,31 @@ export interface PacingTests {
 }
 
 /**
+ * Interface representing the status of a pacing chunk.
+ */
+export interface PaceChunkStatus {
+  /**
+   * Error message if the chunk was not successful.
+   */
+  errorMessage?: string | undefined
+
+  /**
+   * Indicates if the chunk was successful.
+   */
+  success: boolean
+
+  /**
+   * The tests associated with the chunk.
+   */
+  tests: PacingTests
+
+  /**
+   * The number of iterations for the chunk.
+   */
+  iterations: number
+}
+
+/**
  * Interface representing a chunk of pacing data.
  */
 export interface PaceChunk {
@@ -72,12 +97,39 @@ export interface PaceChunk {
   /**
    * The status of the chunk, which may include success, tests, and iterations.
    */
-  status?: { success?: boolean; tests?: PacingTests; iterations?: number }
+  status?: PaceChunkStatus | undefined
 
   /**
    * Calculates the pacing data for the chunk.
    */
   calculate(): void
+}
+
+export interface PacingStatus {
+  /**
+   * Indicates if the pacing is complete.
+   */
+  complete: boolean
+
+  /**
+   * Error message if the pacing was not successful.
+   */
+  errorMessage?: string | undefined
+
+  /**
+   * Indicates if the pacing was successful.
+   */
+  success: boolean
+
+  /**
+   * Number of chunks pacing was split into.
+   */
+  chunks: number
+
+  /**
+   * An array of iteration totals for each chunk.
+   */
+  iterations: number[]
 }
 
 /**
@@ -124,27 +176,7 @@ export interface Pacing {
   /**
    * The status of the pacing, including completion, success, and number of chunks.
    */
-  status: {
-    /**
-     * Number of chunks pacing was split into.
-     */
-    chunks: number
-
-    /**
-     * Indicates if the pacing is complete.
-     */
-    complete: boolean
-
-    /**
-     * An array of iteration totals for each chunk.
-     */
-    iterations: number[]
-
-    /**
-     * Indicates if the pacing was successful.
-     */
-    success: boolean
-  }
+  status: PacingStatus
 
   /**
    * Calculates the pacing data.

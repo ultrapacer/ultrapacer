@@ -19,6 +19,7 @@ export declare class Pacing implements Types.Pacing {
     get moving(): number;
     get status(): {
         complete: boolean;
+        errorMessage: undefined | string;
         success: boolean;
         chunks: number;
         iterations: number[];
