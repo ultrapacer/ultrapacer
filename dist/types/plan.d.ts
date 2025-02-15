@@ -1,5 +1,5 @@
 import { Types } from '../main';
-import { DateWithTimezone } from '.';
+import { DateWithTimezone, SunEventType } from '.';
 export type PlanDataDelays = {
     delay: number;
     loop: number;
@@ -50,7 +50,7 @@ export type PlanData = {
 export type PlanUpdateData = Partial<PlanData> & NonNullable<Partial<Pick<PlanData, 'method' | 'target'>>>;
 export type PlanEvents = {
     sun: {
-        event: string;
+        event: SunEventType;
         elapsed: number;
         loc: number;
     }[];

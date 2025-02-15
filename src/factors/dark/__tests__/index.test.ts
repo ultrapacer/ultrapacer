@@ -6,7 +6,7 @@ import { getDarkFactor } from '../'
 const sunrise = 21600
 const sunset = 72000
 
-const sun: Types.SunEvent = {
+const sun: Types.SunEventTimes = {
   nadir: 0,
   nadirAltitude: -20,
   noon: sunrise + (sunset - sunrise) / 2,

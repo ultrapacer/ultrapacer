@@ -16,7 +16,7 @@ import { scale } from './scale'
 export function getDarkFactor(
   timeOfDaySeconds: number,
   terrainFactor: number,
-  sun: Types.SunEvent,
+  sun: Types.SunEventTimes,
   model: DarkModel = defaults
 ): number {
   if (terrainFactor === 1) return 1
@@ -27,11 +27,9 @@ export function getDarkFactor(
   if (model === null || typeof model === 'undefined') {
     model = defaults
   }
-  // max dark scaling if never gets fully dark
-  const maxDarkScaleFactor = sun.nadirAltitude < -6 ? 1 : -(sun.nadirAltitude / 6)
 
   // dark factor is a scaling of terrain
-  const fdark = (model.terrainScale * (terrainFactor - 1) + model.baseline) * maxDarkScaleFactor
+  const fdark = model.terrainScale * (terrainFactor - 1) + model.baseline
 
   // val will be between 0 and 1, where 0 is no additional and 1 is max
   const val = scale(sun, timeOfDaySeconds)

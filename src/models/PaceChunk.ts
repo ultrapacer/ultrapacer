@@ -4,16 +4,18 @@ import { vsprintf } from 'sprintf-js'
 import { createDebug } from '../debug'
 import { Factors, generatePlanFactors } from '../factors'
 import { Types } from '../main'
+import { req } from '../util/math'
 
 const d = createDebug('PaceChunk')
 
 class PacingTests implements Types.PacingTests {
+  points: boolean = false
   iterations: boolean = false
   factor: boolean = false
   target: boolean = false
 
   get passing() {
-    return this.iterations && this.factor && this.target
+    return this.iterations && this.factor && this.target && this.points
   }
 }
 
@@ -125,15 +127,16 @@ export class PaceChunk implements Types.PaceChunk {
    */
   calculate() {
     const minIterations = 2
-    const maxIterations = 20
+    const maxIterations = 30
     const d2 = d.extend(
       vsprintf('calculate:%.2f-%.2f', [this.points[0].loc, this.points[this.points.length - 1].loc])
     )
     let lastFactor = this.factor || 0
+    let lastElapsed: number[] | undefined = undefined
     let i
     const tests = new PacingTests()
 
-    for (i = 0; i < maxIterations; i++) {
+    for (i = 1; i <= maxIterations; i++) {
       this.applyPacing()
 
       tests.iterations = i >= minIterations
@@ -141,7 +144,7 @@ export class PaceChunk implements Types.PaceChunk {
       // factor test
       // probably tighter than needed, what is a meaningful threshold for factor change?
       // allow a little more error in the last iteration
-      tests.factor = !_.round(lastFactor - this.factor, i === maxIterations - 1 ? 6 : 8)
+      tests.factor = !_.round(lastFactor - this.factor, i === maxIterations ? 6 : 8)
       lastFactor = this.factor
 
       // tests.target makes sure the final point is within a half second of target time (or cutoff max)
@@ -151,14 +154,27 @@ export class PaceChunk implements Types.PaceChunk {
             this.points[this.points.length - 1].elapsed
         ) < 0.1
 
-      if (tests.passing) break
+      // tests.points makes sure all points are within a half second of previous iteration
+      tests.points =
+        (lastElapsed && this.points.every((p, j) => req(p.elapsed, lastElapsed![j], 0))) || false
+      lastElapsed = this.points.map((p) => p.elapsed)
+
+      if (tests.passing) {
+        d2(`iteration ${i} complete, passed`)
+        break
+      } else
+        d2(
+          `iteration ${i} complete, failed ${Object.keys(tests)
+            .filter((k) => !tests[k as keyof PacingTests])
+            .join('|')}`
+        )
     }
-    d2('iteration complete')
+    d2('chunk complete')
 
     this.status = {
       tests,
       success: tests.passing,
-      iterations: i + 1
+      iterations: i
     }
   }
 }
