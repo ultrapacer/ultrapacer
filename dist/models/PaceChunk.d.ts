@@ -8,11 +8,7 @@ export declare class PaceChunk implements Types.PaceChunk {
     delay: number;
     factor: number;
     factors: Factors;
-    status?: {
-        success?: boolean;
-        tests?: Types.PacingTests;
-        iterations?: number;
-    };
+    status?: Types.PaceChunk['status'] | undefined;
     get elapsed(): number;
     get dist(): number;
     get pace(): number;

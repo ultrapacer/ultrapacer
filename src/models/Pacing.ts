@@ -76,12 +76,20 @@ export class Pacing implements Types.Pacing {
   }
 
   get status() {
-    return {
+    const result = {
       complete: this.chunks?.length > 0,
+      errorMessage: undefined as undefined | string,
       success: this.chunks?.filter((c) => !c.status?.success).length === 0,
       chunks: this.chunks.length,
       iterations: this.chunks.map((c) => c.status?.iterations || 0)
     }
+    if (!result.success) {
+      result.errorMessage = this.chunks
+        .filter((c) => c.status && !c.status?.success)
+        .map((c, i) => `Chunk ${i + 1}: ${c.status!.errorMessage}`)
+        .join(' | ')
+    }
+    return result
   }
 
   /**
